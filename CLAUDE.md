@@ -2,7 +2,7 @@
 
 ## One-line summary
 
-No-login Pokémon team sharing & builder platform. Bilingual (Korean / English). Mobile web first, architected for future native mobile app. Master data from Bulbapedia weekly crawl, sprites from PokeAPI.
+No-login Pokémon team sharing & builder platform. Bilingual (Korean / English). Mobile web first, architected for future native mobile app. **Champions-exclusive** — only Pokémon legal in the Champions metagame. Master data from Pokémon Showdown (MIT-licensed `smogon/pokemon-showdown`, `data/mods/champions/` mod). Sprites from PokeAPI CDN (permissive).
 
 ## Core features
 
@@ -10,7 +10,7 @@ No-login Pokémon team sharing & builder platform. Bilingual (Korean / English).
 2. **Create Team** — Pick Pokémon, configure ability / item / nature / EVs / moves with live-calculated damage output per move
 3. **Quick Search** — Enter a Pokémon name in either language, see bulk / speed / move damage as MIN / NORM / MAX ranges
 
-Not tied to any specific format (VGC / Singles / Doubles / Smogon tiers). The team creator chooses the level (50 or 100) and the platform imposes no ruleset or tier restrictions.
+Champions-exclusive metagame site. The team creator chooses the level (default 50) and the platform enforces Champions roster legality.
 
 ## Non-negotiable rules
 
@@ -44,7 +44,9 @@ packages/types/     Shared TypeScript types + Zod schemas.
 packages/api-client/  Typed fetch wrappers around /api routes.
                       Consumed by apps/web AND future apps/mobile.
 packages/db/        Prisma schema + migrations + seed + password helpers.
-packages/crawler/   Bulbapedia batch crawler (standalone CLI).
+packages/crawler/   Showdown Champions crawler (standalone CLI). Fetches from
+                    `smogon/pokemon-showdown` at a pinned SHA. Korean
+                    translations in `packages/crawler/data/ko/*.json`.
 docs/               Single source of truth. Read these first.
   mockups/reference.html    The target UI. Open in browser to see how
                             every screen must render. Pixel-level reference.

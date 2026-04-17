@@ -1,24 +1,28 @@
-// Persistent resume state for the crawler. Stored as JSON at the project
-// root so it survives restarts and can be inspected by hand.
+// Persistent resume state for the Champions crawler.
+// A single pipeline runs steps in order; the state records which steps
+// have completed so a Ctrl-C leaves a resumable trail.
 
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 
+export type StepName = 'natures' | 'abilities' | 'items' | 'moves' | 'pokemon' | 'learnsets';
+
 export interface CrawlerState {
-  pokemon: { doneDex: number[] };
-  moves: { doneIds: number[] };
-  abilities: { doneIds: number[] };
-  items: { doneIds: number[] };
-  learnsets: { donePokemonIds: number[] };
+  steps: Record<StepName, 'done' | 'pending'>;
   lastRunAt: string | null;
 }
 
+const ALL_STEPS: StepName[] = ['natures', 'abilities', 'items', 'moves', 'pokemon', 'learnsets'];
+
 const DEFAULT_STATE: CrawlerState = {
-  pokemon: { doneDex: [] },
-  moves: { doneIds: [] },
-  abilities: { doneIds: [] },
-  items: { doneIds: [] },
-  learnsets: { donePokemonIds: [] },
+  steps: {
+    natures: 'pending',
+    abilities: 'pending',
+    items: 'pending',
+    moves: 'pending',
+    pokemon: 'pending',
+    learnsets: 'pending',
+  },
   lastRunAt: null,
 };
 
@@ -30,7 +34,8 @@ export async function loadState(file: string): Promise<CrawlerState> {
   try {
     const raw = await fs.readFile(file, 'utf8');
     const parsed = JSON.parse(raw) as Partial<CrawlerState>;
-    return { ...DEFAULT_STATE, ...parsed };
+    const steps = { ...DEFAULT_STATE.steps, ...(parsed.steps ?? {}) } as CrawlerState['steps'];
+    return { steps, lastRunAt: parsed.lastRunAt ?? null };
   } catch (err: unknown) {
     if ((err as NodeJS.ErrnoException).code === 'ENOENT') return { ...DEFAULT_STATE };
     throw err;
@@ -42,15 +47,17 @@ export async function saveState(file: string, state: CrawlerState): Promise<void
   await fs.writeFile(file, JSON.stringify(next, null, 2));
 }
 
-export function hasDone(list: number[], id: number): boolean {
-  return list.includes(id);
-}
-
-export function markDone(list: number[], id: number): number[] {
-  if (list.includes(id)) return list;
-  return [...list, id];
-}
-
 export function resetState(): CrawlerState {
-  return { ...DEFAULT_STATE };
+  return {
+    steps: { ...DEFAULT_STATE.steps },
+    lastRunAt: null,
+  };
+}
+
+export function stepDone(state: CrawlerState, step: StepName): void {
+  state.steps[step] = 'done';
+}
+
+export function isStepDone(state: CrawlerState, step: StepName): boolean {
+  return state.steps[step] === 'done';
 }

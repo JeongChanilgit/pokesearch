@@ -1,0 +1,8 @@
+{
+  "lifeorb": { "all": 1.3 },
+  "muscleband": { "physical": 1.1 },
+  "wiseglasses": { "special": 1.1 },
+  "choiceband": { "physical": 1.5 },
+  "choicespecs": { "special": 1.5 },
+  "expertbelt": { "super_effective": 1.2 }
+}

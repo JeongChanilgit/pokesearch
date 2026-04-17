@@ -1,91 +1,66 @@
 #!/usr/bin/env node
-// CLI entry for the PokeSearch crawler.
+// CLI entry for the PokeSearch Champions crawler.
 //
-//   pnpm --filter @pokesearch/crawler crawl --all
-//   pnpm --filter @pokesearch/crawler crawl --pokemon
-//   pnpm --filter @pokesearch/crawler crawl --moves
-//   pnpm --filter @pokesearch/crawler crawl --abilities
-//   pnpm --filter @pokesearch/crawler crawl --items
-//   pnpm --filter @pokesearch/crawler crawl --learnsets
+//   pnpm --filter @pokesearch/crawler crawl
 //   pnpm --filter @pokesearch/crawler crawl --resume
+//   pnpm --filter @pokesearch/crawler crawl --allow-missing-ko
 
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import { prisma } from '@pokesearch/db';
 import { defaultStatePath, loadState, resetState } from './state.js';
-import {
-  runAbilities,
-  runItems,
-  runLearnsets,
-  runMoves,
-  runPokemon,
-  type RunContext,
-  type RunStats,
-} from './run.js';
+import { runChampions, type RunContext } from './run.js';
 
-interface CliArgs {
-  all: boolean;
-  pokemon: boolean;
-  moves: boolean;
-  abilities: boolean;
-  items: boolean;
-  learnsets: boolean;
-  resume: boolean;
-  state: string;
-}
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+// Data dir lives at packages/crawler/data regardless of cwd.
+const DEFAULT_DATA_DIR = path.resolve(__dirname, '../../data');
 
 async function main(): Promise<void> {
-  const argv = (await yargs(hideBin(process.argv))
+  const argv = await yargs(hideBin(process.argv))
     .scriptName('crawl')
-    .option('all', { type: 'boolean', default: false, describe: 'Run every step' })
-    .option('pokemon', { type: 'boolean', default: false, describe: 'Crawl pokemons + varieties' })
-    .option('moves', { type: 'boolean', default: false, describe: 'Crawl moves' })
-    .option('abilities', { type: 'boolean', default: false, describe: 'Crawl abilities' })
-    .option('items', { type: 'boolean', default: false, describe: 'Crawl items' })
-    .option('learnsets', { type: 'boolean', default: false, describe: 'Crawl learnsets' })
-    .option('resume', { type: 'boolean', default: false, describe: 'Skip already-done IDs' })
+    .option('resume', {
+      type: 'boolean',
+      default: false,
+      describe: 'Skip steps already marked done in the state file',
+    })
+    .option('allow-missing-ko', {
+      type: 'boolean',
+      default: false,
+      describe: 'Continue even when Korean translations are missing (dev mode)',
+    })
     .option('state', {
       type: 'string',
       default: defaultStatePath(),
       describe: 'Path to resume state JSON',
     })
+    .option('data-dir', {
+      type: 'string',
+      default: DEFAULT_DATA_DIR,
+      describe: 'Directory containing data/ko/*.json and id-manifest.json',
+    })
     .help()
     .strict()
-    .parse()) as unknown as CliArgs;
+    .parse();
 
-  const steps = argv.all
-    ? { pokemon: true, moves: true, abilities: true, items: true, learnsets: true }
-    : {
-        pokemon: argv.pokemon,
-        moves: argv.moves,
-        abilities: argv.abilities,
-        items: argv.items,
-        learnsets: argv.learnsets,
-      };
+  const state = argv.resume ? await loadState(argv.state as string) : resetState();
 
-  if (!Object.values(steps).some(Boolean)) {
-    console.error('No steps selected. Use --all or one of --pokemon, --moves, --abilities, --items, --learnsets.');
-    process.exit(2);
-  }
-
-  const state = argv.resume ? await loadState(argv.state) : resetState();
   const ctx: RunContext = {
     prisma,
     state,
-    statePath: argv.state,
-    resume: argv.resume,
+    statePath: argv.state as string,
+    resume: argv.resume as boolean,
+    allowMissingKo: argv['allow-missing-ko'] as boolean,
+    dataDir: argv['data-dir'] as string,
     log: (msg: string) => console.log(msg),
   };
 
-  const totals: Record<string, RunStats> = {};
   const started = Date.now();
+  let totals: Record<string, { attempted: number; written: number; skipped: number; failed: number }> = {};
 
   try {
-    if (steps.pokemon) totals.pokemon = await runPokemon(ctx);
-    if (steps.moves) totals.moves = await runMoves(ctx);
-    if (steps.abilities) totals.abilities = await runAbilities(ctx);
-    if (steps.items) totals.items = await runItems(ctx);
-    if (steps.learnsets) totals.learnsets = await runLearnsets(ctx);
+    totals = await runChampions(ctx);
   } finally {
     await prisma.$disconnect();
   }

@@ -1,4 +1,6 @@
-# Weekly Bulbapedia + PokeAPI crawl.
+# Pokémon Showdown Champions crawler.
+# Fetches data from smogon/pokemon-showdown at a pinned SHA and upserts
+# it into the production database (hash-aware, safe to re-run).
 #
 # Enable after deployment — requires a DATABASE_URL secret pointing at the
 # production database. Until then the `workflow_dispatch` trigger keeps
@@ -37,4 +39,4 @@ jobs:
         run: pnpm --filter @pokesearch/db db:generate
 
       - name: Crawl
-        run: pnpm --filter @pokesearch/crawler crawl --all
+        run: pnpm --filter @pokesearch/crawler crawl

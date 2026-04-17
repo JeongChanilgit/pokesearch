@@ -1,11 +1,12 @@
 # PokeSearch
 
-Bilingual (English / Korean) Pokémon team sharing platform. Mobile web first, architected for future native mobile app.
+Bilingual (English / Korean) **Champions-exclusive** Pokémon team sharing platform. Mobile web first, architected for future native mobile app.
 
 - No-login: every team and comment is secured by a bcrypt password
 - Bilingual from day 1 — `/en` and `/ko` URL-prefixed locales
 - PWA: installable, offline-ready for read paths
 - Monorepo: `apps/web`, `packages/{calc,types,api-client,db,crawler}`
+- Master data from Pokémon Showdown (MIT) Champions mod; sprites from PokeAPI CDN
 
 See [CLAUDE.md](CLAUDE.md) and [`docs/`](docs/) for the authoritative project spec. This README is for getting the project running.
 
@@ -42,7 +43,8 @@ pnpm --filter @pokesearch/web dev
 pnpm test                       # run unit tests across the workspace
 pnpm typecheck                  # tsc --noEmit across the workspace
 pnpm --filter @pokesearch/web test:e2e     # Playwright smoke
-pnpm --filter @pokesearch/crawler crawl    # run the Bulbapedia/PokeAPI crawler
+pnpm --filter @pokesearch/crawler crawl                   # run the Showdown Champions crawler
+pnpm --filter @pokesearch/crawler crawl --allow-missing-ko # dev mode: skip Korean validation
 ```
 
 ## Environment variables
@@ -51,8 +53,7 @@ pnpm --filter @pokesearch/crawler crawl    # run the Bulbapedia/PokeAPI crawler
 |---|---|---|
 | `DATABASE_URL` | `@pokesearch/db`, web API routes | Postgres connection string |
 | `NEXT_PUBLIC_APP_URL` | `@pokesearch/web` | Canonical origin (used for metadata / sitemap) |
-| `POKEAPI_BASE_URL` | `@pokesearch/crawler` | Override PokeAPI base URL (defaults to `https://pokeapi.co/api/v2`) |
-| `CRAWLER_CONCURRENCY` | `@pokesearch/crawler` | Parallelism for the crawler (default 4) |
+| `SHOWDOWN_PINNED_SHA` | `@pokesearch/crawler` | Git SHA of `smogon/pokemon-showdown` to fetch (default pinned in `src/showdown/fetch.ts`) |
 
 `.env.example` in the repo root shows the complete list. Never commit real secrets.
 
@@ -80,7 +81,8 @@ The web app is platform-agnostic (any Node host with Next.js 15 support). Recomm
 - [ ] Real PWA icons generated from designer art (replace placeholders in `apps/web/public/icons/`)
 - [ ] No real-person imagery audit
 - [ ] PokeAPI CDN fallback plan if jsdelivr goes down (Cloudflare Images or self-host)
-- [ ] Bulbapedia / PokeAPI attribution visible (footer or About page)
+- [ ] Showdown (MIT) attribution visible (footer or About page)
+- [ ] Korean translations complete (run `pnpm crawl --allow-missing-ko`, fill `data/ko/*.json`)
 - [ ] Weekly crawler workflow (`crawl.yml`) enabled and green
 - [ ] Lighthouse audit on `/en`, `/en/search`, `/en/teams/{id}` — PWA all green, Perf ≥ 90, A11y ≥ 95
 
@@ -99,8 +101,9 @@ Slices were built in order in dedicated Claude Code sessions. Prompts preserved 
 | 7 | `slice-7-team-create.md` | Team creation with password |
 | 8 | `slice-8-team-edit-delete.md` | Edit / delete flow (password verify) |
 | 9 | `slice-9-comments-likes.md` | Comments + likes |
-| 10 | `slice-10-crawler.md` | Bulbapedia + PokeAPI crawler |
+| 10 | `slice-10-crawler.md` | PokeAPI crawler (superseded by slice-12) |
 | 11 | `slice-11-pwa.md` | PWA manifest, install flow, error boundaries, launch polish |
+| 12 | `slice-12-showdown-migration.md` | Champions-only architecture; Showdown as sole data source |
 
 ## If requirements change mid-build
 

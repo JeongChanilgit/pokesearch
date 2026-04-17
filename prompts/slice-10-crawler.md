@@ -1,4 +1,9 @@
-# Slice 10 — Bulbapedia + PokeAPI crawler
+> **SUPERSEDED by slice-12 Showdown migration.**
+> The PokeAPI-based crawler built here was replaced wholesale in slice-12.
+> See `packages/crawler/src/showdown/` and the plan at
+> `C:\Users\peter\.claude\plans\vivid-forging-koala.md` for the current architecture.
+
+# Slice 10 — Bulbapedia + PokeAPI crawler (historical)
 
 ## Goal
 

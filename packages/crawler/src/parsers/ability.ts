@@ -1,5 +1,8 @@
-import type { PokeApiAbility } from '../pokeapi.js';
-import { pickName } from '../pokeapi.js';
+import type { ShowdownRecord } from '../showdown/parse.js';
+import type { IdManifest } from '../showdown/id-manifest.js';
+import type { KoTables, MissingTracker } from '../showdown/korean.js';
+import { assignId } from '../showdown/id-manifest.js';
+import { lookupKo } from '../showdown/korean.js';
 
 export interface ParsedAbility {
   id: number;
@@ -9,20 +12,41 @@ export interface ParsedAbility {
   descriptionKo: string;
 }
 
-function pickFlavor(entries: PokeApiAbility['flavor_text_entries'], lang: 'en' | 'ko'): string {
-  const hit = entries.find((e) => e.language.name === lang);
-  return (hit?.flavor_text ?? '').replace(/[\n\f]/g, ' ').trim();
+function isRecord(v: unknown): v is Record<string, unknown> {
+  return typeof v === 'object' && v !== null && !Array.isArray(v);
 }
 
-export function buildAbilityRow(a: PokeApiAbility): ParsedAbility | null {
-  const nameEn = pickName(a.names, 'en');
-  if (!nameEn) return null;
-  const nameKo = pickName(a.names, 'ko') ?? nameEn;
+export function buildAbilityRow(
+  slug: string,
+  mergedAbilities: ShowdownRecord,
+  textAbilities: ShowdownRecord,
+  manifest: IdManifest,
+  koTables: KoTables,
+  tracker: MissingTracker
+): ParsedAbility | null {
+  const entry = mergedAbilities[slug];
+  if (!isRecord(entry)) return null;
+
+  const textEntry = textAbilities[slug];
+  const nameEn =
+    (isRecord(textEntry) && typeof textEntry.name === 'string' ? textEntry.name : null) ??
+    (typeof entry.name === 'string' ? entry.name : slug);
+
+  const descriptionEn = isRecord(textEntry)
+    ? (typeof textEntry.shortDesc === 'string'
+        ? textEntry.shortDesc
+        : typeof textEntry.desc === 'string'
+          ? textEntry.desc
+          : '')
+    : '';
+
+  const koEntry = lookupKo(koTables, tracker, 'abilities', slug, nameEn);
+
   return {
-    id: a.id,
+    id: assignId(manifest, 'ability', slug),
     nameEn,
-    nameKo,
-    descriptionEn: pickFlavor(a.flavor_text_entries, 'en'),
-    descriptionKo: pickFlavor(a.flavor_text_entries, 'ko'),
+    nameKo: koEntry.name,
+    descriptionEn,
+    descriptionKo: koEntry.description ?? descriptionEn,
   };
 }

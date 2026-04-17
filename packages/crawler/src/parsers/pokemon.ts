@@ -1,16 +1,18 @@
-// Maps PokeAPI species + variety responses to our `pokemons` rows.
+// Maps a Showdown pokedex entry to our `pokemons` row.
 //
-// Our ID scheme: `dex * 100 + form_number`.
-// - Base form       → dex * 100 + 0
-// - First alt form  → dex * 100 + 1
-// - Subsequent alts → dex * 100 + 2, 3, ...
+// ID scheme (unchanged from PokeAPI era): `dex * 100 + form_slot`
+//   - Base form: slot 0  → dex * 100
+//   - Alt forms : slot 1+ → dex * 100 + N  (ordering: base first, then
+//     Showdown's `formeOrder` if present, else alphabetical by slug)
 //
-// Form ordering follows the `varieties[]` order returned by the species
-// endpoint. The default variety is placed at slot 0 regardless of its
-// position in the array; remaining varieties keep their relative order.
+// Sprite URL reuses the PokeAPI CDN (commercial-OK, MIT sprites repo)
+// keyed by national-dex number: there's only one sprite per dex entry
+// for base forms; alt forms use the same base-form dex sprite.
 
-import type { PokeApiPokemon, PokeApiSpecies } from '../pokeapi.js';
-import { idFromUrl, pickName } from '../pokeapi.js';
+import type { ShowdownRecord } from '../showdown/parse.js';
+import type { KoTables, MissingTracker } from '../showdown/korean.js';
+import { lookupKo } from '../showdown/korean.js';
+import { toId } from './legality.js';
 
 export interface ParsedPokemon {
   id: number;
@@ -27,104 +29,133 @@ export interface ParsedPokemon {
   formOf: number | null;
 }
 
-export interface VarietyPlan {
-  ourId: number;
-  formOf: number | null;
-  pokeapiId: number;
-  varietyName: string;
-  isDefault: boolean;
-}
-
-/**
- * Compute our ID layout for a species' varieties.
- *
- * We keep the variety order from PokeAPI (stable per release), but
- * guarantee the default variety occupies form slot 0 so `form_of` always
- * points to the canonical base form.
- */
-export function planVarieties(species: PokeApiSpecies): VarietyPlan[] {
-  const dex = species.id;
-  const varieties = species.varieties;
-  const baseIdx = varieties.findIndex((v) => v.is_default);
-  const base = baseIdx === -1 ? varieties[0] : varieties[baseIdx];
-  if (!base) return [];
-
-  const ordered = [base, ...varieties.filter((v) => v !== base)];
-  const baseId = dex * 100 + 0;
-
-  return ordered.map((variety, slot) => ({
-    ourId: dex * 100 + slot,
-    formOf: slot === 0 ? null : baseId,
-    pokeapiId: idFromUrl(variety.pokemon.url),
-    varietyName: variety.pokemon.name,
-    isDefault: variety === base,
-  }));
-}
-
-/**
- * Extract `name_en` / `name_ko` from a species response. Older Pokémon
- * sometimes lack a Korean name — return `null` so the caller can log and
- * fall back.
- */
-export function pickBilingualNames(
-  species: PokeApiSpecies
-): { nameEn: string; nameKo: string | null } | null {
-  const nameEn = pickName(species.names, 'en');
-  if (!nameEn) return null;
-  const nameKo = pickName(species.names, 'ko');
-  return { nameEn, nameKo };
-}
-
-/**
- * Build a `pokemons` row. For alt forms, the species-level names are
- * decorated with a suffix derived from the variety slug (e.g.
- * `charizard-mega-x` → "Mega X") so the UI can distinguish them.
- */
-export function buildPokemonRow(
-  species: PokeApiSpecies,
-  mon: PokeApiPokemon,
-  plan: VarietyPlan
-): ParsedPokemon | null {
-  const names = pickBilingualNames(species);
-  if (!names) return null;
-  const nameEn = plan.isDefault ? names.nameEn : decorateFormName(names.nameEn, plan.varietyName);
-  const nameKo = plan.isDefault
-    ? names.nameKo ?? `${names.nameEn}`
-    : decorateFormName(names.nameKo ?? names.nameEn, plan.varietyName);
-
-  const stat = (key: string) =>
-    mon.stats.find((s) => s.stat.name === key)?.base_stat ?? 0;
-  const types = [...mon.types].sort((a, b) => a.slot - b.slot).map((t) => t.type.name);
-
-  return {
-    id: plan.ourId,
-    nameEn: truncate(nameEn, 32),
-    nameKo: truncate(nameKo, 32),
-    types,
-    baseH: stat('hp'),
-    baseA: stat('attack'),
-    baseB: stat('defense'),
-    baseC: stat('special-attack'),
-    baseD: stat('special-defense'),
-    baseS: stat('speed'),
-    spriteUrl: spriteUrlFor(plan.pokeapiId),
-    formOf: plan.formOf,
-  };
-}
-
-function spriteUrlFor(pokeapiId: number): string {
-  return `https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/${pokeapiId}.png`;
-}
-
-function decorateFormName(baseName: string, varietySlug: string): string {
-  const parts = varietySlug.split('-').slice(1);
-  if (parts.length === 0) return baseName;
-  const suffix = parts
-    .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
-    .join(' ');
-  return `${baseName} ${suffix}`;
+function spriteUrl(dexNum: number): string {
+  return `https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/${dexNum}.png`;
 }
 
 function truncate(s: string, max: number): string {
   return s.length <= max ? s : s.slice(0, max);
+}
+
+function isRecord(v: unknown): v is Record<string, unknown> {
+  return typeof v === 'object' && v !== null && !Array.isArray(v);
+}
+
+function numArr(v: unknown): number[] {
+  return Array.isArray(v) ? (v as unknown[]).filter((x) => typeof x === 'number') as number[] : [];
+}
+
+/**
+ * Group all Showdown pokedex slugs by national-dex number, computing
+ * stable form slots. Returns a list of `{ slug, dexNum, slot, baseSlug }`
+ * in the order they should be inserted.
+ *
+ * Ordering: base form always slot 0; remaining slugs follow `formeOrder`
+ * if present on the base entry, else alphabetical by slug.
+ */
+export interface FormGroup {
+  slug: string;
+  dexNum: number;
+  slot: number;
+  baseSlug: string;
+}
+
+export function buildFormGroups(
+  mergedPokedex: ShowdownRecord,
+  legalSlugs: Set<string>
+): FormGroup[] {
+  // Group slugs by dex number.
+  const byDex = new Map<number, string[]>();
+  for (const [slug, entry] of Object.entries(mergedPokedex)) {
+    if (!legalSlugs.has(slug)) continue;
+    if (!isRecord(entry)) continue;
+    const num = entry.num;
+    if (typeof num !== 'number' || num <= 0) continue;
+    const list = byDex.get(num) ?? [];
+    list.push(slug);
+    byDex.set(num, list);
+  }
+
+  const groups: FormGroup[] = [];
+
+  for (const [dexNum, slugs] of byDex) {
+    const base = slugs.find((s) => !isRecord(mergedPokedex[s]) || !(mergedPokedex[s] as Record<string, unknown>).baseSpecies);
+    if (!base) continue;
+    const baseEntry = mergedPokedex[base] as Record<string, unknown>;
+
+    // Determine order. Use `formeOrder` from the base entry if present
+    // (it lists Showdown internal names like "Venusaur-Mega"), otherwise
+    // base first then alphabetical alts.
+    const formeOrder = Array.isArray(baseEntry.formeOrder) ? baseEntry.formeOrder as string[] : null;
+    const alts = slugs.filter((s) => s !== base);
+
+    let ordered: string[];
+    if (formeOrder && formeOrder.length > 1) {
+      // Map Showdown display names → slugs for alts.
+      const altMap = new Map<string, string>(alts.map((s) => [toId((mergedPokedex[s] as Record<string, unknown>).name as string ?? s), s]));
+      ordered = [base];
+      for (const formeName of formeOrder) {
+        const id = toId(formeName);
+        if (id === toId((baseEntry.name as string) ?? base)) continue;
+        const altSlug = altMap.get(id);
+        if (altSlug) ordered.push(altSlug);
+      }
+      // Append any alts not in formeOrder.
+      for (const alt of alts) {
+        if (!ordered.includes(alt)) ordered.push(alt);
+      }
+    } else {
+      ordered = [base, ...alts.sort()];
+    }
+
+    for (let slot = 0; slot < ordered.length; slot++) {
+      groups.push({
+        slug: ordered[slot],
+        dexNum,
+        slot,
+        baseSlug: base,
+      });
+    }
+  }
+
+  return groups.sort((a, b) => a.dexNum * 100 + a.slot - (b.dexNum * 100 + b.slot));
+}
+
+export function buildPokemonRow(
+  slug: string,
+  group: FormGroup,
+  mergedPokedex: ShowdownRecord,
+  koTables: KoTables,
+  tracker: MissingTracker
+): ParsedPokemon | null {
+  const entry = mergedPokedex[slug];
+  if (!isRecord(entry)) return null;
+
+  const nameEn = typeof entry.name === 'string' ? entry.name : slug;
+  const koEntry = lookupKo(koTables, tracker, 'pokemon', slug, nameEn);
+
+  const stats = entry.baseStats;
+  if (!isRecord(stats)) return null;
+
+  const types = (Array.isArray(entry.types) ? entry.types : [])
+    .map((t) => (typeof t === 'string' ? t.toLowerCase() : ''))
+    .filter(Boolean);
+
+  const ourId = group.dexNum * 100 + group.slot;
+  const baseId = group.dexNum * 100;
+
+  return {
+    id: ourId,
+    nameEn: truncate(nameEn, 32),
+    nameKo: truncate(koEntry.name, 32),
+    types,
+    baseH: Number(stats.hp ?? 0),
+    baseA: Number(stats.atk ?? 0),
+    baseB: Number(stats.def ?? 0),
+    baseC: Number(stats.spa ?? 0),
+    baseD: Number(stats.spd ?? 0),
+    baseS: Number(stats.spe ?? 0),
+    spriteUrl: spriteUrl(group.dexNum),
+    formOf: group.slot === 0 ? null : baseId,
+  };
 }

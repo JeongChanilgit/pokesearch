@@ -25,7 +25,9 @@ packages/
 │                      components AND apps/mobile later.
 ├── db/                Prisma client + schema + seed + password helpers.
 │                      Server-side ONLY. Never imported by mobile or web client.
-└── crawler/           Bulbapedia / PokeAPI ingester. Standalone CLI.
+└── crawler/           Pokémon Showdown Champions ingester. Standalone CLI.
+                       Fetches base + mod data from `smogon/pokemon-showdown`
+                       (pinned SHA). Korean translations in `data/ko/*.json`.
 ```
 
 ## Critical dependency rules
@@ -131,6 +133,23 @@ Why both? Web benefits from RSC (initial HTML is populated). Mobile has no RSC �
 - Mobile (future): TanStack Query's `persistQueryClient` to AsyncStorage gives similar behavior.
 
 Write actions (create team, comment, like) always require online — no offline queue in v1.
+
+## Crawler data pipeline
+
+Data source: **Pokémon Showdown** (`smogon/pokemon-showdown`, MIT). The Champions mod at `data/mods/champions/` defines the legal roster and move/item overrides.
+
+Pipeline order (single run):
+
+1. **Natures** — `data/natures.ts` (base only; no mod override).
+2. **Abilities** — base `data/abilities.ts` + mod `data/mods/champions/abilities.ts`; filtered to slugs referenced by Champions-legal Pokémon.
+3. **Items** — base + mod; filter `isNonstandard === null` (Champions reinstates these items via the mod).
+4. **Moves** — base `data/moves.ts` + mod overrides; filter `isNonstandard !== 'Past'`.
+5. **Pokémon** — base `data/pokedex.ts`; filter slugs with `tier === 'OU'` in `data/mods/champions/formats-data.ts`. Form slots follow the `dex * 100 + slot` scheme with the default form always at slot 0.
+6. **Learnsets** — `data/mods/champions/learnsets.ts` only; maps move slugs to numeric IDs via `data/id-manifest.json`.
+
+**ID stability**: Showdown uses string slugs; we assign numeric IDs via `packages/crawler/data/id-manifest.json` (slug → id, sorted, 1-based). Pokémon IDs follow `dex * 100 + form_slot` (deterministic from the pokedex). The manifest is committed and grows monotonically — slugs never get new IDs after their first assignment.
+
+**Korean translations**: maintained by hand in `packages/crawler/data/ko/*.json`. Run `pnpm crawl --allow-missing-ko` to generate `missing-slugs.txt`, then fill the JSON files and re-run without the flag.
 
 ## Migration discipline
 

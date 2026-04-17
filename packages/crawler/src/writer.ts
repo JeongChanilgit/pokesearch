@@ -10,8 +10,9 @@ import type { ParsedMove } from './parsers/move.js';
 import type { ParsedAbility } from './parsers/ability.js';
 import type { ParsedItem } from './parsers/item.js';
 import type { ParsedLearnsetEntry } from './parsers/learnset.js';
+import type { ParsedNature } from './parsers/nature.js';
 
-export type EntityType = 'pokemon' | 'move' | 'ability' | 'item' | 'learnset';
+export type EntityType = 'pokemon' | 'move' | 'ability' | 'item' | 'learnset' | 'nature';
 
 export interface WriteResult {
   written: number;
@@ -159,5 +160,21 @@ export async function writeLearnset(
       : []),
   ]);
   await recordHash(prisma, 'learnset', entityId, hash);
+  return true;
+}
+
+export async function writeNature(
+  prisma: PrismaClient,
+  row: ParsedNature
+): Promise<boolean> {
+  const hash = hashRow(row);
+  const entityId = `nature:${row.id}`;
+  if (!(await shouldWrite(prisma, 'nature', entityId, hash))) return false;
+  await prisma.nature.upsert({
+    where: { id: row.id },
+    create: row,
+    update: row,
+  });
+  await recordHash(prisma, 'nature', entityId, hash);
   return true;
 }

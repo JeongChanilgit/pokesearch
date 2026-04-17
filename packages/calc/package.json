@@ -11,11 +11,13 @@
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
     "typecheck": "tsc --noEmit",
     "lint": "echo \"no lint in slice 1\" && exit 0",
     "build": "echo \"no build in slice 1\" && exit 0"
   },
   "devDependencies": {
+    "@vitest/coverage-v8": "^2.1.4",
     "typescript": "^5.5.4",
     "vitest": "^2.1.4"
   }

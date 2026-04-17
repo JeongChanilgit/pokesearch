@@ -22,7 +22,7 @@ let effectMultCache: EffectMultMap | null = null;
 export async function loadEffectMultMap(dataDir: string): Promise<EffectMultMap> {
   if (effectMultCache) return effectMultCache;
   try {
-    const raw = await fs.readFile(path.join(dataDir, 'item-effect-mult.json'), 'utf8');
+    const raw = await fs.readFile(path.join(dataDir, 'data', 'item-effect-mult.json'), 'utf8');
     effectMultCache = JSON.parse(raw) as EffectMultMap;
   } catch {
     effectMultCache = {};

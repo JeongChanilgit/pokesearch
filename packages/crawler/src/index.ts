@@ -14,8 +14,8 @@ import { defaultStatePath, loadState, resetState } from './state.js';
 import { runChampions, type RunContext } from './run.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-// Data dir lives at packages/crawler/data regardless of cwd.
-const DEFAULT_DATA_DIR = path.resolve(__dirname, '../../data');
+// Package root; helpers (defaultKoDir, defaultManifestPath) append `data/` themselves.
+const DEFAULT_DATA_DIR = path.resolve(__dirname, '..');
 
 async function main(): Promise<void> {
   const argv = await yargs(hideBin(process.argv))

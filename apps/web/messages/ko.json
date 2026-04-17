@@ -3,7 +3,8 @@
     "save": "저장",
     "cancel": "취소",
     "delete": "삭제",
-    "back": "뒤로"
+    "back": "뒤로",
+    "statusMove": "변화"
   },
   "nav": {
     "viewTeams": "팀",
@@ -14,6 +15,31 @@
     "title": "포켓서치",
     "welcome": "포켓서치에 오신 것을 환영합니다.",
     "tagline": "계정 없이 포켓몬 팀을 만들고 공유하세요.",
-    "empty": "아직 팀이 없습니다."
+    "popularTeams": "인기 팀",
+    "emptyTitle": "아직 공유된 팀이 없습니다 — 첫 팀을 만들어 보세요",
+    "emptyCta": "팀 만들기",
+    "empty": "아직 팀이 없습니다.",
+    "sortLabel": "정렬",
+    "filter": "필터 ▾",
+    "viewsCount": "조회 {count}",
+    "likesCount": "♡ {count}",
+    "commentsCount": "댓글 {count}",
+    "sort": {
+      "likes": "좋아요 순 ▾",
+      "views": "조회 순 ▾",
+      "newest": "최신 순 ▾",
+      "comments": "댓글 순 ▾"
+    }
+  },
+  "teamDetail": {
+    "back": "팀 목록으로",
+    "physBulk": "물리 내구",
+    "specBulk": "특수 내구",
+    "speed": "스피드",
+    "evLabel": "EV {ev}",
+    "viewsCount": "조회 {count}",
+    "commentsCount": "댓글 {count}",
+    "commentsHeading": "댓글 ({count}개)",
+    "commentsPlaceholder": "댓글은 이후 슬라이스에서 제공됩니다."
   }
 }

@@ -3,7 +3,8 @@
     "save": "Save",
     "cancel": "Cancel",
     "delete": "Delete",
-    "back": "Back"
+    "back": "Back",
+    "statusMove": "status"
   },
   "nav": {
     "viewTeams": "Teams",
@@ -14,6 +15,31 @@
     "title": "PokeSearch",
     "welcome": "Welcome to PokeSearch.",
     "tagline": "Build and share Pokémon teams without an account.",
-    "empty": "No teams yet."
+    "popularTeams": "Popular teams",
+    "emptyTitle": "No teams yet — be the first to create one",
+    "emptyCta": "Create a team",
+    "empty": "No teams yet.",
+    "sortLabel": "Sort",
+    "filter": "Filter ▾",
+    "viewsCount": "{count, plural, =1 {# view} other {# views}}",
+    "likesCount": "♡ {count}",
+    "commentsCount": "{count, plural, =1 {# comment} other {# comments}}",
+    "sort": {
+      "likes": "Most liked ▾",
+      "views": "Most viewed ▾",
+      "newest": "Newest ▾",
+      "comments": "Most commented ▾"
+    }
+  },
+  "teamDetail": {
+    "back": "Back to teams",
+    "physBulk": "Phys bulk",
+    "specBulk": "Sp bulk",
+    "speed": "Speed",
+    "evLabel": "EV {ev}",
+    "viewsCount": "{count, plural, =1 {# view} other {# views}}",
+    "commentsCount": "{count, plural, =1 {# comment} other {# comments}}",
+    "commentsHeading": "Comments ({count})",
+    "commentsPlaceholder": "Comments arrive in a later slice."
   }
 }

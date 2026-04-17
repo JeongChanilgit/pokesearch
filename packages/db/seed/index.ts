@@ -13,6 +13,7 @@ import {
   fetchNature,
   fetchPokemon,
 } from './data/poke-api.js';
+import { seedSampleTeams } from './sample-teams.js';
 
 const prisma = new PrismaClient();
 
@@ -159,9 +160,10 @@ async function main() {
   const moveCount = await seedMoves();
   const abilityCount = await seedAbilities();
   const learnCount = await seedLearnableMoves();
+  const sampleTeamCount = await seedSampleTeams(prisma);
 
   console.log(
-    `Seeded ${pokemonCount} pokemons, ${moveCount} moves, ${abilityCount} abilities, ${items.length} items, ${natureCount} natures (${learnCount} learnable-move rows)`
+    `Seeded ${pokemonCount} pokemons, ${moveCount} moves, ${abilityCount} abilities, ${items.length} items, ${natureCount} natures (${learnCount} learnable-move rows, ${sampleTeamCount} sample teams)`
   );
 }
 

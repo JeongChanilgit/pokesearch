@@ -159,6 +159,8 @@ export const UpdateTeamRequest = z.object({
   name: z.string().min(1).max(60),
   description: z.string().max(500).optional(),
   level: Level,
+  /** If present, replaces the existing password. */
+  password: z.string().min(4).max(64).optional(),
   pokemons: z.array(TeamPokemonInput).min(1).max(6),
 });
 export type UpdateTeamRequest = z.infer<typeof UpdateTeamRequest>;

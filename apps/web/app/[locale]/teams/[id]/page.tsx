@@ -14,6 +14,7 @@ import { computeTeamPokemonMetrics } from '../../../../lib/team-calc';
 import { TeamPokemonCard } from '../../../../components/TeamPokemonCard';
 import { LikeButton } from '../../../../components/LikeButton';
 import { CommentList } from '../../../../components/CommentList';
+import { TeamOwnerActions } from '../../../../components/TeamOwnerActions';
 
 interface Props {
   params: Promise<{ locale: string; id: string }>;
@@ -34,12 +35,16 @@ export default async function TeamDetailPage({ params }: Props) {
     await prisma.team
       .update({ where: { id }, data: { views: { increment: 1 } } })
       .catch(() => {});
-    cookieStore.set(cookieName, '1', {
-      path: '/',
-      maxAge: VIEW_DEDUP_MAX_AGE_SECONDS,
-      httpOnly: true,
-      sameSite: 'lax',
-    });
+    try {
+      cookieStore.set(cookieName, '1', {
+        path: '/',
+        maxAge: VIEW_DEDUP_MAX_AGE_SECONDS,
+        httpOnly: true,
+        sameSite: 'lax',
+      });
+    } catch {
+      /* cookies().set is a no-op in some RSC contexts (Next 15); ignore */
+    }
   }
 
   const team = await queryTeamDetail(id);
@@ -117,6 +122,7 @@ export default async function TeamDetailPage({ params }: Props) {
           {team.description}
         </p>
       )}
+      <TeamOwnerActions teamId={id} />
       <div data-testid="team-pokemon-list">
         {team.pokemons.map((p) => (
           <TeamPokemonCard

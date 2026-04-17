@@ -1,0 +1,19 @@
+{
+  "id": 211,
+  "name": "leftovers",
+  "names": [
+    { "language": { "name": "en" }, "name": "Leftovers" },
+    { "language": { "name": "ko" }, "name": "먹다남은밥" }
+  ],
+  "effect_entries": [
+    {
+      "effect": "Restores 1/16 of the holder's max HP each turn.",
+      "short_effect": "Heals the holder 1/16 of its max HP each turn.",
+      "language": { "name": "en" }
+    }
+  ],
+  "flavor_text_entries": [
+    { "text": "An item to be held by a Pokémon.", "language": { "name": "en" } },
+    { "text": "지닌 포켓몬의 HP를 매 턴 조금씩 회복시킨다.", "language": { "name": "ko" } }
+  ]
+}

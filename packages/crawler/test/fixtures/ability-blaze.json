@@ -1,0 +1,18 @@
+{
+  "id": 66,
+  "name": "blaze",
+  "names": [
+    { "language": { "name": "en" }, "name": "Blaze" },
+    { "language": { "name": "ko" }, "name": "맹화" }
+  ],
+  "flavor_text_entries": [
+    {
+      "flavor_text": "Powers up Fire-type moves\nwhen the Pokemon is in trouble.",
+      "language": { "name": "en" }
+    },
+    {
+      "flavor_text": "HP가 줄면 불꽃 타입 기술의\n위력이 올라간다.",
+      "language": { "name": "ko" }
+    }
+  ]
+}

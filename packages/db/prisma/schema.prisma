@@ -216,3 +216,15 @@ model PokemonLearnableMove {
   @@index([pokemonId])
   @@map("pokemon_learnable_moves")
 }
+
+// Crawler bookkeeping. Keeps content hashes keyed by (entity_type, entity_id)
+// so the crawler can skip writes when upstream data hasn't changed.
+model CrawlerHash {
+  entityType  String   @map("entity_type") @db.VarChar(32)
+  entityId    String   @map("entity_id") @db.VarChar(64)
+  contentHash String   @map("content_hash") @db.VarChar(64)
+  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@id([entityType, entityId])
+  @@map("crawler_hashes")
+}

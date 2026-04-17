@@ -1,0 +1,13 @@
+{
+  "id": 53,
+  "name": "flamethrower",
+  "names": [
+    { "language": { "name": "en" }, "name": "Flamethrower" },
+    { "language": { "name": "ko" }, "name": "화염방사" }
+  ],
+  "type": { "name": "fire" },
+  "damage_class": { "name": "special" },
+  "power": 90,
+  "accuracy": 100,
+  "pp": 15
+}

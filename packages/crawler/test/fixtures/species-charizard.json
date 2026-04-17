@@ -1,0 +1,27 @@
+{
+  "id": 6,
+  "name": "charizard",
+  "names": [
+    { "language": { "name": "en" }, "name": "Charizard" },
+    { "language": { "name": "ko" }, "name": "리자몽" },
+    { "language": { "name": "ja" }, "name": "リザードン" }
+  ],
+  "varieties": [
+    {
+      "is_default": true,
+      "pokemon": { "name": "charizard", "url": "https://pokeapi.co/api/v2/pokemon/6/" }
+    },
+    {
+      "is_default": false,
+      "pokemon": { "name": "charizard-mega-x", "url": "https://pokeapi.co/api/v2/pokemon/10034/" }
+    },
+    {
+      "is_default": false,
+      "pokemon": { "name": "charizard-mega-y", "url": "https://pokeapi.co/api/v2/pokemon/10035/" }
+    },
+    {
+      "is_default": false,
+      "pokemon": { "name": "charizard-gmax", "url": "https://pokeapi.co/api/v2/pokemon/10192/" }
+    }
+  ]
+}

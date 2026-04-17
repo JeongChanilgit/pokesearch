@@ -14,6 +14,7 @@ export type {
   Item,
   Nature,
   PokemonLearnableMove,
+  CrawlerHash,
   MoveCategory,
   StatKey,
 } from '@prisma/client';

@@ -1,0 +1,18 @@
+{
+  "id": 26,
+  "name": "raichu",
+  "names": [
+    { "language": { "name": "en" }, "name": "Raichu" },
+    { "language": { "name": "ko" }, "name": "라이츄" }
+  ],
+  "varieties": [
+    {
+      "is_default": true,
+      "pokemon": { "name": "raichu", "url": "https://pokeapi.co/api/v2/pokemon/26/" }
+    },
+    {
+      "is_default": false,
+      "pokemon": { "name": "raichu-alola", "url": "https://pokeapi.co/api/v2/pokemon/10100/" }
+    }
+  ]
+}

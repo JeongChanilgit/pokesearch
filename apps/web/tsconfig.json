@@ -27,6 +27,12 @@
       ],
       "@pokesearch/api-client/*": [
         "../../packages/api-client/src/*"
+      ],
+      "@pokesearch/db": [
+        "../../packages/db/src/index.ts"
+      ],
+      "@pokesearch/db/*": [
+        "../../packages/db/src/*"
       ]
     },
     "allowJs": true,
@@ -39,6 +45,7 @@
     ".next/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "e2e"
   ]
 }

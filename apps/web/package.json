@@ -14,6 +14,7 @@
     "pretendard": "^1.3.9",
     "@pokesearch/api-client": "workspace:*",
     "@pokesearch/calc": "workspace:*",
+    "@pokesearch/db": "workspace:*",
     "@pokesearch/types": "workspace:*",
     "next": "^15.0.3",
     "next-intl": "^3.26.0",

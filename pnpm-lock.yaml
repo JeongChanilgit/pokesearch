@@ -26,6 +26,9 @@ importers:
       '@pokesearch/calc':
         specifier: workspace:*
         version: link:../../packages/calc
+      '@pokesearch/db':
+        specifier: workspace:*
+        version: link:../../packages/db
       '@pokesearch/types':
         specifier: workspace:*
         version: link:../../packages/types

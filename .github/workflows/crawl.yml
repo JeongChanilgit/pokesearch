@@ -1,0 +1,40 @@
+# Weekly Bulbapedia + PokeAPI crawl.
+#
+# Enable after deployment — requires a DATABASE_URL secret pointing at the
+# production database. Until then the `workflow_dispatch` trigger keeps
+# the workflow parseable without running it on a schedule.
+
+name: crawl
+
+on:
+  # Enable after deployment
+  # schedule:
+  #   - cron: '0 3 * * 0'  # Sunday 03:00 UTC
+  workflow_dispatch:
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Prisma generate
+        run: pnpm --filter @pokesearch/db db:generate
+
+      - name: Crawl
+        run: pnpm --filter @pokesearch/crawler crawl --all

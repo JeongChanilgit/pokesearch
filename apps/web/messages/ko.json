@@ -41,5 +41,26 @@
     "commentsCount": "댓글 {count}",
     "commentsHeading": "댓글 ({count}개)",
     "commentsPlaceholder": "댓글은 이후 슬라이스에서 제공됩니다."
+  },
+  "search": {
+    "title": "빠른 검색",
+    "placeholder": "포켓몬 검색 (EN · KO)",
+    "level": "레벨",
+    "minDef": "하향·0",
+    "normDef": "중립·0",
+    "maxDef": "상향·252",
+    "weak": "약점",
+    "resist": "저항",
+    "immune": "무효",
+    "physBulk": "물리 내구",
+    "specBulk": "특수 내구",
+    "speed": "스피드",
+    "moves": "기술",
+    "movesHint": "최대 데미지 순",
+    "notFound": "포켓몬을 찾을 수 없습니다.",
+    "enterQuery": "포켓몬 이름을 입력하세요.",
+    "noMoves": "공격 기술이 없습니다.",
+    "recent": "최근 검색",
+    "clearRecent": "지우기"
   }
 }

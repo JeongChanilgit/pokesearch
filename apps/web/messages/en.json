@@ -41,5 +41,26 @@
     "commentsCount": "{count, plural, =1 {# comment} other {# comments}}",
     "commentsHeading": "Comments ({count})",
     "commentsPlaceholder": "Comments arrive in a later slice."
+  },
+  "search": {
+    "title": "Quick Search",
+    "placeholder": "Search Pokémon (EN · KO)",
+    "level": "Level",
+    "minDef": "reducing·0",
+    "normDef": "neutral·0",
+    "maxDef": "boosting·252",
+    "weak": "Weak to",
+    "resist": "Resists",
+    "immune": "Immune to",
+    "physBulk": "Physical bulk",
+    "specBulk": "Special bulk",
+    "speed": "Speed",
+    "moves": "Moves",
+    "movesHint": "sorted by max damage",
+    "notFound": "Pokémon not found.",
+    "enterQuery": "Type a Pokémon name to begin.",
+    "noMoves": "No attacking moves.",
+    "recent": "Recent searches",
+    "clearRecent": "Clear"
   }
 }

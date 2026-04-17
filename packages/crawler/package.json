@@ -7,9 +7,11 @@
     "pokesearch-crawler": "src/index.ts"
   },
   "scripts": {
+    "crawl": "tsx src/index.ts",
     "start": "tsx src/index.ts",
     "typecheck": "tsc --noEmit",
-    "test": "echo \"no tests in slice 1\" && exit 0",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "lint": "echo \"no lint in slice 1\" && exit 0",
     "build": "echo \"no build in slice 1\" && exit 0"
   },
@@ -21,6 +23,7 @@
   "devDependencies": {
     "@types/yargs": "^17.0.33",
     "tsx": "^4.19.2",
-    "typescript": "^5.5.4"
+    "typescript": "^5.5.4",
+    "vitest": "^2.1.4"
   }
 }

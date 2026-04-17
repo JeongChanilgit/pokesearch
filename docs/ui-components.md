@@ -166,20 +166,20 @@ All pages use the same shell. In `app/[locale]/layout.tsx`:
 <body className="min-h-screen bg-bg-tertiary">
   <div className="mx-auto max-w-[480px] min-h-screen bg-bg-primary flex flex-col">
     <header>...</header>
+    <TopTabs />
     <main className="flex-1 p-3">{children}</main>
-    <BottomNav />
   </div>
 </body>
 ```
 
 - Content max-width 480px, centered
 - Edge padding 12–16px
-- Bottom nav respects `safe-area-inset-bottom`
+- Top tabs sit directly below the header, above main content
 
-### 2. Bottom navigation
+### 2. Top tabs (primary navigation)
 
 ```tsx
-<nav className="border-t border-border-tertiary bg-bg-primary pt-1.5 pb-2.5 grid grid-cols-3" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 10px)' }}>
+<nav className="border-b border-border-tertiary bg-bg-primary py-1.5 grid grid-cols-3">
   <NavItem href="/" icon="i-list" label={t('nav.viewTeams')} active={pathname === '/'} />
   <NavItem href="/teams/new" icon="i-plus" label={t('nav.createTeam')} active={...} />
   <NavItem href="/search" icon="i-search" label={t('nav.quickSearch')} active={...} />

@@ -27,7 +27,7 @@ function NavItem({ href, icon, label, active }: NavItemProps) {
   );
 }
 
-export function BottomNav() {
+export function TopTabs() {
   const locale = useLocale();
   const pathname = usePathname();
   const t = useTranslations('nav');
@@ -40,10 +40,7 @@ export function BottomNav() {
   const isSearch = strip.startsWith('/search');
 
   return (
-    <nav
-      className="border-t border-border-tertiary bg-bg-primary pt-1.5 grid grid-cols-3"
-      style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 10px)' }}
-    >
+    <nav className="border-b border-border-tertiary bg-bg-primary py-1.5 grid grid-cols-3">
       <NavItem href={`${prefix}/`} icon="i-list" label={t('viewTeams')} active={isTeams} />
       <NavItem
         href={`${prefix}/teams/new`}

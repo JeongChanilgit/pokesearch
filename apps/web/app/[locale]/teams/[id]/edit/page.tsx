@@ -221,7 +221,7 @@ export default function EditTeamPage() {
   }
 
   return (
-    <div className="pb-20">
+    <div className="pb-4">
       <h1 className="text-[15px] font-semibold mb-2">{tEdit('title')}</h1>
 
       <TeamMetaForm
@@ -298,7 +298,7 @@ export default function EditTeamPage() {
         </button>
       )}
 
-      <div className="sticky bottom-[56px] bg-bg-primary pt-2 pb-2 border-t border-border-tertiary mt-3">
+      <div className="sticky bottom-0 bg-bg-primary pt-2 pb-2 border-t border-border-tertiary mt-3">
         <button
           type="button"
           data-testid="save-edit"
@@ -346,7 +346,7 @@ export default function EditTeamPage() {
         <div
           role="status"
           data-testid="toast"
-          className="fixed bottom-[70px] left-1/2 -translate-x-1/2 bg-text-primary text-bg-primary text-[11px] px-3 py-1.5 rounded-md shadow-lg z-40"
+          className="fixed bottom-4 left-1/2 -translate-x-1/2 bg-text-primary text-bg-primary text-[11px] px-3 py-1.5 rounded-md shadow-lg z-40"
         >
           {toast}
         </div>

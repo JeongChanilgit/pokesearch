@@ -36,7 +36,7 @@
   .ph-head .locale { font-size: 10px; color: var(--text-secondary); padding: 2px 6px; border: 0.5px solid var(--border-tertiary); border-radius: 10px; }
   .ph-head .locale .on { color: var(--text-primary); font-weight: 500; }
   .ph-body { flex: 1; padding: 12px; overflow: hidden; position: relative; }
-  .ph-nav { display: grid; grid-template-columns: 1fr 1fr 1fr; border-top: 0.5px solid var(--border-tertiary); padding: 6px 0 10px; background: var(--bg-primary); }
+  .ph-nav { display: grid; grid-template-columns: 1fr 1fr 1fr; border-bottom: 0.5px solid var(--border-tertiary); padding: 6px 0; background: var(--bg-primary); }
   .ph-nav-item { text-align: center; font-size: 10px; color: var(--text-tertiary); }
   .ph-nav-item.active { color: var(--text-primary); font-weight: 500; }
   .ph-nav-item svg { display: block; margin: 0 auto 2px; width: 18px; height: 18px; }
@@ -165,6 +165,11 @@
     <div class="ph">
       <div class="ph-notch"></div>
       <div class="ph-head"><span class="title">PokeSearch</span><span class="locale"><span class="on">EN</span> · KO</span></div>
+      <div class="ph-nav">
+        <div class="ph-nav-item active"><svg><use href="#i-list"/></svg>View teams</div>
+        <div class="ph-nav-item"><svg><use href="#i-plus"/></svg>Create team</div>
+        <div class="ph-nav-item"><svg><use href="#i-search"/></svg>Quick search</div>
+      </div>
       <div class="ph-body">
         <div style="font-size: 12px; font-weight: 500; margin-bottom: 8px;">Popular teams</div>
         <div style="display: flex; gap: 5px; margin-bottom: 10px;">
@@ -210,11 +215,6 @@
           </div>
         </div>
       </div>
-      <div class="ph-nav">
-        <div class="ph-nav-item active"><svg><use href="#i-list"/></svg>View teams</div>
-        <div class="ph-nav-item"><svg><use href="#i-plus"/></svg>Create team</div>
-        <div class="ph-nav-item"><svg><use href="#i-search"/></svg>Quick search</div>
-      </div>
     </div>
   </div>
 
@@ -224,6 +224,11 @@
     <div class="ph">
       <div class="ph-notch"></div>
       <div class="ph-head"><span class="back">←</span><span class="title">Trick Room Altaria</span></div>
+      <div class="ph-nav">
+        <div class="ph-nav-item active"><svg><use href="#i-list"/></svg>View teams</div>
+        <div class="ph-nav-item"><svg><use href="#i-plus"/></svg>Create team</div>
+        <div class="ph-nav-item"><svg><use href="#i-search"/></svg>Quick search</div>
+      </div>
       <div class="ph-body">
         <div style="display: flex; gap: 6px; margin-bottom: 10px; align-items: center;">
           <span class="like liked">♡ 76</span>
@@ -276,11 +281,6 @@
         </div>
         <div style="text-align: center; font-size: 10px; color: var(--text-tertiary); padding: 6px 0 0;">4 more Pokémon</div>
       </div>
-      <div class="ph-nav">
-        <div class="ph-nav-item active"><svg><use href="#i-list"/></svg>View teams</div>
-        <div class="ph-nav-item"><svg><use href="#i-plus"/></svg>Create team</div>
-        <div class="ph-nav-item"><svg><use href="#i-search"/></svg>Quick search</div>
-      </div>
     </div>
   </div>
 
@@ -290,6 +290,11 @@
     <div class="ph">
       <div class="ph-notch"></div>
       <div class="ph-head"><span class="title">Quick search</span></div>
+      <div class="ph-nav">
+        <div class="ph-nav-item"><svg><use href="#i-list"/></svg>View teams</div>
+        <div class="ph-nav-item"><svg><use href="#i-plus"/></svg>Create team</div>
+        <div class="ph-nav-item active"><svg><use href="#i-search"/></svg>Quick search</div>
+      </div>
       <div class="ph-body">
         <input class="inp" value="🔍 Garchomp" style="margin-bottom: 8px;"/>
         <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
@@ -322,11 +327,6 @@
         <div class="qmv"><div class="qmv-head"><svg class="cat-ic"><use href="#cat-phy"/></svg><span class="nm">Stone Edge</span><span class="pw">· Rock · 100</span></div><div class="mnm" style="margin:0;"><div class="mnmc min"><div class="v">13,900</div></div><div class="mnmc norm"><div class="v">15,500</div></div><div class="mnmc max"><div class="v">20,000</div></div></div></div>
         <div class="qmv"><div class="qmv-head"><svg class="cat-ic"><use href="#cat-spe"/></svg><span class="nm">Earth Power</span><span class="pw">· Ground · 90</span></div><div class="mnm" style="margin:0;"><div class="mnmc min"><div class="v">12,150</div></div><div class="mnmc norm"><div class="v">13,500</div></div><div class="mnmc max"><div class="v">19,575</div></div></div></div>
       </div>
-      <div class="ph-nav">
-        <div class="ph-nav-item"><svg><use href="#i-list"/></svg>View teams</div>
-        <div class="ph-nav-item"><svg><use href="#i-plus"/></svg>Create team</div>
-        <div class="ph-nav-item active"><svg><use href="#i-search"/></svg>Quick search</div>
-      </div>
     </div>
   </div>
 
@@ -336,6 +336,11 @@
     <div class="ph">
       <div class="ph-notch"></div>
       <div class="ph-head"><span class="title">New team</span></div>
+      <div class="ph-nav">
+        <div class="ph-nav-item"><svg><use href="#i-list"/></svg>View teams</div>
+        <div class="ph-nav-item active"><svg><use href="#i-plus"/></svg>Create team</div>
+        <div class="ph-nav-item"><svg><use href="#i-search"/></svg>Quick search</div>
+      </div>
       <div class="ph-body">
         <label style="font-size: 10px; color: var(--text-secondary); display: block; margin-bottom: 3px;">Team name</label>
         <input class="inp" placeholder="e.g. Trick Room Altaria" style="margin-bottom: 10px;"/>
@@ -351,11 +356,6 @@
       </div>
       <div style="padding: 8px 12px; border-top: 0.5px solid var(--border-tertiary);">
         <button class="btn btn-primary disabled" style="width: 100%; padding: 8px;" disabled>Save</button>
-      </div>
-      <div class="ph-nav">
-        <div class="ph-nav-item"><svg><use href="#i-list"/></svg>View teams</div>
-        <div class="ph-nav-item active"><svg><use href="#i-plus"/></svg>Create team</div>
-        <div class="ph-nav-item"><svg><use href="#i-search"/></svg>Quick search</div>
       </div>
     </div>
   </div>
@@ -407,6 +407,11 @@
     <div class="ph">
       <div class="ph-notch"></div>
       <div class="ph-head"><span class="title">New team</span></div>
+      <div class="ph-nav">
+        <div class="ph-nav-item"><svg><use href="#i-list"/></svg>View teams</div>
+        <div class="ph-nav-item active"><svg><use href="#i-plus"/></svg>Create team</div>
+        <div class="ph-nav-item"><svg><use href="#i-search"/></svg>Quick search</div>
+      </div>
       <div class="ph-body">
         <input class="inp" value="Trick Room Altaria" style="margin-bottom: 8px; font-weight: 500;"/>
         <div class="card" style="padding: 8px;">
@@ -438,11 +443,6 @@
       </div>
       <div style="padding: 8px 12px; border-top: 0.5px solid var(--border-tertiary);">
         <button class="btn btn-primary" style="width: 100%; padding: 8px;">Save</button>
-      </div>
-      <div class="ph-nav">
-        <div class="ph-nav-item"><svg><use href="#i-list"/></svg>View teams</div>
-        <div class="ph-nav-item active"><svg><use href="#i-plus"/></svg>Create team</div>
-        <div class="ph-nav-item"><svg><use href="#i-search"/></svg>Quick search</div>
       </div>
     </div>
   </div>
@@ -532,6 +532,11 @@
     <div class="ph">
       <div class="ph-notch"></div>
       <div class="ph-head"><span class="back">←</span><span class="title">트릭룸 파비코리</span><span class="locale">EN · <span class="on">KO</span></span></div>
+      <div class="ph-nav">
+        <div class="ph-nav-item active"><svg><use href="#i-list"/></svg>팀 보기</div>
+        <div class="ph-nav-item"><svg><use href="#i-plus"/></svg>팀 만들기</div>
+        <div class="ph-nav-item"><svg><use href="#i-search"/></svg>빠른 검색</div>
+      </div>
       <div class="ph-body">
         <div class="sec">댓글 3개</div>
         <div class="cm"><div class="who"><span>뮤츠러버 · 2시간 전</span><span class="del">삭제</span></div>트릭룸 타점 미쳤다 ㄷㄷ</div>
@@ -545,11 +550,6 @@
         <textarea class="inp" rows="2" placeholder="댓글 내용..." style="resize: none; font-size: 10px;"></textarea>
         <button class="btn btn-primary" style="width: 100%; margin-top: 5px; padding: 7px; font-size: 11px;">등록</button>
         <div style="background: var(--bg-secondary); border-radius: 5px; padding: 6px 8px; font-size: 9px; color: var(--text-secondary); margin-top: 10px; line-height: 1.4;">동일 IP에서 1분 내 2건 이상 댓글은 차단됩니다</div>
-      </div>
-      <div class="ph-nav">
-        <div class="ph-nav-item active"><svg><use href="#i-list"/></svg>팀 보기</div>
-        <div class="ph-nav-item"><svg><use href="#i-plus"/></svg>팀 만들기</div>
-        <div class="ph-nav-item"><svg><use href="#i-search"/></svg>빠른 검색</div>
       </div>
     </div>
   </div>

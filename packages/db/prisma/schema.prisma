@@ -1,4 +1,6 @@
-// Prisma schema — models are added in slice 4.
+// Prisma schema for PokeSearch.
+// Two zones: user-generated (teams/team_pokemons/etc) and master data.
+// See docs/db-schema.md for the full spec.
 
 generator client {
   provider        = "prisma-client-js"
@@ -9,4 +11,208 @@ datasource db {
   provider   = "postgresql"
   url        = env("DATABASE_URL")
   extensions = [pg_trgm]
+}
+
+// ---------- Enums ----------
+
+enum MoveCategory {
+  physical
+  special
+  status
+}
+
+enum StatKey {
+  hp
+  atk
+  def
+  spa
+  spd
+  spe
+}
+
+// ---------- User-generated ----------
+
+model Team {
+  id           String   @id @default(uuid()) @db.Uuid
+  name         String   @db.VarChar(60)
+  description  String?
+  level        Int      @default(50) @db.SmallInt
+  passwordHash String   @map("password_hash") @db.VarChar(60)
+  views        Int      @default(0)
+  likesCount   Int      @default(0) @map("likes_count")
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  pokemons TeamPokemon[]
+  comments Comment[]
+  likes    Like[]
+
+  @@index([createdAt(sort: Desc)])
+  @@index([likesCount(sort: Desc), createdAt(sort: Desc)])
+  @@map("teams")
+}
+
+model TeamPokemon {
+  id        String @id @default(uuid()) @db.Uuid
+  teamId    String @map("team_id") @db.Uuid
+  slotOrder Int    @map("slot_order") @db.SmallInt
+  pokemonId Int    @map("pokemon_id")
+  abilityId Int    @map("ability_id")
+  itemId    Int?   @map("item_id")
+  natureId  Int    @map("nature_id") @db.SmallInt
+
+  evH Int @default(0) @map("ev_h") @db.SmallInt
+  evA Int @default(0) @map("ev_a") @db.SmallInt
+  evB Int @default(0) @map("ev_b") @db.SmallInt
+  evC Int @default(0) @map("ev_c") @db.SmallInt
+  evD Int @default(0) @map("ev_d") @db.SmallInt
+  evS Int @default(0) @map("ev_s") @db.SmallInt
+
+  ivH Int @default(31) @map("iv_h") @db.SmallInt
+  ivA Int @default(31) @map("iv_a") @db.SmallInt
+  ivB Int @default(31) @map("iv_b") @db.SmallInt
+  ivC Int @default(31) @map("iv_c") @db.SmallInt
+  ivD Int @default(31) @map("iv_d") @db.SmallInt
+  ivS Int @default(31) @map("iv_s") @db.SmallInt
+
+  teraType String? @map("tera_type") @db.VarChar(16)
+
+  team    Team              @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  pokemon Pokemon           @relation(fields: [pokemonId], references: [id])
+  ability Ability           @relation(fields: [abilityId], references: [id])
+  item    Item?             @relation(fields: [itemId], references: [id])
+  nature  Nature            @relation(fields: [natureId], references: [id])
+  moves   TeamPokemonMove[]
+
+  @@unique([teamId, slotOrder])
+  @@map("team_pokemons")
+}
+
+model TeamPokemonMove {
+  id            String @id @default(uuid()) @db.Uuid
+  teamPokemonId String @map("team_pokemon_id") @db.Uuid
+  moveId        Int    @map("move_id")
+  slotOrder     Int    @map("slot_order") @db.SmallInt
+
+  teamPokemon TeamPokemon @relation(fields: [teamPokemonId], references: [id], onDelete: Cascade)
+  move        Move        @relation(fields: [moveId], references: [id])
+
+  @@unique([teamPokemonId, slotOrder])
+  @@unique([teamPokemonId, moveId])
+  @@map("team_pokemon_moves")
+}
+
+model Comment {
+  id           String   @id @default(uuid()) @db.Uuid
+  teamId       String   @map("team_id") @db.Uuid
+  nickname     String   @db.VarChar(20)
+  passwordHash String   @map("password_hash") @db.VarChar(60)
+  content      String
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  @@index([teamId, createdAt(sort: Desc)])
+  @@map("comments")
+}
+
+model Like {
+  id        String   @id @default(uuid()) @db.Uuid
+  teamId    String   @map("team_id") @db.Uuid
+  clientFp  String   @map("client_fp") @db.VarChar(64)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  @@unique([teamId, clientFp])
+  @@map("likes")
+}
+
+// ---------- Master data ----------
+
+model Pokemon {
+  id        Int      @id
+  nameEn    String   @map("name_en") @db.VarChar(32)
+  nameKo    String   @map("name_ko") @db.VarChar(32)
+  types     String[] @db.VarChar(16)
+  baseH     Int      @map("base_h") @db.SmallInt
+  baseA     Int      @map("base_a") @db.SmallInt
+  baseB     Int      @map("base_b") @db.SmallInt
+  baseC     Int      @map("base_c") @db.SmallInt
+  baseD     Int      @map("base_d") @db.SmallInt
+  baseS     Int      @map("base_s") @db.SmallInt
+  spriteUrl String   @map("sprite_url") @db.VarChar(200)
+  formOf    Int?     @map("form_of")
+
+  baseForm       Pokemon?               @relation("PokemonForms", fields: [formOf], references: [id])
+  altForms       Pokemon[]              @relation("PokemonForms")
+  teamPokemons   TeamPokemon[]
+  learnableMoves PokemonLearnableMove[]
+
+  @@map("pokemons")
+}
+
+model Move {
+  id       Int          @id
+  nameEn   String       @map("name_en") @db.VarChar(32)
+  nameKo   String       @map("name_ko") @db.VarChar(32)
+  type     String       @db.VarChar(16)
+  category MoveCategory
+  power    Int?         @db.SmallInt
+  accuracy Int?         @db.SmallInt
+  pp       Int          @db.SmallInt
+
+  teamPokemonMoves TeamPokemonMove[]
+  learnableBy      PokemonLearnableMove[]
+
+  @@map("moves")
+}
+
+model Ability {
+  id            Int    @id
+  nameEn        String @map("name_en") @db.VarChar(32)
+  nameKo        String @map("name_ko") @db.VarChar(32)
+  descriptionEn String @map("description_en")
+  descriptionKo String @map("description_ko")
+
+  teamPokemons TeamPokemon[]
+
+  @@map("abilities")
+}
+
+model Item {
+  id            Int    @id
+  nameEn        String @map("name_en") @db.VarChar(32)
+  nameKo        String @map("name_ko") @db.VarChar(32)
+  descriptionEn String @map("description_en")
+  descriptionKo String @map("description_ko")
+  effectMult    Json?  @map("effect_mult")
+
+  teamPokemons TeamPokemon[]
+
+  @@map("items")
+}
+
+model Nature {
+  id         Int      @id @db.SmallInt
+  nameEn     String   @map("name_en") @db.VarChar(16)
+  nameKo     String   @map("name_ko") @db.VarChar(16)
+  boostStat  StatKey? @map("boost_stat")
+  reduceStat StatKey? @map("reduce_stat")
+
+  teamPokemons TeamPokemon[]
+
+  @@map("natures")
+}
+
+model PokemonLearnableMove {
+  pokemonId Int @map("pokemon_id")
+  moveId    Int @map("move_id")
+
+  pokemon Pokemon @relation(fields: [pokemonId], references: [id])
+  move    Move    @relation(fields: [moveId], references: [id])
+
+  @@id([pokemonId, moveId])
+  @@index([pokemonId])
+  @@map("pokemon_learnable_moves")
 }

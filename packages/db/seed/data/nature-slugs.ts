@@ -1,0 +1,30 @@
+// PokeAPI nature slugs. Order here is only for reference; the real `id`
+// comes from PokeAPI's /nature endpoint so it matches PokeAPI's numbering.
+
+export const natureSlugs: string[] = [
+  'hardy',
+  'bold',
+  'modest',
+  'calm',
+  'timid',
+  'lonely',
+  'docile',
+  'mild',
+  'gentle',
+  'hasty',
+  'adamant',
+  'impish',
+  'bashful',
+  'careful',
+  'rash',
+  'jolly',
+  'naughty',
+  'lax',
+  'quirky',
+  'naive',
+  'brave',
+  'relaxed',
+  'quiet',
+  'sassy',
+  'serious',
+];

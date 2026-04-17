@@ -1,3 +1,19 @@
-// Server-side only. The real PrismaClient export lands in slice 4 after models are defined.
-// Until then this file is a placeholder — no runtime consumers yet.
-export {};
+export { prisma } from './client.js';
+export { hashPassword, verifyPassword } from './password.js';
+export type {
+  Prisma,
+  PrismaClient,
+  Team,
+  TeamPokemon,
+  TeamPokemonMove,
+  Comment,
+  Like,
+  Pokemon,
+  Move,
+  Ability,
+  Item,
+  Nature,
+  PokemonLearnableMove,
+  MoveCategory,
+  StatKey,
+} from '@prisma/client';

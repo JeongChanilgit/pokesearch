@@ -1,1 +1,27 @@
-{}
+{
+  "hardy":   { "name": "노력" },
+  "lonely":  { "name": "외로움" },
+  "brave":   { "name": "용감" },
+  "adamant": { "name": "고집" },
+  "naughty": { "name": "장난꾸러기" },
+  "bold":    { "name": "대담" },
+  "docile":  { "name": "온순" },
+  "relaxed": { "name": "무사태평" },
+  "impish":  { "name": "개구쟁이" },
+  "lax":     { "name": "촐랑" },
+  "timid":   { "name": "겁쟁이" },
+  "hasty":   { "name": "성급" },
+  "serious": { "name": "성실" },
+  "jolly":   { "name": "명랑" },
+  "naive":   { "name": "천진난만" },
+  "modest":  { "name": "조심" },
+  "mild":    { "name": "의젓" },
+  "quiet":   { "name": "냉정" },
+  "bashful": { "name": "수줍음" },
+  "rash":    { "name": "덜렁" },
+  "calm":    { "name": "차분" },
+  "gentle":  { "name": "얌전" },
+  "sassy":   { "name": "건방" },
+  "careful": { "name": "신중" },
+  "quirky":  { "name": "변덕" }
+}

@@ -40,7 +40,35 @@
     "viewsCount": "{count, plural, =1 {# view} other {# views}}",
     "commentsCount": "{count, plural, =1 {# comment} other {# comments}}",
     "commentsHeading": "Comments ({count})",
-    "commentsPlaceholder": "Comments arrive in a later slice."
+    "commentsPlaceholder": "Comments arrive in a later slice.",
+    "edit": "Edit",
+    "delete": "Delete",
+    "deletedToast": "Team deleted"
+  },
+  "passwordConfirm": {
+    "titleEdit": "Edit team — enter password",
+    "titleDelete": "Delete team",
+    "descEdit": "Enter the team password to continue.",
+    "descDelete": "This cannot be undone.",
+    "cascadeWarning": "All comments and likes will be removed too",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Enter team password",
+    "passwordRequired": "Password is required.",
+    "wrongPassword": "Password doesn't match.",
+    "tooManyAttempts": "Too many attempts. Try again in 15 minutes.",
+    "notFound": "Team not found.",
+    "generic": "Something went wrong. Please try again.",
+    "continueEdit": "Continue",
+    "busy": "Checking…"
+  },
+  "edit": {
+    "title": "Edit team",
+    "loading": "Loading team…",
+    "loadError": "Could not load this team.",
+    "save": "Save changes",
+    "saving": "Saving…",
+    "saved": "Changes saved",
+    "saveError": "Could not save changes. Please try again."
   },
   "search": {
     "title": "Quick Search",

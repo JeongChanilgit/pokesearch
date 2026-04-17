@@ -12,6 +12,7 @@ import {
 import { computeTeamPokemonMetrics } from '../../../../lib/team-calc';
 import { TeamPokemonCard } from '../../../../components/TeamPokemonCard';
 import { LikeButton } from '../../../../components/LikeButton';
+import { TeamOwnerActions } from '../../../../components/TeamOwnerActions';
 
 interface Props {
   params: Promise<{ locale: string; id: string }>;
@@ -57,12 +58,14 @@ export default async function TeamDetailPage({ params }: Props) {
           {team.name}
         </h1>
       </div>
-      <div className="flex gap-2 items-center mb-2.5">
+      <div className="flex gap-2 items-center mb-2.5 flex-wrap">
         <LikeButton count={team.likesCount} />
         <span className="text-[9px] text-text-secondary">
           {t('viewsCount', { count: team.views })} ·{' '}
           {t('commentsCount', { count: team.commentsCount })}
         </span>
+        <span className="flex-1" />
+        <TeamOwnerActions teamId={team.id} locale={locale} />
       </div>
       {team.description && (
         <p className="text-[11px] text-text-secondary mb-2 whitespace-pre-wrap">

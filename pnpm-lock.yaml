@@ -127,6 +127,9 @@ importers:
       '@pokesearch/types':
         specifier: workspace:*
         version: link:../types
+      esbuild:
+        specifier: ^0.21.5
+        version: 0.21.5
       yargs:
         specifier: ^17.7.2
         version: 17.7.2

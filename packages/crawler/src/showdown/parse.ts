@@ -11,20 +11,31 @@
 // We don't care about Showdown's battle handlers (`onStart`, `onDamage`
 // etc.) — we only need the static fields. Strategy:
 //
-// 1. Strip the `export const X: import('…') = ` prefix and trailing `;`
-//    so we're left with a bare object literal.
-// 2. Evaluate it in a sandboxed `vm` context. Function-valued properties
+// 1. Transpile the TypeScript source to plain JavaScript with esbuild
+//    (drops type annotations, preserves all runtime values).
+// 2. Extract the object literal from the transpiled JS.
+// 3. Evaluate it in a sandboxed `vm` context. Function-valued properties
 //    are evaluated to real functions but remain in the result; we filter
 //    them out below via `scrubFunctions`.
-// 3. Return a deep-cloned plain-object copy — functions dropped,
+// 4. Return a deep-cloned plain-object copy — functions dropped,
 //    everything else kept as-is.
 
 import vm from 'node:vm';
+import { transformSync } from 'esbuild';
 
 export type ShowdownRecord = Record<string, unknown>;
 
 export function parseShowdownFile(source: string): ShowdownRecord {
-  const body = extractObjectLiteral(source);
+  // Transpile TypeScript → JavaScript so vm can evaluate it without
+  // choking on type annotations, generics, non-null assertions, etc.
+  const { code: jsSource } = transformSync(source, {
+    loader: 'ts',
+    target: 'node18',
+    format: 'esm',
+    minify: false,
+  });
+
+  const body = extractObjectLiteral(jsSource);
   const sandbox: Record<string, unknown> = {};
   const context = vm.createContext(sandbox);
   const raw = vm.runInContext(`(${body})`, context, { timeout: 10000 }) as ShowdownRecord;

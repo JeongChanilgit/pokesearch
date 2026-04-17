@@ -12,3 +12,8 @@ export const Item = z.object({
   effectMult: ItemEffectMult.nullable().optional(),
 });
 export type Item = z.infer<typeof Item>;
+
+export const ListItemsResponse = z.object({
+  items: z.array(Item),
+});
+export type ListItemsResponse = z.infer<typeof ListItemsResponse>;

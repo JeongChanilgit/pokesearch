@@ -10,6 +10,8 @@ import type {
   SuggestPokemonInput,
   ListPokemonsInput,
   GetPokemonMovesRequest,
+  GetPokemonRequest,
+  ListAbilitiesInput,
 } from '@pokesearch/types';
 import type { ApiClientOptions } from './http';
 import { quickSearch, suggestPokemon } from './search';
@@ -23,7 +25,8 @@ import {
 } from './teams';
 import { listComments, createComment, deleteComment } from './comments';
 import { addLike, removeLike, getLikeStatus } from './likes';
-import { listPokemons, getPokemonMoves } from './pokemons';
+import { listPokemons, getPokemonMoves, getPokemon } from './pokemons';
+import { listAbilities, listItems, listNatures } from './abilities';
 
 /**
  * Bind ApiClientOptions once and get a ready-to-call object of endpoints.
@@ -53,8 +56,13 @@ export function createApiClient(opts: ApiClientOptions = {}) {
     removeLike: (teamId: string) => removeLike(teamId, opts),
 
     listPokemons: (input?: ListPokemonsInput) => listPokemons(input, opts),
+    getPokemon: (input: GetPokemonRequest) => getPokemon(input, opts),
     getPokemonMoves: (input: GetPokemonMovesRequest) =>
       getPokemonMoves(input, opts),
+
+    listAbilities: (input?: ListAbilitiesInput) => listAbilities(input, opts),
+    listItems: () => listItems(opts),
+    listNatures: () => listNatures(opts),
   };
 }
 

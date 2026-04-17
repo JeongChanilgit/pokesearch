@@ -3,9 +3,24 @@ import {
   ListPokemonsResponse,
   GetPokemonMovesRequest,
   GetPokemonMovesResponse,
+  GetPokemonRequest,
+  GetPokemonResponse,
 } from '@pokesearch/types';
 import type { ListPokemonsInput } from '@pokesearch/types';
 import { request, type ApiClientOptions } from './http';
+
+export async function getPokemon(
+  input: GetPokemonRequest,
+  opts: ApiClientOptions = {},
+): Promise<GetPokemonResponse> {
+  const parsed = GetPokemonRequest.parse(input);
+  return request(
+    `/api/pokemons/${parsed.pokemonId}`,
+    { method: 'GET' },
+    opts,
+    (data) => GetPokemonResponse.parse(data),
+  );
+}
 
 export async function listPokemons(
   input: ListPokemonsInput = {},

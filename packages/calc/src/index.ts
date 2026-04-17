@@ -6,3 +6,4 @@ export * from './bulk';
 export * from './damage';
 export * from './range';
 export * from './type-chart';
+export * from './ability-multipliers';

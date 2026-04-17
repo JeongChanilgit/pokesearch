@@ -21,6 +21,14 @@ export const PokemonFull = PokemonSummary.extend({
 });
 export type PokemonFull = z.infer<typeof PokemonFull>;
 
+export const GetPokemonRequest = z.object({
+  pokemonId: z.number().int().positive(),
+});
+export type GetPokemonRequest = z.infer<typeof GetPokemonRequest>;
+
+export const GetPokemonResponse = PokemonFull;
+export type GetPokemonResponse = z.infer<typeof GetPokemonResponse>;
+
 export const PokemonSuggestion = z.object({
   id: z.number().int().positive(),
   nameEn: z.string(),

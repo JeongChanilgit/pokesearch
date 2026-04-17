@@ -14,4 +14,5 @@ export {
 } from './teams';
 export { listComments, createComment, deleteComment } from './comments';
 export { getLikeStatus, addLike, removeLike } from './likes';
-export { listPokemons, getPokemonMoves } from './pokemons';
+export { listPokemons, getPokemonMoves, getPokemon } from './pokemons';
+export { listAbilities, listItems, listNatures } from './abilities';

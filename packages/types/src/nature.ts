@@ -9,3 +9,8 @@ export const Nature = z.object({
   reduceStat: StatKey.nullable(),
 });
 export type Nature = z.infer<typeof Nature>;
+
+export const ListNaturesResponse = z.object({
+  items: z.array(Nature),
+});
+export type ListNaturesResponse = z.infer<typeof ListNaturesResponse>;

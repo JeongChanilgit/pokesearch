@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import { ListTeamsRequest } from '@pokesearch/types';
+import { CreateTeamRequest, ListTeamsRequest } from '@pokesearch/types';
 import { queryTeamList } from '../../../lib/team-queries';
+import { createTeamRecord } from '../../../lib/team-create';
 
 export const dynamic = 'force-dynamic';
 
@@ -23,4 +24,27 @@ export async function GET(req: NextRequest) {
   }
   const body = await queryTeamList(parsed.data);
   return NextResponse.json(body);
+}
+
+export async function POST(req: NextRequest) {
+  let raw: unknown;
+  try {
+    raw = await req.json();
+  } catch {
+    return NextResponse.json({ error: 'invalid_json' }, { status: 400 });
+  }
+  const parsed = CreateTeamRequest.safeParse(raw);
+  if (!parsed.success) {
+    return NextResponse.json(
+      { error: 'invalid_body', details: parsed.error.flatten() },
+      { status: 400 },
+    );
+  }
+  try {
+    const { id } = await createTeamRecord(parsed.data);
+    return NextResponse.json({ id }, { status: 201 });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'server_error';
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
 }

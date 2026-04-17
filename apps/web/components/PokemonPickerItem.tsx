@@ -23,6 +23,8 @@ export function PokemonPickerItem({ pokemon, selected, onSelect }: Props) {
         alt=""
         width={22}
         height={22}
+        loading="lazy"
+        decoding="async"
         className="shrink-0 object-contain"
       />
       <div className="flex-1 min-w-0">

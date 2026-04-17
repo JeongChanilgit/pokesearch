@@ -127,5 +127,23 @@
     "saved": "Team saved",
     "errorGeneric": "Could not save the team. Please try again.",
     "abilityRippleToast": "Moves removed — no longer legal under this ability."
+  },
+  "install": {
+    "title": "Install PokeSearch",
+    "body": "Add to your home screen for quick access.",
+    "bodyIos": "Tap Share, then 'Add to Home Screen'.",
+    "install": "Install",
+    "dismiss": "Dismiss"
+  },
+  "error": {
+    "title": "Something went wrong",
+    "body": "An unexpected error occurred. Please try again.",
+    "retry": "Try again",
+    "home": "Back to home"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "body": "The page you're looking for doesn't exist.",
+    "home": "Back to home"
   }
 }

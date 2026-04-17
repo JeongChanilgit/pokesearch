@@ -25,6 +25,8 @@ export function TeamCard({ team }: Props) {
             alt=""
             width={22}
             height={22}
+            loading="lazy"
+            decoding="async"
             className="object-contain"
           />
         ))}

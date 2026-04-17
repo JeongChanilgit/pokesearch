@@ -11,12 +11,16 @@ export function PokemonHolder({ pokemonId, itemName, size = 44 }: Props) {
       <img
         src={`https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/${pokemonId}.png`}
         alt=""
+        loading="lazy"
+        decoding="async"
         className="w-full h-full object-contain"
       />
       {itemName && (
         <img
           src={`https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/items/${itemName}.png`}
           alt=""
+          loading="lazy"
+          decoding="async"
           className="absolute bottom-[-3px] right-[-3px] bg-bg-primary border border-border-tertiary rounded-full box-border"
           style={{ width: itemSize, height: itemSize, padding: 1 }}
         />

@@ -173,6 +173,8 @@ export function SearchInput({ initialQuery, level }: Props) {
                 alt=""
                 width={22}
                 height={22}
+                loading="lazy"
+                decoding="async"
                 className="object-contain shrink-0"
               />
               <div className="flex-1 min-w-0">

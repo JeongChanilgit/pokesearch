@@ -39,7 +39,36 @@
     "evLabel": "EV {ev}",
     "viewsCount": "{count, plural, =1 {# view} other {# views}}",
     "commentsCount": "{count, plural, =1 {# comment} other {# comments}}",
-    "commentsHeading": "Comments ({count})"
+    "commentsHeading": "Comments ({count})",
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "edit": {
+    "title": "Edit team",
+    "save": "Save changes",
+    "saving": "Saving…",
+    "saved": "Changes saved",
+    "errorGeneric": "Could not save changes. Please try again.",
+    "tokenExpired": "Your session expired. Please re-enter the password.",
+    "loading": "Loading…",
+    "loadError": "Could not load the team."
+  },
+  "verify": {
+    "editTitle": "Edit team",
+    "deleteTitle": "Delete team",
+    "editDesc": "Enter the team password to edit this team.",
+    "deleteDesc": "Enter the team password to delete this team. This cannot be undone.",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Team password",
+    "deleteDangerHeading": "This action is permanent.",
+    "deleteDangerBody": "Team, Pokémon, comments and likes will be removed. This cannot be undone.",
+    "confirmEdit": "Continue",
+    "confirmDelete": "Delete",
+    "verifying": "Verifying…",
+    "deleting": "Deleting…",
+    "wrongPassword": "Password doesn't match.",
+    "rateLimited": "Too many attempts. Try again in {minutes} minutes.",
+    "errorGeneric": "Something went wrong. Please try again."
   },
   "comments": {
     "heading": "Comments ({count})",

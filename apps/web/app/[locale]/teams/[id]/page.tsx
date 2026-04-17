@@ -14,6 +14,7 @@ import { computeTeamPokemonMetrics } from '../../../../lib/team-calc';
 import { TeamPokemonCard } from '../../../../components/TeamPokemonCard';
 import { LikeButton } from '../../../../components/LikeButton';
 import { CommentList } from '../../../../components/CommentList';
+import { TeamOwnerActions } from '../../../../components/TeamOwnerActions';
 
 interface Props {
   params: Promise<{ locale: string; id: string }>;
@@ -117,6 +118,7 @@ export default async function TeamDetailPage({ params }: Props) {
           {team.description}
         </p>
       )}
+      <TeamOwnerActions teamId={id} />
       <div data-testid="team-pokemon-list">
         {team.pokemons.map((p) => (
           <TeamPokemonCard

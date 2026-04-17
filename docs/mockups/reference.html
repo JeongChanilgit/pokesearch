@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PokeSearch — UI reference (9 screens)</title>
+<style>
+  :root {
+    --bg-primary: #FFFFFF;
+    --bg-secondary: #F5F5F3;
+    --bg-tertiary: #EBEBE7;
+    --text-primary: #1F1E1D;
+    --text-secondary: #6F6E6A;
+    --text-tertiary: #9E9D98;
+    --border-tertiary: rgba(31, 30, 29, 0.15);
+    --border-secondary: rgba(31, 30, 29, 0.3);
+    --radius-md: 8px;
+    --radius-lg: 12px;
+  }
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, system-ui, 'Pretendard', sans-serif; margin: 0; padding: 20px; background: var(--bg-tertiary); color: var(--text-primary); }
+  h1 { font-size: 18px; font-weight: 500; margin: 0 0 4px; text-align: center; }
+  .sub { font-size: 12px; color: var(--text-secondary); text-align: center; margin-bottom: 20px; }
+  .mg { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 16px; max-width: 1600px; margin: 0 auto; }
+  .mw { background: var(--bg-secondary); border-radius: var(--radius-lg); padding: 14px; }
+  .ml { text-align: center; font-size: 12px; font-weight: 500; margin-bottom: 2px; }
+  .ml .n { display: inline-block; width: 18px; height: 18px; border-radius: 50%; background: var(--text-primary); color: var(--bg-primary); font-size: 10px; line-height: 18px; margin-right: 6px; text-align: center; }
+  .msub { text-align: center; font-size: 9px; color: var(--text-tertiary); margin-bottom: 10px; }
+
+  .ph { background: var(--bg-primary); border: 1.5px solid var(--border-secondary); border-radius: 28px; overflow: hidden; max-width: 290px; margin: 0 auto; display: flex; flex-direction: column; min-height: 660px; position: relative; }
+  .ph-notch { padding: 8px 0 4px; display: flex; justify-content: center; }
+  .ph-notch::before { content: ''; display: block; width: 60px; height: 5px; border-radius: 3px; background: var(--text-primary); opacity: 0.9; }
+  .ph-head { padding: 8px 14px; border-bottom: 0.5px solid var(--border-tertiary); display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; }
+  .ph-head .back { font-size: 14px; color: var(--text-secondary); }
+  .ph-head .title { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ph-head .locale { font-size: 10px; color: var(--text-secondary); padding: 2px 6px; border: 0.5px solid var(--border-tertiary); border-radius: 10px; }
+  .ph-head .locale .on { color: var(--text-primary); font-weight: 500; }
+  .ph-body { flex: 1; padding: 12px; overflow: hidden; position: relative; }
+  .ph-nav { display: grid; grid-template-columns: 1fr 1fr 1fr; border-top: 0.5px solid var(--border-tertiary); padding: 6px 0 10px; background: var(--bg-primary); }
+  .ph-nav-item { text-align: center; font-size: 10px; color: var(--text-tertiary); }
+  .ph-nav-item.active { color: var(--text-primary); font-weight: 500; }
+  .ph-nav-item svg { display: block; margin: 0 auto 2px; width: 18px; height: 18px; }
+
+  .card { border: 0.5px solid var(--border-tertiary); border-radius: 8px; padding: 9px; }
+  .chip { padding: 5px 8px; border: 0.5px solid var(--border-tertiary); border-radius: 6px; color: var(--text-secondary); font-size: 10px; }
+  .btn { font-size: 10px; padding: 5px 10px; border: 0.5px solid var(--border-tertiary); border-radius: 5px; background: var(--bg-primary); color: var(--text-primary); font-family: inherit; cursor: pointer; }
+  .btn-primary { background: var(--text-primary); color: var(--bg-primary); border-color: var(--text-primary); }
+  .btn-primary.disabled { background: var(--bg-secondary); color: var(--text-tertiary); border-color: var(--border-tertiary); }
+  .btn-danger { color: #A32D2D; border-color: #F09595; background: #FCEBEB; }
+  .inp { border: 0.5px solid var(--border-tertiary); border-radius: 5px; padding: 6px 9px; font-size: 11px; color: var(--text-primary); background: var(--bg-primary); font-family: inherit; box-sizing: border-box; width: 100%; }
+  .sec { font-size: 10px; color: var(--text-secondary); margin: 8px 0 5px; font-weight: 500; display: flex; justify-content: space-between; align-items: center; }
+  .sec .hint { font-size: 9px; color: var(--text-tertiary); font-weight: 400; }
+
+  .sprite { width: 22px; height: 22px; object-fit: contain; }
+  .sprite-md { width: 32px; height: 32px; object-fit: contain; }
+  .holder { position: relative; width: 44px; height: 44px; flex-shrink: 0; }
+  .holder img.sp { width: 100%; height: 100%; object-fit: contain; }
+  .holder img.item { position: absolute; right: -3px; bottom: -3px; width: 20px; height: 20px; background: var(--bg-primary); border: 0.5px solid var(--border-tertiary); border-radius: 50%; padding: 1px; }
+
+  .km { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; margin: 7px 0; }
+  .kmc { border-radius: 5px; padding: 5px 3px; text-align: center; }
+  .kmc .k { font-size: 9px; }
+  .kmc .v { font-size: 13px; font-weight: 500; font-variant-numeric: tabular-nums; margin-top: 1px; }
+  .kmc.phys { background: #FAECE7; } .kmc.phys .k { color: #993C1D; } .kmc.phys .v { color: #4A1B0C; }
+  .kmc.spec { background: #EEEDFE; } .kmc.spec .k { color: #534AB7; } .kmc.spec .v { color: #26215C; }
+  .kmc.spd  { background: #E1F5EE; } .kmc.spd .k  { color: #0F6E56; } .kmc.spd .v  { color: #04342C; }
+
+  .stat { display: grid; grid-template-columns: 12px 1fr 10px 30px 44px; align-items: center; gap: 4px; font-size: 10px; padding: 2px 0; font-variant-numeric: tabular-nums; }
+  .stat .slbl { color: var(--text-secondary); font-weight: 500; text-align: center; }
+  .stat .sbar { height: 4px; background: var(--bg-secondary); border-radius: 2px; overflow: hidden; display: flex; }
+  .stat .sb { height: 100%; background: #85B7EB; }
+  .stat .se { height: 100%; background: #1D9E75; }
+  .stat .sarr { text-align: center; font-weight: 500; }
+  .stat .sarr-up { color: #0F6E56; }
+  .stat .sarr-dn { color: #A32D2D; }
+  .stat .sval { text-align: right; color: var(--text-primary); font-weight: 500; }
+  .stat .sev { text-align: right; color: var(--text-tertiary); font-size: 9px; }
+
+  .cat-ic { width: 14px; height: 14px; flex-shrink: 0; }
+  .mv { display: grid; grid-template-columns: 14px 1fr auto; align-items: center; gap: 7px; padding: 5px 8px; background: var(--bg-secondary); border-radius: 5px; font-size: 10px; margin-bottom: 3px; }
+  .mv .nm { color: var(--text-primary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .mv .pw { color: var(--text-tertiary); font-size: 9px; }
+  .mv .dmg { color: #0C447C; font-weight: 500; font-variant-numeric: tabular-nums; font-size: 10px; }
+  .mv .dmg-none { color: var(--text-tertiary); font-size: 9px; font-style: italic; }
+
+  .qmv { border: 0.5px solid var(--border-tertiary); border-radius: 5px; padding: 6px 8px; margin-bottom: 4px; }
+  .qmv-head { display: flex; align-items: center; gap: 6px; font-size: 10px; margin-bottom: 4px; }
+  .qmv-head .nm { color: var(--text-primary); font-weight: 500; }
+  .qmv-head .pw { color: var(--text-tertiary); font-size: 9px; }
+
+  .tp { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 9px; font-weight: 500; margin-right: 3px; }
+  .t-normal { background: #F1EFE8; color: #444441; } .t-fire { background: #FAECE7; color: #712B13; } .t-water { background: #E6F1FB; color: #0C447C; } .t-grass { background: #EAF3DE; color: #27500A; } .t-electric { background: #FAEEDA; color: #633806; } .t-ice { background: #E6F1FB; color: #185FA5; } .t-fight { background: #FAECE7; color: #4A1B0C; } .t-poison { background: #FBEAF0; color: #993556; } .t-ground { background: #FAEEDA; color: #633806; } .t-flying { background: #E6F1FB; color: #185FA5; } .t-psychic { background: #FBEAF0; color: #72243E; } .t-bug { background: #EAF3DE; color: #3B6D11; } .t-rock { background: #F1EFE8; color: #444441; } .t-ghost { background: #EEEDFE; color: #3C3489; } .t-dragon { background: #EEEDFE; color: #26215C; } .t-dark { background: #F1EFE8; color: #2C2C2A; } .t-steel { background: #F1EFE8; color: #444441; } .t-fairy { background: #FBEAF0; color: #993556; }
+
+  .cm { background: var(--bg-secondary); border-radius: 5px; padding: 6px 8px; font-size: 10px; margin-bottom: 4px; }
+  .cm .who { font-size: 9px; color: var(--text-secondary); display: flex; justify-content: space-between; margin-bottom: 2px; }
+  .cm .who .del { color: #A32D2D; }
+
+  .like { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border: 0.5px solid var(--border-tertiary); border-radius: 14px; font-size: 10px; color: var(--text-secondary); }
+  .like.liked { background: #FBEAF0; color: #D4537E; border-color: #F4C0D1; }
+
+  .empty { border: 0.5px dashed var(--border-tertiary); border-radius: 8px; padding: 22px 10px; text-align: center; color: var(--text-tertiary); font-size: 11px; }
+
+  .pk-list { display: flex; flex-direction: column; max-height: 220px; overflow: hidden; border: 0.5px solid var(--border-tertiary); border-radius: 5px; }
+  .pk-item { display: flex; align-items: center; gap: 8px; padding: 5px 8px; font-size: 10px; border-bottom: 0.5px solid var(--border-tertiary); }
+  .pk-item:last-child { border-bottom: none; }
+  .pk-item.on { background: #E6F1FB; }
+  .pk-item .en { color: var(--text-primary); }
+  .pk-item .ko { color: var(--text-tertiary); font-size: 9px; }
+
+  .sel { display: flex; justify-content: space-between; align-items: center; padding: 5px 8px; border: 0.5px solid var(--border-tertiary); border-radius: 5px; font-size: 10px; margin-bottom: 4px; }
+  .sel .slbl { color: var(--text-secondary); }
+  .sel .sval { color: var(--text-primary); font-weight: 500; }
+
+  .ev-row { display: grid; grid-template-columns: 12px 1fr 60px; align-items: center; gap: 6px; padding: 2px 0; font-size: 10px; }
+  .ev-row input[type=range] { width: 100%; height: 3px; }
+  .ev-row .elbl { color: var(--text-secondary); font-weight: 500; text-align: center; }
+  .ev-row .eval { text-align: right; font-variant-numeric: tabular-nums; }
+
+  .mnm { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; text-align: center; margin-bottom: 6px; }
+  .mnmc { padding: 4px 2px; border-radius: 4px; }
+  .mnmc .k { font-size: 8px; letter-spacing: 0.04em; }
+  .mnmc .v { font-size: 11px; font-weight: 500; font-variant-numeric: tabular-nums; margin-top: 1px; }
+  .mnmc.min { background: #FCEBEB; } .mnmc.min .k { color: #A32D2D; } .mnmc.min .v { color: #501313; }
+  .mnmc.norm { background: #E6F1FB; } .mnmc.norm .k { color: #185FA5; } .mnmc.norm .v { color: #042C53; }
+  .mnmc.max { background: #EAF3DE; } .mnmc.max .k { color: #3B6D11; } .mnmc.max .v { color: #173404; }
+
+  .lvl-tog { display: inline-flex; gap: 2px; padding: 2px; background: var(--bg-secondary); border-radius: 6px; font-size: 10px; }
+  .lvl-tog span { padding: 3px 10px; border-radius: 4px; color: var(--text-secondary); cursor: pointer; }
+  .lvl-tog span.on { background: var(--bg-primary); color: var(--text-primary); font-weight: 500; }
+
+  .mo-bg { position: absolute; inset: 0; background: rgba(20,20,20,0.55); display: flex; align-items: center; justify-content: center; padding: 16px; }
+  .mo { background: var(--bg-primary); border-radius: var(--radius-lg); padding: 16px; width: 100%; max-width: 240px; }
+  .mo-t { font-size: 13px; font-weight: 500; margin-bottom: 4px; }
+  .mo-d { font-size: 10px; color: var(--text-secondary); margin-bottom: 10px; line-height: 1.4; }
+  .mo-f { margin-bottom: 8px; }
+  .mo-f label { display: block; font-size: 10px; color: var(--text-secondary); margin-bottom: 3px; }
+  .mo-a { display: flex; gap: 6px; margin-top: 10px; }
+  .mo-a .btn { flex: 1; font-size: 11px; padding: 7px 0; text-align: center; }
+  .warn { background: #FAEEDA; border-radius: 4px; padding: 6px 8px; font-size: 9px; color: #633806; line-height: 1.4; }
+  .danger { background: #FCEBEB; border-radius: 4px; padding: 6px 8px; font-size: 9px; color: #501313; line-height: 1.4; margin-bottom: 8px; }
+  .dim { opacity: 0.35; pointer-events: none; }
+</style>
+</head>
+<body>
+
+<h1>PokeSearch — UI reference</h1>
+<p class="sub">Target mobile-web design. Implement components exactly to match. See docs/ui-components.md for HTML/CSS patterns.</p>
+
+<svg width="0" height="0" style="position: absolute;">
+  <defs>
+    <symbol id="i-list" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="4" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="3" y="10" width="18" height="4" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="3" y="16" width="18" height="4" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M20 20l-4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+    <symbol id="cat-phy" viewBox="0 0 14 14"><rect x="2" y="3" width="10" height="8" rx="1.5" fill="#D85A30" stroke="#712B13" stroke-width="0.5"/></symbol>
+    <symbol id="cat-spe" viewBox="0 0 14 14"><circle cx="7" cy="7" r="5.5" fill="#534AB7" stroke="#26215C" stroke-width="0.5"/><circle cx="7" cy="7" r="2" fill="#CECBF6"/></symbol>
+    <symbol id="cat-sta" viewBox="0 0 14 14"><polygon points="7,1.5 12,4.5 12,9.5 7,12.5 2,9.5 2,4.5" fill="#888780" stroke="#444441" stroke-width="0.5"/></symbol>
+  </defs>
+</svg>
+
+<div class="mg">
+
+  <div class="mw">
+    <div class="ml"><span class="n">1</span>Home · View teams</div>
+    <div class="msub">Default entry (EN)</div>
+    <div class="ph">
+      <div class="ph-notch"></div>
+      <div class="ph-head"><span class="title">PokeSearch</span><span class="locale"><span class="on">EN</span> · KO</span></div>
+      <div class="ph-body">
+        <div style="font-size: 12px; font-weight: 500; margin-bottom: 8px;">Popular teams</div>
+        <div style="display: flex; gap: 5px; margin-bottom: 10px;">
+          <div class="chip" style="flex: 1;">Most liked ▾</div>
+          <div class="chip" style="flex: 1;">Filter ▾</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <div class="card">
+            <div style="font-size: 11px; font-weight: 500; margin-bottom: 5px;">Trick Room Altaria</div>
+            <div style="display: flex; gap: 3px; margin-bottom: 5px;">
+              <img class="sprite" src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/10067.png"/>
+              <img class="sprite" src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/579.png"/>
+              <img class="sprite" src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/445.png"/>
+              <img class="sprite" src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/598.png"/>
+              <img class="sprite" src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/637.png"/>
+              <img class="sprite" src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/635.png"/>
+            </div>
+            <div style="display: flex; gap: 10px; font-size: 9px; color: var(--text-secondary);"><span>100 views</span><span>♡ 75</span><span>10 comments</span></div>
+          </div>
+          <div class="card">
+            <div style="font-size: 11px; font-weight: 500; margin-bottom: 5px;">Garchomp sweeper</div>
+            <div style="display: flex; gap: 3px; margin-bottom: 5px;">
+              <img class="sprite" src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/445.png"/>
+              <img class="sprite" src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/248.png"/>
+              <img class="sprite" src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/376.png"/>
+              <img class="sprite" src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/658.png"/>
+              <img class="sprite" src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/212.png"/>
+              <img class="sprite" src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/448.png"/>
+            </div>
+            <div style="display: flex; gap: 10px; font-size: 9px; color: var(--text-secondary);"><span>98 views</span><span>♡ 60</span><span>8 comments</span></div>
+          </div>
+          <div class="card">
+            <div style="font-size: 11px; font-weight: 500; margin-bottom: 5px;">Dialga balance</div>
+            <div style="display: flex; gap: 3px; margin-bottom: 5px;">
+              <img class="sprite" src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/483.png"/>
+              <img class="sprite" src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/144.png"/>
+              <img class="sprite" src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/145.png"/>
+              <img class="sprite" src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/146.png"/>
+              <img class="sprite" src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/380.png"/>
+              <img class="sprite" src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/381.png"/>
+            </div>
+            <div style="display: flex; gap: 10px; font-size: 9px; color: var(--text-secondary);"><span>82 views</span><span>♡ 45</span><span>6 comments</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="ph-nav">
+        <div class="ph-nav-item active"><svg><use href="#i-list"/></svg>View teams</div>
+        <div class="ph-nav-item"><svg><use href="#i-plus"/></svg>Create team</div>
+        <div class="ph-nav-item"><svg><use href="#i-search"/></svg>Quick search</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mw">
+    <div class="ml"><span class="n">2</span>Team detail</div>
+    <div class="msub">All 6 stats aligned · item overlay · category icons</div>
+    <div class="ph">
+      <div class="ph-notch"></div>
+      <div class="ph-head"><span class="back">←</span><span class="title">Trick Room Altaria</span></div>
+      <div class="ph-body">
+        <div style="display: flex; gap: 6px; margin-bottom: 10px; align-items: center;">
+          <span class="like liked">♡ 76</span>
+          <span style="font-size: 9px; color: var(--text-secondary);">100 views · 10 comments</span>
+          <span style="flex: 1;"></span>
+          <button class="btn" style="font-size: 9px; padding: 3px 7px;">Edit</button>
+          <button class="btn btn-danger" style="font-size: 9px; padding: 3px 7px;">Delete</button>
+        </div>
+        <div class="card" style="margin-bottom: 6px;">
+          <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 5px;">
+            <div class="holder">
+              <img class="sp" src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/10067.png"/>
+              <img class="item" src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/items/life-orb.png"/>
+            </div>
+            <div style="flex: 1;">
+              <div style="font-size: 11px; font-weight: 500;">Mega Altaria</div>
+              <div style="font-size: 9px; color: var(--text-secondary);">Pixilate · Life Orb · Quiet</div>
+            </div>
+          </div>
+          <div class="km">
+            <div class="kmc phys"><div class="k">Phys bulk</div><div class="v">57,567</div></div>
+            <div class="kmc spec"><div class="k">Sp bulk</div><div class="v">55,796</div></div>
+            <div class="kmc spd"><div class="k">Speed</div><div class="v">90</div></div>
+          </div>
+          <div class="stat"><span class="slbl">H</span><div class="sbar"><div class="sb" style="width: 75%;"></div><div class="se" style="width: 16%;"></div></div><span class="sarr"></span><span class="sval">182</span><span class="sev">EV 252</span></div>
+          <div class="stat"><span class="slbl">A</span><div class="sbar"><div class="sb" style="width: 65%;"></div></div><span class="sarr"></span><span class="sval">130</span><span class="sev">EV 0</span></div>
+          <div class="stat"><span class="slbl">B</span><div class="sbar"><div class="sb" style="width: 65%;"></div></div><span class="sarr"></span><span class="sval">130</span><span class="sev">EV 0</span></div>
+          <div class="stat"><span class="slbl">C</span><div class="sbar"><div class="sb" style="width: 65%;"></div><div class="se" style="width: 24%;"></div></div><span class="sarr sarr-up">↑</span><span class="sval">178</span><span class="sev">EV 252</span></div>
+          <div class="stat"><span class="slbl">D</span><div class="sbar"><div class="sb" style="width: 63%;"></div></div><span class="sarr"></span><span class="sval">126</span><span class="sev">EV 4</span></div>
+          <div class="stat"><span class="slbl">S</span><div class="sbar"><div class="sb" style="width: 45%;"></div></div><span class="sarr sarr-dn">↓</span><span class="sval">90</span><span class="sev">EV 0</span></div>
+          <div style="margin-top: 7px;">
+            <div class="mv"><svg class="cat-ic"><use href="#cat-spe"/></svg><span class="nm">Hyper Voice <span class="pw">· 90</span></span><span class="dmg">37,476</span></div>
+            <div class="mv"><svg class="cat-ic"><use href="#cat-spe"/></svg><span class="nm">Moonblast <span class="pw">· 95</span></span><span class="dmg">32,972</span></div>
+            <div class="mv"><svg class="cat-ic"><use href="#cat-phy"/></svg><span class="nm">Fake Out <span class="pw">· 40</span></span><span class="dmg">12,168</span></div>
+            <div class="mv"><svg class="cat-ic"><use href="#cat-sta"/></svg><span class="nm">Protect <span class="pw">· status</span></span><span class="dmg-none">—</span></div>
+          </div>
+        </div>
+        <div class="card" style="padding: 7px;">
+          <div style="display: flex; gap: 7px; align-items: center;">
+            <div class="holder" style="width: 32px; height: 32px;">
+              <img class="sp" src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/579.png"/>
+              <img class="item" src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/items/life-orb.png" style="width: 14px; height: 14px;"/>
+            </div>
+            <div style="flex: 1;">
+              <div style="font-size: 10px; font-weight: 500;">Reuniclus</div>
+              <div style="font-size: 9px; color: var(--text-secondary);">Magic Guard · Life Orb · Quiet</div>
+            </div>
+            <span style="font-size: 9px; color: var(--text-secondary);">▾</span>
+          </div>
+        </div>
+        <div style="text-align: center; font-size: 10px; color: var(--text-tertiary); padding: 6px 0 0;">4 more Pokémon</div>
+      </div>
+      <div class="ph-nav">
+        <div class="ph-nav-item active"><svg><use href="#i-list"/></svg>View teams</div>
+        <div class="ph-nav-item"><svg><use href="#i-plus"/></svg>Create team</div>
+        <div class="ph-nav-item"><svg><use href="#i-search"/></svg>Quick search</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mw">
+    <div class="ml"><span class="n">3</span>Quick search</div>
+    <div class="msub">Weak + resist + immune · moves sorted by max damage</div>
+    <div class="ph">
+      <div class="ph-notch"></div>
+      <div class="ph-head"><span class="title">Quick search</span></div>
+      <div class="ph-body">
+        <input class="inp" value="🔍 Garchomp" style="margin-bottom: 8px;"/>
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+          <img class="sprite-md" src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/445.png"/>
+          <div style="flex: 1;">
+            <div style="font-size: 11px; font-weight: 500;">Garchomp <span style="font-size: 9px; color: var(--text-tertiary); font-weight: 400;">· 한카리아스</span></div>
+            <div style="margin-top: 2px;"><span class="tp t-dragon">Dragon</span><span class="tp t-ground">Ground</span></div>
+          </div>
+          <div class="lvl-tog"><span class="on">50</span><span>100</span></div>
+        </div>
+        <div style="font-size: 9px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 8px;">
+          <div>Weak &nbsp;<span class="tp t-ice">Ice ×4</span><span class="tp t-dragon">Dragon</span><span class="tp t-fairy">Fairy</span></div>
+          <div>Resist&nbsp;<span class="tp t-fire">Fire</span><span class="tp t-poison">Poison</span><span class="tp t-rock">Rock</span></div>
+          <div>Immune&nbsp;<span class="tp t-electric">Electric</span></div>
+        </div>
+        <div style="background: var(--bg-secondary); border-radius: 5px; padding: 5px 8px; font-size: 9px; color: var(--text-secondary); margin-bottom: 8px; line-height: 1.5;">
+          <b style="color: #A32D2D;">MIN</b> reducing·0 · <b style="color: #185FA5;">NORM</b> neutral·0 · <b style="color: #3B6D11;">MAX</b> boosting·252
+        </div>
+        <div class="sec">Physical bulk</div>
+        <div class="mnm"><div class="mnmc min"><div class="k">MIN</div><div class="v">44,087</div></div><div class="mnmc norm"><div class="k">NORM</div><div class="v">48,978</div></div><div class="mnmc max"><div class="k">MAX</div><div class="v">81,606</div></div></div>
+        <div class="sec">Special bulk</div>
+        <div class="mnm"><div class="mnmc min"><div class="k">MIN</div><div class="v">41,861</div></div><div class="mnmc norm"><div class="k">NORM</div><div class="v">46,752</div></div><div class="mnmc max"><div class="k">MAX</div><div class="v">78,467</div></div></div>
+        <div class="sec">Speed</div>
+        <div class="mnm"><div class="mnmc min"><div class="k">MIN</div><div class="v">109</div></div><div class="mnmc norm"><div class="k">NORM</div><div class="v">122</div></div><div class="mnmc max"><div class="k">MAX</div><div class="v">169</div></div></div>
+        <div class="sec">Moves <span class="hint">sorted by max damage</span></div>
+        <div class="qmv"><div class="qmv-head"><svg class="cat-ic"><use href="#cat-phy"/></svg><span class="nm">Outrage</span><span class="pw">· Dragon · 120</span></div><div class="mnm" style="margin:0;"><div class="mnmc min"><div class="v">25,020</div></div><div class="mnmc norm"><div class="v">27,900</div></div><div class="mnmc max"><div class="v">36,000</div></div></div></div>
+        <div class="qmv"><div class="qmv-head"><svg class="cat-ic"><use href="#cat-phy"/></svg><span class="nm">Earthquake</span><span class="pw">· Ground · 100</span></div><div class="mnm" style="margin:0;"><div class="mnmc min"><div class="v">20,850</div></div><div class="mnmc norm"><div class="v">23,250</div></div><div class="mnmc max"><div class="v">30,000</div></div></div></div>
+        <div class="qmv"><div class="qmv-head"><svg class="cat-ic"><use href="#cat-spe"/></svg><span class="nm">Draco Meteor</span><span class="pw">· Dragon · 130</span></div><div class="mnm" style="margin:0;"><div class="mnmc min"><div class="v">17,550</div></div><div class="mnmc norm"><div class="v">19,500</div></div><div class="mnmc max"><div class="v">28,275</div></div></div></div>
+        <div class="qmv"><div class="qmv-head"><svg class="cat-ic"><use href="#cat-phy"/></svg><span class="nm">Dragon Claw</span><span class="pw">· Dragon · 80</span></div><div class="mnm" style="margin:0;"><div class="mnmc min"><div class="v">16,680</div></div><div class="mnmc norm"><div class="v">18,600</div></div><div class="mnmc max"><div class="v">24,000</div></div></div></div>
+        <div class="qmv"><div class="qmv-head"><svg class="cat-ic"><use href="#cat-phy"/></svg><span class="nm">Stone Edge</span><span class="pw">· Rock · 100</span></div><div class="mnm" style="margin:0;"><div class="mnmc min"><div class="v">13,900</div></div><div class="mnmc norm"><div class="v">15,500</div></div><div class="mnmc max"><div class="v">20,000</div></div></div></div>
+        <div class="qmv"><div class="qmv-head"><svg class="cat-ic"><use href="#cat-spe"/></svg><span class="nm">Earth Power</span><span class="pw">· Ground · 90</span></div><div class="mnm" style="margin:0;"><div class="mnmc min"><div class="v">12,150</div></div><div class="mnmc norm"><div class="v">13,500</div></div><div class="mnmc max"><div class="v">19,575</div></div></div></div>
+      </div>
+      <div class="ph-nav">
+        <div class="ph-nav-item"><svg><use href="#i-list"/></svg>View teams</div>
+        <div class="ph-nav-item"><svg><use href="#i-plus"/></svg>Create team</div>
+        <div class="ph-nav-item active"><svg><use href="#i-search"/></svg>Quick search</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mw">
+    <div class="ml"><span class="n">4</span>Create team · empty</div>
+    <div class="msub">New team starting point</div>
+    <div class="ph">
+      <div class="ph-notch"></div>
+      <div class="ph-head"><span class="title">New team</span></div>
+      <div class="ph-body">
+        <label style="font-size: 10px; color: var(--text-secondary); display: block; margin-bottom: 3px;">Team name</label>
+        <input class="inp" placeholder="e.g. Trick Room Altaria" style="margin-bottom: 10px;"/>
+        <label style="font-size: 10px; color: var(--text-secondary); display: block; margin-bottom: 3px;">Description (optional)</label>
+        <textarea class="inp" rows="2" style="resize: none;" placeholder="Concept, strategy..."></textarea>
+        <div style="margin-top: 10px;">
+          <label style="font-size: 10px; color: var(--text-secondary); display: block; margin-bottom: 3px;">Level</label>
+          <div class="lvl-tog" style="width: 100%; box-sizing: border-box;"><span class="on" style="flex:1">50</span><span style="flex:1">100</span></div>
+        </div>
+        <div class="sec" style="margin-top: 14px;">Pokémon <span class="hint">0 / 6</span></div>
+        <div class="empty" style="padding: 44px 10px;">No Pokémon yet<br><span style="color: var(--text-secondary);">Add one to begin</span></div>
+        <button class="btn" style="width: 100%; border-style: dashed; padding: 10px; margin-top: 8px;">+ Add Pokémon</button>
+      </div>
+      <div style="padding: 8px 12px; border-top: 0.5px solid var(--border-tertiary);">
+        <button class="btn btn-primary disabled" style="width: 100%; padding: 8px;" disabled>Save</button>
+      </div>
+      <div class="ph-nav">
+        <div class="ph-nav-item"><svg><use href="#i-list"/></svg>View teams</div>
+        <div class="ph-nav-item active"><svg><use href="#i-plus"/></svg>Create team</div>
+        <div class="ph-nav-item"><svg><use href="#i-search"/></svg>Quick search</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mw">
+    <div class="ml"><span class="n">5</span>Pokémon picker modal</div>
+    <div class="msub">List view with sprite + bilingual name</div>
+    <div class="ph">
+      <div class="ph-notch"></div>
+      <div class="ph-head dim"><span class="title">New team</span></div>
+      <div class="ph-body">
+        <div class="dim">
+          <input class="inp" value="Trick Room Altaria" style="margin-bottom: 8px;"/>
+          <div class="empty" style="padding: 28px 10px;">No Pokémon yet</div>
+        </div>
+        <div class="mo-bg">
+          <div class="mo" style="max-width: 250px; padding: 14px;">
+            <div class="mo-t">Choose a Pokémon</div>
+            <input class="inp" placeholder="🔍 Name (EN or KO)" style="margin-bottom: 6px;"/>
+            <div style="display: flex; gap: 4px; margin-bottom: 8px; flex-wrap: wrap;">
+              <span class="chip" style="font-size: 9px; padding: 3px 7px;">All</span>
+              <span class="chip" style="font-size: 9px; padding: 3px 7px; background: #E6F1FB; border-color: #85B7EB; color: #0C447C;">Gen 9</span>
+              <span class="chip" style="font-size: 9px; padding: 3px 7px;">Mega</span>
+            </div>
+            <div class="pk-list">
+              <div class="pk-item on"><img class="sprite" src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/10067.png"/><div style="flex:1"><div class="en">Mega Altaria</div><div class="ko">메가 파비코리</div></div></div>
+              <div class="pk-item"><img class="sprite" src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/579.png"/><div style="flex:1"><div class="en">Reuniclus</div><div class="ko">란쿨루스</div></div></div>
+              <div class="pk-item"><img class="sprite" src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/445.png"/><div style="flex:1"><div class="en">Garchomp</div><div class="ko">한카리아스</div></div></div>
+              <div class="pk-item"><img class="sprite" src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/150.png"/><div style="flex:1"><div class="en">Mewtwo</div><div class="ko">뮤츠</div></div></div>
+              <div class="pk-item"><img class="sprite" src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/448.png"/><div style="flex:1"><div class="en">Lucario</div><div class="ko">루카리오</div></div></div>
+              <div class="pk-item"><img class="sprite" src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/376.png"/><div style="flex:1"><div class="en">Metagross</div><div class="ko">메타그로스</div></div></div>
+              <div class="pk-item"><img class="sprite" src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/483.png"/><div style="flex:1"><div class="en">Dialga</div><div class="ko">디아루가</div></div></div>
+            </div>
+            <div class="mo-a"><button class="btn">Cancel</button><button class="btn btn-primary">Add</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="ph-nav dim">
+        <div class="ph-nav-item"><svg><use href="#i-list"/></svg>View teams</div>
+        <div class="ph-nav-item active"><svg><use href="#i-plus"/></svg>Create team</div>
+        <div class="ph-nav-item"><svg><use href="#i-search"/></svg>Quick search</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mw">
+    <div class="ml"><span class="n">6</span>Create team · configured</div>
+    <div class="msub">Full EV sliders · live damage with icons</div>
+    <div class="ph">
+      <div class="ph-notch"></div>
+      <div class="ph-head"><span class="title">New team</span></div>
+      <div class="ph-body">
+        <input class="inp" value="Trick Room Altaria" style="margin-bottom: 8px; font-weight: 500;"/>
+        <div class="card" style="padding: 8px;">
+          <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 6px;">
+            <div class="holder" style="width: 36px; height: 36px;">
+              <img class="sp" src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/10067.png"/>
+              <img class="item" src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/items/life-orb.png" style="width: 16px; height: 16px;"/>
+            </div>
+            <div style="flex: 1; font-size: 11px; font-weight: 500;">Mega Altaria</div>
+            <button class="btn" style="font-size: 9px; padding: 2px 6px;">Change</button>
+          </div>
+          <div class="sel"><span class="slbl">Ability</span><span class="sval">Pixilate ▾</span></div>
+          <div class="sel"><span class="slbl">Item</span><span class="sval">Life Orb ▾</span></div>
+          <div class="sel"><span class="slbl">Nature</span><span class="sval">Quiet (C↑ S↓) ▾</span></div>
+          <div class="sec" style="margin-top: 8px;">EVs <span class="hint">508 / 510</span></div>
+          <div class="ev-row"><span class="elbl">H</span><input type="range" min="0" max="252" value="252"/><span class="eval">252 · 182</span></div>
+          <div class="ev-row"><span class="elbl">A</span><input type="range" min="0" max="252" value="0"/><span class="eval">0 · 130</span></div>
+          <div class="ev-row"><span class="elbl">B</span><input type="range" min="0" max="252" value="0"/><span class="eval">0 · 130</span></div>
+          <div class="ev-row"><span class="elbl">C</span><input type="range" min="0" max="252" value="252"/><span class="eval">252 · 178↑</span></div>
+          <div class="ev-row"><span class="elbl">D</span><input type="range" min="0" max="252" value="4"/><span class="eval">4 · 126</span></div>
+          <div class="ev-row"><span class="elbl">S</span><input type="range" min="0" max="252" value="0"/><span class="eval">0 · 90↓</span></div>
+          <div class="sec" style="margin-top: 8px;">Moves <span class="hint">live damage</span></div>
+          <div class="mv"><svg class="cat-ic"><use href="#cat-spe"/></svg><span class="nm">Hyper Voice</span><span class="dmg">37,476</span></div>
+          <div class="mv"><svg class="cat-ic"><use href="#cat-spe"/></svg><span class="nm">Moonblast</span><span class="dmg">32,972</span></div>
+          <div class="mv"><svg class="cat-ic"><use href="#cat-phy"/></svg><span class="nm">Fake Out</span><span class="dmg">12,168</span></div>
+          <div class="mv"><svg class="cat-ic"><use href="#cat-sta"/></svg><span class="nm">Protect</span><span class="dmg-none">—</span></div>
+        </div>
+        <button class="btn" style="width: 100%; border-style: dashed; padding: 8px; font-size: 10px; margin-top: 8px;">+ Add Pokémon (1/6)</button>
+      </div>
+      <div style="padding: 8px 12px; border-top: 0.5px solid var(--border-tertiary);">
+        <button class="btn btn-primary" style="width: 100%; padding: 8px;">Save</button>
+      </div>
+      <div class="ph-nav">
+        <div class="ph-nav-item"><svg><use href="#i-list"/></svg>View teams</div>
+        <div class="ph-nav-item active"><svg><use href="#i-plus"/></svg>Create team</div>
+        <div class="ph-nav-item"><svg><use href="#i-search"/></svg>Quick search</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mw">
+    <div class="ml"><span class="n">7</span>Save modal · password</div>
+    <div class="msub">One-time on new team</div>
+    <div class="ph">
+      <div class="ph-notch"></div>
+      <div class="ph-head dim"><span class="title">New team</span></div>
+      <div class="ph-body">
+        <div class="dim">
+          <input class="inp" value="Trick Room Altaria" style="margin-bottom: 8px; font-weight: 500;"/>
+          <div class="card" style="padding: 7px; margin-bottom: 6px;">
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <div class="holder" style="width: 32px; height: 32px;">
+                <img class="sp" src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/10067.png"/>
+                <img class="item" src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/items/life-orb.png" style="width: 14px; height: 14px;"/>
+              </div>
+              <div style="font-size: 10px; font-weight: 500;">Mega Altaria</div>
+            </div>
+          </div>
+        </div>
+        <div class="mo-bg">
+          <div class="mo">
+            <div class="mo-t">Save team</div>
+            <div class="mo-d">Set a password. You'll need it later to edit or delete.</div>
+            <div class="mo-f"><label>Password</label><input type="password" class="inp" value="••••"/></div>
+            <div class="mo-f"><label>Confirm password</label><input type="password" class="inp" value="••••"/></div>
+            <div class="warn">⚠ Password cannot be recovered</div>
+            <div class="mo-a"><button class="btn">Cancel</button><button class="btn btn-primary">Save</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="ph-nav dim">
+        <div class="ph-nav-item"><svg><use href="#i-list"/></svg>View teams</div>
+        <div class="ph-nav-item active"><svg><use href="#i-plus"/></svg>Create team</div>
+        <div class="ph-nav-item"><svg><use href="#i-search"/></svg>Quick search</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mw">
+    <div class="ml"><span class="n">8</span>Delete modal · confirm</div>
+    <div class="msub">Destructive with password</div>
+    <div class="ph">
+      <div class="ph-notch"></div>
+      <div class="ph-head dim"><span class="back">←</span><span class="title">Trick Room Altaria</span></div>
+      <div class="ph-body">
+        <div class="dim">
+          <div style="display: flex; gap: 6px; margin-bottom: 8px; align-items: center;">
+            <span class="like liked">♡ 76</span><span style="flex: 1;"></span>
+            <button class="btn" style="font-size: 9px;">Edit</button>
+            <button class="btn btn-danger" style="font-size: 9px;">Delete</button>
+          </div>
+          <div class="card" style="padding: 7px;">
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <div class="holder" style="width: 32px; height: 32px;">
+                <img class="sp" src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/10067.png"/>
+                <img class="item" src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/items/life-orb.png" style="width: 14px; height: 14px;"/>
+              </div>
+              <div style="font-size: 10px; font-weight: 500;">Mega Altaria</div>
+            </div>
+          </div>
+        </div>
+        <div class="mo-bg">
+          <div class="mo">
+            <div class="mo-t">Delete team</div>
+            <div class="mo-d">This cannot be undone.</div>
+            <div class="danger">⚠ All comments and likes will be removed too</div>
+            <div class="mo-f"><label>Password</label><input type="password" class="inp" placeholder="Enter team password"/></div>
+            <div class="mo-a"><button class="btn">Cancel</button><button class="btn btn-danger">Delete</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="ph-nav dim">
+        <div class="ph-nav-item active"><svg><use href="#i-list"/></svg>View teams</div>
+        <div class="ph-nav-item"><svg><use href="#i-plus"/></svg>Create team</div>
+        <div class="ph-nav-item"><svg><use href="#i-search"/></svg>Quick search</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mw">
+    <div class="ml"><span class="n">9</span>Comments · 댓글</div>
+    <div class="msub">Same layout, Korean locale (KO)</div>
+    <div class="ph">
+      <div class="ph-notch"></div>
+      <div class="ph-head"><span class="back">←</span><span class="title">트릭룸 파비코리</span><span class="locale">EN · <span class="on">KO</span></span></div>
+      <div class="ph-body">
+        <div class="sec">댓글 3개</div>
+        <div class="cm"><div class="who"><span>뮤츠러버 · 2시간 전</span><span class="del">삭제</span></div>트릭룸 타점 미쳤다 ㄷㄷ</div>
+        <div class="cm"><div class="who"><span>익명 · 5시간 전</span><span class="del">삭제</span></div>파비코리 C 투자 좀 더 하면 좋을 듯?</div>
+        <div class="cm"><div class="who"><span>포켓매니아 · 1일 전</span><span class="del">삭제</span></div>한카리아스 대신 땅신령 어떠세요</div>
+        <div class="sec" style="margin-top: 12px;">댓글 작성</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-bottom: 5px;">
+          <input class="inp" placeholder="닉네임" style="font-size: 10px;"/>
+          <input class="inp" type="password" placeholder="비밀번호 (삭제용)" style="font-size: 10px;"/>
+        </div>
+        <textarea class="inp" rows="2" placeholder="댓글 내용..." style="resize: none; font-size: 10px;"></textarea>
+        <button class="btn btn-primary" style="width: 100%; margin-top: 5px; padding: 7px; font-size: 11px;">등록</button>
+        <div style="background: var(--bg-secondary); border-radius: 5px; padding: 6px 8px; font-size: 9px; color: var(--text-secondary); margin-top: 10px; line-height: 1.4;">동일 IP에서 1분 내 2건 이상 댓글은 차단됩니다</div>
+      </div>
+      <div class="ph-nav">
+        <div class="ph-nav-item active"><svg><use href="#i-list"/></svg>팀 보기</div>
+        <div class="ph-nav-item"><svg><use href="#i-plus"/></svg>팀 만들기</div>
+        <div class="ph-nav-item"><svg><use href="#i-search"/></svg>빠른 검색</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

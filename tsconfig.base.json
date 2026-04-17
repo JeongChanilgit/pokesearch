@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "forceConsistentCasingInFileNames": true,
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "paths": {
+      "@pokesearch/calc": ["packages/calc/src/index.ts"],
+      "@pokesearch/calc/*": ["packages/calc/src/*"],
+      "@pokesearch/types": ["packages/types/src/index.ts"],
+      "@pokesearch/types/*": ["packages/types/src/*"],
+      "@pokesearch/api-client": ["packages/api-client/src/index.ts"],
+      "@pokesearch/api-client/*": ["packages/api-client/src/*"],
+      "@pokesearch/db": ["packages/db/src/index.ts"],
+      "@pokesearch/db/*": ["packages/db/src/*"]
+    }
+  }
+}

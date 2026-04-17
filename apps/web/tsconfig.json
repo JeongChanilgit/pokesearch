@@ -1,0 +1,44 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": [
+        "./*"
+      ],
+      "@pokesearch/calc": [
+        "../../packages/calc/src/index.ts"
+      ],
+      "@pokesearch/calc/*": [
+        "../../packages/calc/src/*"
+      ],
+      "@pokesearch/types": [
+        "../../packages/types/src/index.ts"
+      ],
+      "@pokesearch/types/*": [
+        "../../packages/types/src/*"
+      ],
+      "@pokesearch/api-client": [
+        "../../packages/api-client/src/index.ts"
+      ],
+      "@pokesearch/api-client/*": [
+        "../../packages/api-client/src/*"
+      ]
+    },
+    "allowJs": true,
+    "incremental": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

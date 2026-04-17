@@ -1,0 +1,202 @@
+@import 'tailwindcss';
+@import 'pretendard/dist/web/variable/pretendardvariable.css';
+
+@theme {
+  --font-sans:
+    'Pretendard Variable', Pretendard, -apple-system, 'system-ui', 'Segoe UI', Roboto, sans-serif;
+
+  /* Core palette */
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f5f5f3;
+  --color-bg-tertiary: #ebebe7;
+  --color-text-primary: #1f1e1d;
+  --color-text-secondary: #6f6e6a;
+  --color-text-tertiary: #9e9d98;
+  --color-border-tertiary: rgba(31, 30, 29, 0.15);
+  --color-border-secondary: rgba(31, 30, 29, 0.3);
+
+  /* Key metric cards */
+  --color-phys-bg: #faece7;
+  --color-phys-fg: #4a1b0c;
+  --color-phys-label: #993c1d;
+  --color-spec-bg: #eeedfe;
+  --color-spec-fg: #26215c;
+  --color-spec-label: #534ab7;
+  --color-spd-bg: #e1f5ee;
+  --color-spd-fg: #04342c;
+  --color-spd-label: #0f6e56;
+
+  /* MIN / NORM / MAX */
+  --color-min-bg: #fcebeb;
+  --color-min-fg: #501313;
+  --color-min-label: #a32d2d;
+  --color-norm-bg: #e6f1fb;
+  --color-norm-fg: #042c53;
+  --color-norm-label: #185fa5;
+  --color-max-bg: #eaf3de;
+  --color-max-fg: #173404;
+  --color-max-label: #3b6d11;
+
+  /* Stat bars */
+  --color-bar-base: #85b7eb;
+  --color-bar-ev: #1d9e75;
+
+  /* Nature arrows */
+  --color-nature-up: #0f6e56;
+  --color-nature-down: #a32d2d;
+
+  /* Category icons */
+  --color-cat-phy: #d85a30;
+  --color-cat-phy-border: #712b13;
+  --color-cat-spe: #534ab7;
+  --color-cat-spe-inner: #cecbf6;
+  --color-cat-spe-border: #26215c;
+  --color-cat-sta: #888780;
+  --color-cat-sta-border: #444441;
+
+  /* Like */
+  --color-like-liked-bg: #fbeaf0;
+  --color-like-liked-fg: #d4537e;
+  --color-like-liked-border: #f4c0d1;
+
+  /* Actions / semantics */
+  --color-action: #378add;
+  --color-danger-bg: #fcebeb;
+  --color-danger-fg: #a32d2d;
+  --color-danger-border: #f09595;
+  --color-warn-bg: #faeeda;
+  --color-warn-fg: #633806;
+
+  /* Type badges — bg / fg pairs */
+  --color-type-normal-bg: #f1efe8;
+  --color-type-normal-fg: #444441;
+  --color-type-fire-bg: #faece7;
+  --color-type-fire-fg: #712b13;
+  --color-type-water-bg: #e6f1fb;
+  --color-type-water-fg: #0c447c;
+  --color-type-grass-bg: #eaf3de;
+  --color-type-grass-fg: #27500a;
+  --color-type-electric-bg: #faeeda;
+  --color-type-electric-fg: #633806;
+  --color-type-ice-bg: #e6f1fb;
+  --color-type-ice-fg: #185fa5;
+  --color-type-fighting-bg: #faece7;
+  --color-type-fighting-fg: #4a1b0c;
+  --color-type-poison-bg: #fbeaf0;
+  --color-type-poison-fg: #993556;
+  --color-type-ground-bg: #faeeda;
+  --color-type-ground-fg: #633806;
+  --color-type-flying-bg: #e6f1fb;
+  --color-type-flying-fg: #185fa5;
+  --color-type-psychic-bg: #fbeaf0;
+  --color-type-psychic-fg: #72243e;
+  --color-type-bug-bg: #eaf3de;
+  --color-type-bug-fg: #3b6d11;
+  --color-type-rock-bg: #f1efe8;
+  --color-type-rock-fg: #444441;
+  --color-type-ghost-bg: #eeedfe;
+  --color-type-ghost-fg: #3c3489;
+  --color-type-dragon-bg: #eeedfe;
+  --color-type-dragon-fg: #26215c;
+  --color-type-dark-bg: #f1efe8;
+  --color-type-dark-fg: #2c2c2a;
+  --color-type-steel-bg: #f1efe8;
+  --color-type-steel-fg: #444441;
+  --color-type-fairy-bg: #fbeaf0;
+  --color-type-fairy-fg: #993556;
+}
+
+@layer base {
+  html,
+  body {
+    font-family: var(--font-sans);
+    font-feature-settings: 'tnum';
+  }
+  body {
+    background: var(--color-bg-tertiary);
+    color: var(--color-text-primary);
+    line-height: 1.6;
+  }
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer components {
+  .pr-inp {
+    @apply border border-border-tertiary rounded-sm px-2.5 py-1.5 text-[11px] text-text-primary bg-bg-primary w-full box-border;
+  }
+
+  .t-normal {
+    background: var(--color-type-normal-bg);
+    color: var(--color-type-normal-fg);
+  }
+  .t-fire {
+    background: var(--color-type-fire-bg);
+    color: var(--color-type-fire-fg);
+  }
+  .t-water {
+    background: var(--color-type-water-bg);
+    color: var(--color-type-water-fg);
+  }
+  .t-grass {
+    background: var(--color-type-grass-bg);
+    color: var(--color-type-grass-fg);
+  }
+  .t-electric {
+    background: var(--color-type-electric-bg);
+    color: var(--color-type-electric-fg);
+  }
+  .t-ice {
+    background: var(--color-type-ice-bg);
+    color: var(--color-type-ice-fg);
+  }
+  .t-fighting {
+    background: var(--color-type-fighting-bg);
+    color: var(--color-type-fighting-fg);
+  }
+  .t-poison {
+    background: var(--color-type-poison-bg);
+    color: var(--color-type-poison-fg);
+  }
+  .t-ground {
+    background: var(--color-type-ground-bg);
+    color: var(--color-type-ground-fg);
+  }
+  .t-flying {
+    background: var(--color-type-flying-bg);
+    color: var(--color-type-flying-fg);
+  }
+  .t-psychic {
+    background: var(--color-type-psychic-bg);
+    color: var(--color-type-psychic-fg);
+  }
+  .t-bug {
+    background: var(--color-type-bug-bg);
+    color: var(--color-type-bug-fg);
+  }
+  .t-rock {
+    background: var(--color-type-rock-bg);
+    color: var(--color-type-rock-fg);
+  }
+  .t-ghost {
+    background: var(--color-type-ghost-bg);
+    color: var(--color-type-ghost-fg);
+  }
+  .t-dragon {
+    background: var(--color-type-dragon-bg);
+    color: var(--color-type-dragon-fg);
+  }
+  .t-dark {
+    background: var(--color-type-dark-bg);
+    color: var(--color-type-dark-fg);
+  }
+  .t-steel {
+    background: var(--color-type-steel-bg);
+    color: var(--color-type-steel-fg);
+  }
+  .t-fairy {
+    background: var(--color-type-fairy-bg);
+    color: var(--color-type-fairy-fg);
+  }
+}

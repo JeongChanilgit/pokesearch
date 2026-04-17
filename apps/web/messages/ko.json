@@ -1,0 +1,19 @@
+{
+  "common": {
+    "save": "저장",
+    "cancel": "취소",
+    "delete": "삭제",
+    "back": "뒤로"
+  },
+  "nav": {
+    "viewTeams": "팀",
+    "createTeam": "만들기",
+    "quickSearch": "검색"
+  },
+  "home": {
+    "title": "포켓서치",
+    "welcome": "포켓서치에 오신 것을 환영합니다.",
+    "tagline": "계정 없이 포켓몬 팀을 만들고 공유하세요.",
+    "empty": "아직 팀이 없습니다."
+  }
+}

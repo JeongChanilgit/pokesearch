@@ -1,0 +1,19 @@
+{
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "back": "Back"
+  },
+  "nav": {
+    "viewTeams": "Teams",
+    "createTeam": "Create",
+    "quickSearch": "Search"
+  },
+  "home": {
+    "title": "PokeSearch",
+    "welcome": "Welcome to PokeSearch.",
+    "tagline": "Build and share Pokémon teams without an account.",
+    "empty": "No teams yet."
+  }
+}

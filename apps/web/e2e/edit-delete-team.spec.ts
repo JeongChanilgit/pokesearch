@@ -13,7 +13,11 @@ async function createTeam(page: Page, teamName: string): Promise<string | null> 
   await expect(page.getByTestId('picker-modal')).toBeVisible();
   const list = page.getByTestId('picker-list');
   const firstBtn = list.getByRole('button').first();
-  if ((await firstBtn.count()) === 0) return null;
+  try {
+    await firstBtn.waitFor({ state: 'visible', timeout: 5000 });
+  } catch {
+    return null;
+  }
   await firstBtn.click();
   await page.getByTestId('picker-add').click();
   await expect(page.getByTestId('pokemon-editor')).toBeVisible();

@@ -35,12 +35,16 @@ export default async function TeamDetailPage({ params }: Props) {
     await prisma.team
       .update({ where: { id }, data: { views: { increment: 1 } } })
       .catch(() => {});
-    cookieStore.set(cookieName, '1', {
-      path: '/',
-      maxAge: VIEW_DEDUP_MAX_AGE_SECONDS,
-      httpOnly: true,
-      sameSite: 'lax',
-    });
+    try {
+      cookieStore.set(cookieName, '1', {
+        path: '/',
+        maxAge: VIEW_DEDUP_MAX_AGE_SECONDS,
+        httpOnly: true,
+        sameSite: 'lax',
+      });
+    } catch {
+      /* cookies().set is a no-op in some RSC contexts (Next 15); ignore */
+    }
   }
 
   const team = await queryTeamDetail(id);

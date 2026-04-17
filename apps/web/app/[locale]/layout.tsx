@@ -5,6 +5,7 @@ import { locales, type Locale } from '../../i18n';
 import { IconDefs } from '../../components/IconDefs';
 import { BottomNav } from '../../components/BottomNav';
 import { LocaleToggle } from '../../components/LocaleToggle';
+import { QueryProvider } from '../../components/QueryProvider';
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -25,15 +26,17 @@ export default async function LocaleLayout({ children, params }: Props) {
     <html lang={locale}>
       <body className="min-h-screen bg-bg-tertiary">
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <IconDefs />
-          <div className="mx-auto max-w-[480px] min-h-screen bg-bg-primary flex flex-col">
-            <header className="flex items-center justify-between px-4 py-2 border-b border-border-tertiary">
-              <span className="text-[14px] font-medium">PokeSearch</span>
-              <LocaleToggle />
-            </header>
-            <main className="flex-1 p-3">{children}</main>
-            <BottomNav />
-          </div>
+          <QueryProvider>
+            <IconDefs />
+            <div className="mx-auto max-w-[480px] min-h-screen bg-bg-primary flex flex-col">
+              <header className="flex items-center justify-between px-4 py-2 border-b border-border-tertiary">
+                <span className="text-[14px] font-medium">PokeSearch</span>
+                <LocaleToggle />
+              </header>
+              <main className="flex-1 p-3">{children}</main>
+              <BottomNav />
+            </div>
+          </QueryProvider>
         </NextIntlClientProvider>
       </body>
     </html>

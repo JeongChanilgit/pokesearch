@@ -11,7 +11,7 @@ export async function getLikeStatus(
 ): Promise<LikeStatusResponse> {
   UuidSchema.parse(teamId);
   return request(
-    `/api/teams/${teamId}/likes`,
+    `/api/teams/${teamId}/likes/me`,
     { method: 'GET' },
     opts,
     (data) => LikeStatusResponse.parse(data),

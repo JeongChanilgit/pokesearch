@@ -12,15 +12,14 @@ export type Comment = z.infer<typeof Comment>;
 
 export const ListCommentsRequest = z.object({
   teamId: UuidSchema,
-  limit: z.number().int().min(1).max(100).optional().default(50),
-  cursor: z.string().optional(),
+  page: z.number().int().min(1).optional().default(1),
 });
 export type ListCommentsRequest = z.infer<typeof ListCommentsRequest>;
 export type ListCommentsInput = z.input<typeof ListCommentsRequest>;
 
 export const ListCommentsResponse = z.object({
-  items: z.array(Comment),
-  nextCursor: z.string().nullable(),
+  comments: z.array(Comment),
+  hasMore: z.boolean(),
 });
 export type ListCommentsResponse = z.infer<typeof ListCommentsResponse>;
 
@@ -32,9 +31,7 @@ export const CreateCommentRequest = z.object({
 });
 export type CreateCommentRequest = z.infer<typeof CreateCommentRequest>;
 
-export const CreateCommentResponse = z.object({
-  id: UuidSchema,
-});
+export const CreateCommentResponse = Comment;
 export type CreateCommentResponse = z.infer<typeof CreateCommentResponse>;
 
 export const DeleteCommentRequest = z.object({

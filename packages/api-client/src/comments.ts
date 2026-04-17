@@ -18,8 +18,7 @@ export async function listComments(
 ): Promise<ListCommentsResponse> {
   const parsed = ListCommentsRequest.parse(input);
   const params = new URLSearchParams();
-  params.set('limit', String(parsed.limit));
-  if (parsed.cursor) params.set('cursor', parsed.cursor);
+  params.set('page', String(parsed.page));
   return request(
     `/api/teams/${parsed.teamId}/comments?${params.toString()}`,
     { method: 'GET' },

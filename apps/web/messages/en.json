@@ -39,8 +39,30 @@
     "evLabel": "EV {ev}",
     "viewsCount": "{count, plural, =1 {# view} other {# views}}",
     "commentsCount": "{count, plural, =1 {# comment} other {# comments}}",
-    "commentsHeading": "Comments ({count})",
-    "commentsPlaceholder": "Comments arrive in a later slice."
+    "commentsHeading": "Comments ({count})"
+  },
+  "comments": {
+    "heading": "Comments ({count})",
+    "empty": "No comments yet.",
+    "loadMore": "Load more",
+    "loading": "Loading…",
+    "nicknamePlaceholder": "Nickname",
+    "passwordPlaceholder": "Password",
+    "contentPlaceholder": "Write a comment…",
+    "submit": "Post comment",
+    "posting": "Posting…",
+    "delete": "Delete",
+    "deleteConfirm": "Enter password to delete",
+    "deleteCancel": "Cancel",
+    "deleteSubmit": "Delete",
+    "wrongPassword": "Wrong password.",
+    "rateLimited": "Please wait a minute before commenting again.",
+    "forbiddenWord": "Your comment contains a forbidden word.",
+    "errorGeneric": "Something went wrong. Please try again.",
+    "defaultNickname": "Anonymous"
+  },
+  "likes": {
+    "aria": "Toggle like"
   },
   "search": {
     "title": "Quick Search",

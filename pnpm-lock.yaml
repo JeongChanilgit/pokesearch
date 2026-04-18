@@ -121,6 +121,9 @@ importers:
 
   packages/crawler:
     dependencies:
+      '@pokesearch/calc':
+        specifier: workspace:*
+        version: link:../calc
       '@pokesearch/db':
         specifier: workspace:*
         version: link:../db

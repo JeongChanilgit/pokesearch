@@ -142,6 +142,7 @@ model Pokemon {
   baseD     Int      @map("base_d") @db.SmallInt
   baseS     Int      @map("base_s") @db.SmallInt
   spriteUrl String   @map("sprite_url") @db.VarChar(200)
+  showdownId String? @unique @map("showdown_id") @db.VarChar(64)
   formOf    Int?     @map("form_of")
 
   baseForm       Pokemon?               @relation("PokemonForms", fields: [formOf], references: [id])

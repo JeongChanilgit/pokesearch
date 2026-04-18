@@ -5,13 +5,15 @@
 //   - Alt forms : slot 1+ → dex * 100 + N  (ordering: base first, then
 //     Showdown's `formeOrder` if present, else alphabetical by slug)
 //
-// Sprite URL uses the Pokémon Showdown dex CDN keyed by slug
-// (e.g. charizardmegax, charizardmegay) so each form gets a distinct sprite.
+// Sprite URL is derived from the PokeAPI CDN via @pokesearch/calc, keyed by
+// (dexNum, showdownId) so each form (mega-x, mega-y, alola, galar, ...) gets
+// a distinct sprite.
 
 import type { ShowdownRecord } from '../showdown/parse.js';
 import type { KoTables, MissingTracker } from '../showdown/korean.js';
 import { lookupKo } from '../showdown/korean.js';
 import { toId } from './legality.js';
+import { spriteUrl } from '@pokesearch/calc';
 
 export interface ParsedPokemon {
   id: number;
@@ -25,11 +27,8 @@ export interface ParsedPokemon {
   baseD: number;
   baseS: number;
   spriteUrl: string;
+  showdownId: string;
   formOf: number | null;
-}
-
-function spriteUrl(slug: string): string {
-  return `https://play.pokemonshowdown.com/sprites/dex/${slug}.png`;
 }
 
 function truncate(s: string, max: number): string {
@@ -154,7 +153,8 @@ export function buildPokemonRow(
     baseC: Number(stats.spa ?? 0),
     baseD: Number(stats.spd ?? 0),
     baseS: Number(stats.spe ?? 0),
-    spriteUrl: spriteUrl(slug),
+    spriteUrl: spriteUrl(group.dexNum, slug),
+    showdownId: slug,
     formOf: group.slot === 0 ? null : baseId,
   };
 }

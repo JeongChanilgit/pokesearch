@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { fallbackSpriteUrl } from '@pokesearch/calc';
 
 interface Props {
   spriteUrl: string;
@@ -14,9 +15,7 @@ export function PokemonHolder({ spriteUrl, dexNum, itemName, size = 44 }: Props)
   const itemSize = Math.round(size * 0.45);
 
   const src =
-    errored && dexNum != null
-      ? `https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/${dexNum}.png`
-      : spriteUrl;
+    errored && dexNum != null ? fallbackSpriteUrl(dexNum) : spriteUrl;
 
   return (
     <div className="relative shrink-0" style={{ width: size, height: size }}>

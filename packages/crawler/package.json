@@ -16,6 +16,7 @@
     "build": "echo \"no build in slice 1\" && exit 0"
   },
   "dependencies": {
+    "@pokesearch/calc": "workspace:*",
     "@pokesearch/db": "workspace:*",
     "@pokesearch/types": "workspace:*",
     "esbuild": "^0.21.5",

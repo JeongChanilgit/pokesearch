@@ -34,7 +34,12 @@ docker ps --filter name=pokesearch-postgres --format "table {{.Names}}\t{{.Ports
 pnpm --filter @pokesearch/db db:migrate
 pnpm --filter @pokesearch/db db:seed
 
-# 5. Start the web app
+# 5. Download sprites (Pokémon + items) into apps/web/public/sprites/
+#    The app has no runtime external CDN dependency — sprites must exist locally.
+pnpm --filter @pokesearch/crawler download-sprites
+pnpm --filter @pokesearch/crawler download-item-sprites
+
+# 6. Start the web app
 pnpm --filter @pokesearch/web dev
 # → http://localhost:3000 (redirects to /en or /ko)
 ```

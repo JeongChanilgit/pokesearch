@@ -22,11 +22,13 @@ See [CLAUDE.md](CLAUDE.md) and [`docs/`](docs/) for the authoritative project sp
 # 1. Install deps (workspace-wide)
 pnpm install
 
-# 2. Copy env template and adjust if needed
+# 2. Copy env template to the repo root (Next.js loads it from here because pnpm dev runs from root)
 cp .env.example .env
 
 # 3. Start Postgres (Docker)
 docker compose up -d db
+# Confirm the container is running and the host port matches DATABASE_URL:
+docker ps --filter name=pokesearch-postgres --format "table {{.Names}}\t{{.Ports}}"
 
 # 4. Migrate and seed the DB
 pnpm --filter @pokesearch/db db:migrate

@@ -110,6 +110,7 @@ export const TeamPokemonDetail = z.object({
   id: UuidSchema,
   slotOrder: z.number().int().min(1).max(6),
   pokemon: PokemonSummary.extend({
+    showdownId: z.string(),
     baseH: z.number().int(),
     baseA: z.number().int(),
     baseB: z.number().int(),

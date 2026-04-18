@@ -28,6 +28,7 @@ export function spriteUrl(dexNum: number, showdownId: string): string {
   return `${POKE_API_SPRITES_BASE}/${id}.png`;
 }
 
-export function fallbackSpriteUrl(dexNum: number): string {
-  return `${POKE_API_SPRITES_BASE}/${dexNum}.png`;
+// Same logic as spriteUrl — preserves form so the fallback isn't lossy.
+export function fallbackSpriteUrl(dexNum: number, showdownId: string): string {
+  return `${POKE_API_SPRITES_BASE}/${toPokeApiSpriteId(dexNum, showdownId)}.png`;
 }

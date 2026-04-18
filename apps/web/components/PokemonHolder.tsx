@@ -6,16 +6,17 @@ import { fallbackSpriteUrl } from '@pokesearch/calc';
 interface Props {
   spriteUrl: string;
   dexNum?: number;
+  showdownId?: string;
   itemName?: string;
   size?: 32 | 44;
 }
 
-export function PokemonHolder({ spriteUrl, dexNum, itemName, size = 44 }: Props) {
+export function PokemonHolder({ spriteUrl, dexNum, showdownId, itemName, size = 44 }: Props) {
   const [errored, setErrored] = useState(false);
   const itemSize = Math.round(size * 0.45);
 
   const src =
-    errored && dexNum != null ? fallbackSpriteUrl(dexNum) : spriteUrl;
+    errored && dexNum != null ? fallbackSpriteUrl(dexNum, showdownId ?? '') : spriteUrl;
 
   return (
     <div className="relative shrink-0" style={{ width: size, height: size }}>

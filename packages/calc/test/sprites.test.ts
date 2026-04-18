@@ -64,15 +64,15 @@ describe('spriteUrl', () => {
 });
 
 describe('fallbackSpriteUrl', () => {
-  it('returns dex-number-only URL', () => {
-    expect(fallbackSpriteUrl(6)).toBe(`${BASE}/6.png`);
+  it('preserves mega-x form for charizardmegax', () => {
+    expect(fallbackSpriteUrl(6, 'charizardmegax')).toBe(`${BASE}/6-mega-x.png`);
   });
 
-  it('ignores any form and uses just the dex number', () => {
-    expect(fallbackSpriteUrl(38)).toBe(`${BASE}/38.png`);
+  it('returns base dex URL for plain form', () => {
+    expect(fallbackSpriteUrl(6, 'charizard')).toBe(`${BASE}/6.png`);
   });
 
-  it('works for three-digit dex numbers', () => {
-    expect(fallbackSpriteUrl(571)).toBe(`${BASE}/571.png`);
+  it('preserves mega form for kangaskhanmega', () => {
+    expect(fallbackSpriteUrl(115, 'kangaskhanmega')).toBe(`${BASE}/115-mega.png`);
   });
 });

@@ -9,6 +9,7 @@
   "scripts": {
     "crawl": "tsx src/index.ts",
     "start": "tsx src/index.ts",
+    "download-item-sprites": "tsx src/download-item-sprites.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",

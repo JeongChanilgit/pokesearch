@@ -4,7 +4,7 @@ import { useLocale } from 'next-intl';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useTransition } from 'react';
 
-const LOCALES = ['en', 'ko'] as const;
+type Locale = 'en' | 'ko';
 
 export function LocaleToggle() {
   const locale = useLocale();
@@ -13,7 +13,7 @@ export function LocaleToggle() {
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
 
-  function switchTo(next: (typeof LOCALES)[number]) {
+  function switchTo(next: Locale) {
     if (next === locale) return;
     const stripped = pathname.replace(/^\/(en|ko)(?=\/|$)/, '') || '/';
     let nextPath = `/${next}${stripped === '/' ? '' : stripped}`;

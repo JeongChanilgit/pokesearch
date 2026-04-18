@@ -8,10 +8,6 @@ interface Props {
   locale: Locale;
 }
 
-function capitalize(s: string) {
-  return s.charAt(0).toUpperCase() + s.slice(1);
-}
-
 export function QuickSearchMoveCard({ move, locale }: Props) {
   const isStatus = move.category === 'status';
   const accStr = move.accuracy != null ? `${move.accuracy}%` : '—';

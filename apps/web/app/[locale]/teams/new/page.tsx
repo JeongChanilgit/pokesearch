@@ -70,6 +70,17 @@ export default function NewTeamPage() {
 
   const canSave = draftIsValid(state);
 
+  function getValidationHint(): string | null {
+    if (!state.name.trim()) return t('validationNoName');
+    if (state.pokemons.length === 0) return t('validationNoPokemon');
+    for (const p of state.pokemons) {
+      if (p.abilityId == null) return t('validationNoAbility');
+    }
+    return null;
+  }
+
+  const validationHint = canSave ? null : getValidationHint();
+
   function openPicker(mode: PickerMode) {
     setPicker(mode);
   }
@@ -218,6 +229,14 @@ export default function NewTeamPage() {
         >
           {t('save')}
         </button>
+        {validationHint && (
+          <p
+            data-testid="save-validation-hint"
+            className="mt-1 text-[10px] text-text-secondary text-center"
+          >
+            {validationHint}
+          </p>
+        )}
       </div>
 
       <PokemonPickerModal

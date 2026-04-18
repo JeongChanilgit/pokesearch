@@ -163,7 +163,10 @@
     "saving": "Saving…",
     "saved": "Team saved",
     "errorGeneric": "Could not save the team. Please try again.",
-    "abilityRippleToast": "Moves removed — no longer legal under this ability."
+    "abilityRippleToast": "Moves removed — no longer legal under this ability.",
+    "validationNoName": "Add a team name to save.",
+    "validationNoPokemon": "Add at least one Pokémon to save.",
+    "validationNoAbility": "All Pokémon need an ability selected."
   },
   "install": {
     "title": "Install PokeSearch",

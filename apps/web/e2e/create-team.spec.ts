@@ -13,6 +13,26 @@ test.describe('create team', () => {
     await expect(saveBtn).toBeDisabled();
   });
 
+  test('empty team name blocks SaveModal from opening', async ({ page }) => {
+    await page.goto('/en/teams/new');
+
+    // Button must be disabled when name is empty.
+    const saveBtn = page.getByTestId('open-save-modal');
+    await expect(saveBtn).toBeDisabled();
+
+    // Validation hint should appear explaining the missing name.
+    await expect(page.getByTestId('save-validation-hint')).toBeVisible();
+
+    // SaveModal must NOT open despite any attempt to click the disabled button.
+    await saveBtn.dispatchEvent('click');
+    await expect(page.getByTestId('save-modal')).not.toBeVisible();
+
+    // Filling the name alone still leaves the button disabled (no Pokémon yet).
+    await page.getByTestId('team-name-input').fill('My Team');
+    await expect(saveBtn).toBeDisabled();
+    await expect(page.getByTestId('save-validation-hint')).toBeVisible();
+  });
+
   test('happy path: fill meta, add pokemon, save redirects to detail', async ({
     page,
   }) => {

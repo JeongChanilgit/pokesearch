@@ -84,6 +84,21 @@ async function main(): Promise<void> {
       const res = await fetch(url);
 
       if (res.status === 404) {
+        // Fallback: for Champions-exclusive mega stones (e.g. "scovillainite")
+        // that don't exist on PokeAPI, copy a generic mega-stone sprite
+        // ("venusaurite") as a placeholder so the UI isn't broken.
+        if (slug.endsWith('ite')) {
+          const placeholder = path.join(OUT_DIR, 'venusaurite.png');
+          try {
+            await fs.access(placeholder);
+            await fs.copyFile(placeholder, destPath);
+            console.log(`  FBK  ${slug} (← venusaurite.png)`);
+            downloaded++;
+            continue;
+          } catch {
+            // placeholder not present yet — fall through to missing
+          }
+        }
         console.warn(`  404  ${slug} (id=${item.id}, name="${item.nameEn}")`);
         missing404++;
         continue;

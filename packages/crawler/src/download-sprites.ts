@@ -11,7 +11,8 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { PrismaClient } from "@prisma/client";
+import { fileURLToPath } from "node:url";
+import { prisma } from "@pokesearch/db";
 
 // ---------------------------------------------------------------------------
 // CLI flags
@@ -23,7 +24,7 @@ const FORCE = process.argv.includes("--force");
 // ---------------------------------------------------------------------------
 // Resolve workspace root (packages/crawler/src → ../../.. = repo root)
 const WORKSPACE_ROOT = path.resolve(
-  path.dirname(new URL(import.meta.url).pathname),
+  path.dirname(fileURLToPath(import.meta.url)),
   "..",
   "..",
   ".."
@@ -53,11 +54,90 @@ const SUFFIXES: readonly [string, string][] = [
   ["paldea", "paldea"],
 ];
 
+// Special cases where PokeAPI uses unusual slugs that the suffix map cannot
+// reach. Longest/most-specific keys should be tried first in lookup.
+const SPECIAL_SLUGS: Record<string, string> = {
+  gourgeist: "gourgeist-average",
+  gourgeistsmall: "gourgeist-small",
+  gourgeistlarge: "gourgeist-large",
+  gourgeistsuper: "gourgeist-super",
+  pumpkaboo: "pumpkaboo-average",
+  pumpkaboosmall: "pumpkaboo-small",
+  pumpkaboolarge: "pumpkaboo-large",
+  pumpkaboosuper: "pumpkaboo-super",
+  lycanroc: "lycanroc-midday",
+  lycanrocmidnight: "lycanroc-midnight",
+  lycanrocdusk: "lycanroc-dusk",
+  mimikyu: "mimikyu-disguised",
+  kommoo: "kommo-o",
+  hakamoo: "hakamo-o",
+  jangmoo: "jangmo-o",
+  mrrime: "mr-rime",
+  mrmime: "mr-mime",
+  mrmimegalar: "mr-mime-galar",
+  mimejr: "mime-jr",
+  morpeko: "morpeko-full-belly",
+  basculegion: "basculegion-male",
+  basculegionf: "basculegion-female",
+  maushold: "maushold-family-of-four",
+  palafin: "palafin-zero",
+  indeedee: "indeedee-male",
+  indeedeef: "indeedee-female",
+  meowsticf: "meowstic-female",
+  meowstic: "meowstic-male",
+  nidoranf: "nidoran-f",
+  nidoranm: "nidoran-m",
+  porygonz: "porygon-z",
+  typenull: "type-null",
+  tapukoko: "tapu-koko",
+  tapulele: "tapu-lele",
+  tapubulu: "tapu-bulu",
+  tapufini: "tapu-fini",
+  oricorio: "oricorio-baile",
+  oricoriopompom: "oricorio-pom-pom",
+  oricoriopau: "oricorio-pau",
+  oricoriosensu: "oricorio-sensu",
+  toxtricity: "toxtricity-amped",
+  toxtricitylowkey: "toxtricity-low-key",
+  aegislash: "aegislash-shield",
+  rotomheat: "rotom-heat",
+  rotomwash: "rotom-wash",
+  rotomfrost: "rotom-frost",
+  rotomfan: "rotom-fan",
+  rotommow: "rotom-mow",
+  taurospaldeacombat: "tauros-paldea-combat-breed",
+  taurospaldeablaze: "tauros-paldea-blaze-breed",
+  taurospaldeaaqua: "tauros-paldea-aqua-breed",
+};
+
+// Explicit fallback overrides for fringe cases where stripping the suffix
+// yields an ID we don't actually have a sprite for.
+const FALLBACK_BASE: Record<string, string> = {
+  meowsticmmega: "meowstic",
+  meowsticfmega: "meowstic",
+};
+
+/** Strip any known form suffix to derive the base showdownId. */
+function stripFormSuffix(showdownId: string): string | null {
+  if (FALLBACK_BASE[showdownId]) {
+    return FALLBACK_BASE[showdownId];
+  }
+  for (const [suffix] of SUFFIXES) {
+    if (showdownId.endsWith(suffix)) {
+      return showdownId.slice(0, showdownId.length - suffix.length);
+    }
+  }
+  return null;
+}
+
 /**
  * Convert a Showdown ID (e.g. "charizardmegax") to a PokeAPI slug
  * (e.g. "charizard-mega-x").
  */
 function showdownIdToSlug(showdownId: string): string {
+  if (SPECIAL_SLUGS[showdownId]) {
+    return SPECIAL_SLUGS[showdownId];
+  }
   for (const [suffix, hyphenated] of SUFFIXES) {
     if (showdownId.endsWith(suffix)) {
       const base = showdownId.slice(0, showdownId.length - suffix.length);
@@ -141,17 +221,11 @@ async function main() {
   // Ensure output directory exists
   await fs.promises.mkdir(OUTPUT_DIR, { recursive: true });
 
-  const prisma = new PrismaClient();
-
-  let pokemons: { id: number; showdownId: string | null; nameEn: string }[];
-  try {
-    pokemons = await prisma.pokemon.findMany({
+  const pokemons: { id: number; showdownId: string | null; nameEn: string }[] =
+    await prisma.pokemon.findMany({
       select: { id: true, showdownId: true, nameEn: true },
       orderBy: { id: "asc" },
     });
-  } finally {
-    await prisma.$disconnect();
-  }
 
   const total = pokemons.length;
   let downloaded = 0;
@@ -190,6 +264,21 @@ async function main() {
     const result = await fetchSpriteUrl(slug);
 
     if ("missing" in result) {
+      // Fallback: for Champions-exclusive forms (e.g. hawluchamega) that
+      // don't exist on PokeAPI, copy the base-form sprite if we already have
+      // it locally. Strip any known form suffix to derive the base showdownId.
+      const baseId = stripFormSuffix(pokemon.showdownId);
+      if (baseId && baseId !== pokemon.showdownId) {
+        const basePath = path.join(OUTPUT_DIR, `${baseId}.png`);
+        if (fs.existsSync(basePath)) {
+          await fs.promises.copyFile(basePath, destPath);
+          downloaded++;
+          console.log(
+            `${progress} FALLBK  ${pokemon.showdownId}.png (← ${baseId}.png)`
+          );
+          continue;
+        }
+      }
       missing++;
       console.warn(`${progress} MISSING ${pokemon.showdownId} (slug: ${slug})`);
       continue;

@@ -153,7 +153,7 @@ export function buildPokemonRow(
     baseC: Number(stats.spa ?? 0),
     baseD: Number(stats.spd ?? 0),
     baseS: Number(stats.spe ?? 0),
-    spriteUrl: spriteUrl(group.dexNum, slug),
+    spriteUrl: spriteUrl(slug),
     showdownId: slug,
     formOf: group.slot === 0 ? null : baseId,
   };

@@ -25,10 +25,19 @@ export default async function HomePage({ params, searchParams }: Props) {
     limit: 20,
   });
 
+  const headingKey =
+    sort === 'views'
+      ? 'mostViewedTeams'
+      : sort === 'newest'
+        ? 'newestTeams'
+        : sort === 'comments'
+          ? 'mostDiscussedTeams'
+          : 'popularTeams';
+
   if (initial.items.length === 0) {
     return (
       <div>
-        <h1 className="text-[12px] font-medium mb-2">{t('popularTeams')}</h1>
+        <h1 className="text-[12px] font-medium mb-2">{t(headingKey)}</h1>
         <div className="border border-dashed border-border-tertiary rounded-lg px-2.5 py-[22px] text-center text-[11px] text-text-tertiary">
           <div>{t('emptyTitle')}</div>
           <Link
@@ -44,12 +53,18 @@ export default async function HomePage({ params, searchParams }: Props) {
 
   return (
     <div>
-      <h1 className="text-[12px] font-medium mb-2">{t('popularTeams')}</h1>
+      <h1 className="text-[12px] font-medium mb-2">{t(headingKey)}</h1>
       <div className="flex gap-1.5 mb-2.5">
         <SortDropdown />
-        <div className="flex-1 border border-border-tertiary rounded-md px-2 py-1.5 text-[10px] text-text-secondary min-h-[32px] flex items-center">
+        <button
+          type="button"
+          disabled
+          aria-disabled="true"
+          title={t('filterComingSoon')}
+          className="flex-1 border border-border-tertiary rounded-md px-2 py-1.5 text-[10px] text-text-tertiary min-h-[32px] flex items-center opacity-50 cursor-not-allowed"
+        >
           {t('filter')}
-        </div>
+        </button>
       </div>
       <TeamListBody initial={initial} sort={sort} pokemonId={pokemonId} />
     </div>

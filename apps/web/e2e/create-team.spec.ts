@@ -46,8 +46,12 @@ test.describe('create team', () => {
 
     const list = page.getByTestId('picker-list');
     const firstBtn = list.getByRole('button').first();
-    const hasAny = await firstBtn.count();
-    test.skip(hasAny === 0, 'seed empty — run pnpm db:seed');
+    // Wait for the async pokemon list to populate (or time out → treat as empty seed).
+    const hasAny = await firstBtn
+      .waitFor({ state: 'visible', timeout: 5000 })
+      .then(() => true)
+      .catch(() => false);
+    test.skip(!hasAny, 'seed empty — run pnpm db:seed');
 
     await firstBtn.click();
     await page.getByTestId('picker-add').click();

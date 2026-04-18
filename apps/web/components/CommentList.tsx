@@ -91,7 +91,11 @@ export function CommentList({ teamId, locale, initialData, initialCount }: Props
   }
 
   async function handleDelete(commentId: string, password: string): Promise<boolean> {
-    const snapshot = optimisticExtras;
+    try {
+      await deleteComment({ commentId, password }, { locale });
+    } catch {
+      return false;
+    }
     setOptimisticExtras((prev) => prev.filter((c) => c.id !== commentId));
     queryClient.setQueryData<typeof query.data>(commentsKey(teamId), (old) => {
       if (!old) return old;
@@ -103,14 +107,7 @@ export function CommentList({ teamId, locale, initialData, initialCount }: Props
         })),
       };
     });
-    try {
-      await deleteComment({ commentId, password }, { locale });
-      return true;
-    } catch (err) {
-      setOptimisticExtras(snapshot);
-      await queryClient.invalidateQueries({ queryKey: commentsKey(teamId) });
-      return false;
-    }
+    return true;
   }
 
   return (

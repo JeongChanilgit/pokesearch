@@ -34,8 +34,6 @@ export function TeamPokemonCard({ pokemon, metrics }: Props) {
       <div className="flex gap-2 items-center mb-[5px]">
         <PokemonHolder
           spriteUrl={pokemon.pokemon.spriteUrl}
-          dexNum={Math.floor(pokemon.pokemon.id / 100)}
-          showdownId={pokemon.pokemon.showdownId}
           itemName={pokemon.item ? itemSlugFromName(pokemon.item.nameEn) : undefined}
           size={44}
         />

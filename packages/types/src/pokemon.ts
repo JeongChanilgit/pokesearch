@@ -6,7 +6,7 @@ export const PokemonSummary = z.object({
   nameEn: z.string(),
   nameKo: z.string(),
   types: z.array(TypeName).min(1).max(2),
-  spriteUrl: z.string().url(),
+  spriteUrl: z.string(),
 });
 export type PokemonSummary = z.infer<typeof PokemonSummary>;
 
@@ -33,7 +33,7 @@ export const PokemonSuggestion = z.object({
   id: z.number().int().positive(),
   nameEn: z.string(),
   nameKo: z.string(),
-  spriteUrl: z.string().url(),
+  spriteUrl: z.string(),
 });
 export type PokemonSuggestion = z.infer<typeof PokemonSuggestion>;
 

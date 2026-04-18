@@ -128,7 +128,6 @@ export async function queryTeamDetail(id: string): Promise<TeamDetail | null> {
         nameKo: p.pokemon.nameKo,
         types: normalizeTypes(p.pokemon.types),
         spriteUrl: p.pokemon.spriteUrl,
-        showdownId: (p.pokemon as typeof p.pokemon & { showdownId?: string | null }).showdownId ?? '',
         baseH: p.pokemon.baseH,
         baseA: p.pokemon.baseA,
         baseB: p.pokemon.baseB,

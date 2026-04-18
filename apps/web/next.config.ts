@@ -23,12 +23,6 @@ const nextConfig: NextConfig = {
     '@pokesearch/types',
   ],
   serverExternalPackages: ['bcrypt', '@prisma/client'],
-  images: {
-    remotePatterns: [
-      { protocol: 'https', hostname: 'cdn.jsdelivr.net' },
-      { protocol: 'https', hostname: 'raw.githubusercontent.com' },
-    ],
-  },
   webpack: (config, { isServer, webpack }) => {
     config.resolve = config.resolve || {};
     config.resolve.extensionAlias = {

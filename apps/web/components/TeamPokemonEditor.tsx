@@ -187,7 +187,6 @@ export function TeamPokemonEditor({
       <div className="flex gap-2 items-center mb-1.5">
         <PokemonHolder
           spriteUrl={pokemon.full.spriteUrl}
-          dexNum={Math.floor(pokemon.pokemonId / 100)}
           itemName={
             selectedItem ? itemSlugFromName(selectedItem.nameEn) : undefined
           }

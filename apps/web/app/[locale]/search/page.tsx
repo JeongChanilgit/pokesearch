@@ -119,7 +119,7 @@ function SearchResult({
   return (
     <>
       <div className="flex items-center gap-2 mb-1.5">
-        <PokemonHolder spriteUrl={p.spriteUrl} dexNum={Math.floor(p.id / 100)} size={32} />
+        <PokemonHolder spriteUrl={p.spriteUrl} size={32} />
         <div className="min-w-0 flex-1">
           <div className="text-[13px] font-medium truncate">
             {displayName(p, locale)}{' '}

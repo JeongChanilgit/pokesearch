@@ -25,6 +25,7 @@ interface PokeApiType {
 
 interface PokeApiPokemon {
   id: number;
+  name: string;
   stats: PokeApiStat[];
   types: PokeApiType[];
 }
@@ -100,7 +101,7 @@ export async function fetchPokemon(dex: number): Promise<PokemonFetched | null> 
     baseC: stat('special-attack'),
     baseD: stat('special-defense'),
     baseS: stat('speed'),
-    spriteUrl: `https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/${dex}.png`,
+    spriteUrl: `/sprites/pokemon/${mon.name}.png`,
   };
 }
 

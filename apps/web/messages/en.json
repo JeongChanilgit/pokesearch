@@ -111,6 +111,7 @@
     "notFound": "Pokémon not found.",
     "enterQuery": "Type a Pokémon name to begin.",
     "noMoves": "No attacking moves.",
+    "baseStats": "Base stats",
     "recent": "Recent searches",
     "clearRecent": "Clear"
   },
@@ -138,6 +139,9 @@
     "evTotal": "{used} / 510",
     "moves": "Moves",
     "movesHint": "live damage",
+    "movesAll": "All",
+    "movesAttack": "Attack",
+    "movesStatus": "Status",
     "pickerTitle": "Choose a Pokémon",
     "pickerSearch": "🔍 Name (EN or KO)",
     "pickerAdd": "Add",

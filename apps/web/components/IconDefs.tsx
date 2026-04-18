@@ -72,6 +72,80 @@ export function IconDefs() {
             strokeWidth="0.5"
           />
         </symbol>
+
+        {/* Type icons — 16×16 colored rounded square + 2-letter white initial */}
+        <symbol id="type-normal" viewBox="0 0 16 16">
+          <rect width="16" height="16" rx="4" fill="#a0a09a" />
+          <text x="8" y="11.5" textAnchor="middle" fill="white" fontSize="7" fontWeight="700" fontFamily="system-ui,sans-serif">NO</text>
+        </symbol>
+        <symbol id="type-fire" viewBox="0 0 16 16">
+          <rect width="16" height="16" rx="4" fill="#d85a30" />
+          <text x="8" y="11.5" textAnchor="middle" fill="white" fontSize="7" fontWeight="700" fontFamily="system-ui,sans-serif">FI</text>
+        </symbol>
+        <symbol id="type-water" viewBox="0 0 16 16">
+          <rect width="16" height="16" rx="4" fill="#378add" />
+          <text x="8" y="11.5" textAnchor="middle" fill="white" fontSize="7" fontWeight="700" fontFamily="system-ui,sans-serif">WA</text>
+        </symbol>
+        <symbol id="type-electric" viewBox="0 0 16 16">
+          <rect width="16" height="16" rx="4" fill="#c99a0e" />
+          <text x="8" y="11.5" textAnchor="middle" fill="white" fontSize="7" fontWeight="700" fontFamily="system-ui,sans-serif">EL</text>
+        </symbol>
+        <symbol id="type-grass" viewBox="0 0 16 16">
+          <rect width="16" height="16" rx="4" fill="#3b8a1a" />
+          <text x="8" y="11.5" textAnchor="middle" fill="white" fontSize="7" fontWeight="700" fontFamily="system-ui,sans-serif">GR</text>
+        </symbol>
+        <symbol id="type-ice" viewBox="0 0 16 16">
+          <rect width="16" height="16" rx="4" fill="#185fa5" />
+          <text x="8" y="11.5" textAnchor="middle" fill="white" fontSize="7" fontWeight="700" fontFamily="system-ui,sans-serif">IC</text>
+        </symbol>
+        <symbol id="type-fighting" viewBox="0 0 16 16">
+          <rect width="16" height="16" rx="4" fill="#993c1d" />
+          <text x="8" y="11.5" textAnchor="middle" fill="white" fontSize="7" fontWeight="700" fontFamily="system-ui,sans-serif">FG</text>
+        </symbol>
+        <symbol id="type-poison" viewBox="0 0 16 16">
+          <rect width="16" height="16" rx="4" fill="#993556" />
+          <text x="8" y="11.5" textAnchor="middle" fill="white" fontSize="7" fontWeight="700" fontFamily="system-ui,sans-serif">PO</text>
+        </symbol>
+        <symbol id="type-ground" viewBox="0 0 16 16">
+          <rect width="16" height="16" rx="4" fill="#a07830" />
+          <text x="8" y="11.5" textAnchor="middle" fill="white" fontSize="7" fontWeight="700" fontFamily="system-ui,sans-serif">GD</text>
+        </symbol>
+        <symbol id="type-flying" viewBox="0 0 16 16">
+          <rect width="16" height="16" rx="4" fill="#5580c0" />
+          <text x="8" y="11.5" textAnchor="middle" fill="white" fontSize="7" fontWeight="700" fontFamily="system-ui,sans-serif">FL</text>
+        </symbol>
+        <symbol id="type-psychic" viewBox="0 0 16 16">
+          <rect width="16" height="16" rx="4" fill="#c0306a" />
+          <text x="8" y="11.5" textAnchor="middle" fill="white" fontSize="7" fontWeight="700" fontFamily="system-ui,sans-serif">PS</text>
+        </symbol>
+        <symbol id="type-bug" viewBox="0 0 16 16">
+          <rect width="16" height="16" rx="4" fill="#5a8a10" />
+          <text x="8" y="11.5" textAnchor="middle" fill="white" fontSize="7" fontWeight="700" fontFamily="system-ui,sans-serif">BU</text>
+        </symbol>
+        <symbol id="type-rock" viewBox="0 0 16 16">
+          <rect width="16" height="16" rx="4" fill="#807060" />
+          <text x="8" y="11.5" textAnchor="middle" fill="white" fontSize="7" fontWeight="700" fontFamily="system-ui,sans-serif">RO</text>
+        </symbol>
+        <symbol id="type-ghost" viewBox="0 0 16 16">
+          <rect width="16" height="16" rx="4" fill="#534ab7" />
+          <text x="8" y="11.5" textAnchor="middle" fill="white" fontSize="7" fontWeight="700" fontFamily="system-ui,sans-serif">GH</text>
+        </symbol>
+        <symbol id="type-dragon" viewBox="0 0 16 16">
+          <rect width="16" height="16" rx="4" fill="#26215c" />
+          <text x="8" y="11.5" textAnchor="middle" fill="white" fontSize="7" fontWeight="700" fontFamily="system-ui,sans-serif">DR</text>
+        </symbol>
+        <symbol id="type-dark" viewBox="0 0 16 16">
+          <rect width="16" height="16" rx="4" fill="#3a3832" />
+          <text x="8" y="11.5" textAnchor="middle" fill="white" fontSize="7" fontWeight="700" fontFamily="system-ui,sans-serif">DA</text>
+        </symbol>
+        <symbol id="type-steel" viewBox="0 0 16 16">
+          <rect width="16" height="16" rx="4" fill="#708090" />
+          <text x="8" y="11.5" textAnchor="middle" fill="white" fontSize="7" fontWeight="700" fontFamily="system-ui,sans-serif">ST</text>
+        </symbol>
+        <symbol id="type-fairy" viewBox="0 0 16 16">
+          <rect width="16" height="16" rx="4" fill="#c070a0" />
+          <text x="8" y="11.5" textAnchor="middle" fill="white" fontSize="7" fontWeight="700" fontFamily="system-ui,sans-serif">FA</text>
+        </symbol>
       </defs>
     </svg>
   );

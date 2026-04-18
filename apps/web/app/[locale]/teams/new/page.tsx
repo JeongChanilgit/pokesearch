@@ -5,12 +5,10 @@ import { useRouter, useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import {
   createTeam,
-  listAbilities,
   listItems,
   listNatures,
 } from '@pokesearch/api-client';
 import type {
-  Ability,
   CreateTeamInput,
   Item,
   Nature,
@@ -40,7 +38,6 @@ export default function NewTeamPage() {
   const t = useTranslations('create');
 
   const [state, dispatch] = useReducer(draftReducer, INITIAL_DRAFT);
-  const [abilities, setAbilities] = useState<Ability[]>([]);
   const [items, setItems] = useState<Item[]>([]);
   const [natures, setNatures] = useState<Nature[]>([]);
   const [picker, setPicker] = useState<PickerMode>({ kind: 'closed' });
@@ -51,10 +48,9 @@ export default function NewTeamPage() {
 
   useEffect(() => {
     let cancelled = false;
-    Promise.all([listAbilities(), listItems(), listNatures()])
-      .then(([a, i, n]) => {
+    Promise.all([listItems(), listNatures()])
+      .then(([i, n]) => {
         if (cancelled) return;
-        setAbilities(a.items);
         setItems(i.items);
         setNatures(n.items);
       })
@@ -150,7 +146,6 @@ export default function NewTeamPage() {
           key={p.slotOrder}
           pokemon={p}
           level={state.level}
-          abilities={abilities}
           items={items}
           natures={natures}
           onChangeRequest={() =>

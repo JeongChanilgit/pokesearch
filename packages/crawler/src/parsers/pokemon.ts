@@ -5,9 +5,8 @@
 //   - Alt forms : slot 1+ → dex * 100 + N  (ordering: base first, then
 //     Showdown's `formeOrder` if present, else alphabetical by slug)
 //
-// Sprite URL reuses the PokeAPI CDN (commercial-OK, MIT sprites repo)
-// keyed by national-dex number: there's only one sprite per dex entry
-// for base forms; alt forms use the same base-form dex sprite.
+// Sprite URL uses the Pokémon Showdown dex CDN keyed by slug
+// (e.g. charizardmegax, charizardmegay) so each form gets a distinct sprite.
 
 import type { ShowdownRecord } from '../showdown/parse.js';
 import type { KoTables, MissingTracker } from '../showdown/korean.js';
@@ -29,8 +28,8 @@ export interface ParsedPokemon {
   formOf: number | null;
 }
 
-function spriteUrl(dexNum: number): string {
-  return `https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/${dexNum}.png`;
+function spriteUrl(slug: string): string {
+  return `https://play.pokemonshowdown.com/sprites/dex/${slug}.png`;
 }
 
 function truncate(s: string, max: number): string {
@@ -155,7 +154,7 @@ export function buildPokemonRow(
     baseC: Number(stats.spa ?? 0),
     baseD: Number(stats.spd ?? 0),
     baseS: Number(stats.spe ?? 0),
-    spriteUrl: spriteUrl(group.dexNum),
+    spriteUrl: spriteUrl(slug),
     formOf: group.slot === 0 ? null : baseId,
   };
 }

@@ -148,19 +148,22 @@ model Pokemon {
   altForms       Pokemon[]              @relation("PokemonForms")
   teamPokemons   TeamPokemon[]
   learnableMoves PokemonLearnableMove[]
+  abilities      PokemonAbility[]
 
   @@map("pokemons")
 }
 
 model Move {
-  id       Int          @id
-  nameEn   String       @map("name_en") @db.VarChar(32)
-  nameKo   String       @map("name_ko") @db.VarChar(32)
-  type     String       @db.VarChar(16)
-  category MoveCategory
-  power    Int?         @db.SmallInt
-  accuracy Int?         @db.SmallInt
-  pp       Int          @db.SmallInt
+  id           Int          @id
+  nameEn       String       @map("name_en") @db.VarChar(32)
+  nameKo       String       @map("name_ko") @db.VarChar(32)
+  type         String       @db.VarChar(16)
+  category     MoveCategory
+  power        Int?         @db.SmallInt
+  accuracy     Int?         @db.SmallInt
+  pp           Int          @db.SmallInt
+  shortDescEn  String?      @map("short_desc_en")
+  shortDescKo  String?      @map("short_desc_ko")
 
   teamPokemonMoves TeamPokemonMove[]
   learnableBy      PokemonLearnableMove[]
@@ -176,6 +179,7 @@ model Ability {
   descriptionKo String @map("description_ko")
 
   teamPokemons TeamPokemon[]
+  pokemons     PokemonAbility[]
 
   @@map("abilities")
 }
@@ -203,6 +207,18 @@ model Nature {
   teamPokemons TeamPokemon[]
 
   @@map("natures")
+}
+
+model PokemonAbility {
+  pokemonId Int @map("pokemon_id")
+  abilityId Int @map("ability_id")
+
+  pokemon Pokemon @relation(fields: [pokemonId], references: [id])
+  ability Ability @relation(fields: [abilityId], references: [id])
+
+  @@id([pokemonId, abilityId])
+  @@index([pokemonId])
+  @@map("pokemon_abilities")
 }
 
 model PokemonLearnableMove {

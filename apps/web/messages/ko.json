@@ -111,6 +111,7 @@
     "notFound": "포켓몬을 찾을 수 없습니다.",
     "enterQuery": "포켓몬 이름을 입력하세요.",
     "noMoves": "공격 기술이 없습니다.",
+    "baseStats": "종족값",
     "recent": "최근 검색",
     "clearRecent": "지우기"
   },
@@ -138,6 +139,9 @@
     "evTotal": "{used} / 510",
     "moves": "기술",
     "movesHint": "실시간 데미지",
+    "movesAll": "전체",
+    "movesAttack": "공격",
+    "movesStatus": "변화",
     "pickerTitle": "포켓몬 선택",
     "pickerSearch": "🔍 이름 (한/영)",
     "pickerAdd": "추가",

@@ -23,14 +23,20 @@ function isRecord(v: unknown): v is Record<string, unknown> {
  * `pokemonId` is the caller's `dex * 100 + slot` id.
  * Move ids are looked up from the manifest (must already be populated
  * from the move crawl step running first).
+ *
+ * If `slug` has no entry or an empty learnset, falls back to `baseSlug`.
  */
 export function buildLearnset(
   pokemonId: number,
   slug: string,
+  baseSlug: string,
   modLearnsets: ShowdownRecord,
   manifest: IdManifest
 ): ParsedLearnsetEntry[] {
-  const entry = modLearnsets[slug];
+  let entry = modLearnsets[slug];
+  if (!isRecord(entry) || !isRecord(entry.learnset) || Object.keys(entry.learnset).length === 0) {
+    entry = modLearnsets[baseSlug];
+  }
   if (!isRecord(entry)) return [];
   const learnset = entry.learnset;
   if (!isRecord(learnset)) return [];

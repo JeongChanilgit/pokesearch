@@ -10,7 +10,8 @@ import { SearchInput } from '../../../components/SearchInput';
 import { LevelToggle } from '../../../components/LevelToggle';
 import { MinNormMaxLegend } from '../../../components/MinNormMaxLegend';
 import { MinNormMaxRow } from '../../../components/MinNormMaxRow';
-import { QuickSearchMoveCard } from '../../../components/QuickSearchMoveCard';
+import { MoveFilterList } from '../../../components/MoveFilterList';
+import { BaseStatRow } from '../../../components/BaseStatRow';
 import type { TypeName, QuickSearchResponse } from '@pokesearch/types';
 import { effectivenessAgainst } from '@pokesearch/calc';
 
@@ -33,12 +34,16 @@ interface Labels {
   weak: string;
   resist: string;
   immune: string;
+  baseStats: string;
   physBulk: string;
   specBulk: string;
   speed: string;
   moves: string;
   movesHint: string;
   noMoves: string;
+  movesAll: string;
+  movesAttack: string;
+  movesStatus: string;
 }
 
 export default async function SearchPage({ params, searchParams }: Props) {
@@ -52,16 +57,21 @@ export default async function SearchPage({ params, searchParams }: Props) {
 
   const t = await getTranslations({ locale, namespace: 'search' });
 
+  const tCreate = await getTranslations({ locale, namespace: 'create' });
   const labels: Labels = {
     weak: t('weak'),
     resist: t('resist'),
     immune: t('immune'),
+    baseStats: t('baseStats'),
     physBulk: t('physBulk'),
     specBulk: t('specBulk'),
     speed: t('speed'),
     moves: t('moves'),
     movesHint: t('movesHint'),
     noMoves: t('noMoves'),
+    movesAll: tCreate('movesAll'),
+    movesAttack: tCreate('movesAttack'),
+    movesStatus: tCreate('movesStatus'),
   };
 
   const result = q ? await buildQuickSearchResult(q, level) : null;
@@ -109,7 +119,7 @@ function SearchResult({
   return (
     <>
       <div className="flex items-center gap-2 mb-1.5">
-        <PokemonHolder pokemonId={p.id} size={32} />
+        <PokemonHolder spriteUrl={p.spriteUrl} dexNum={Math.floor(p.id / 100)} size={32} />
         <div className="min-w-0 flex-1">
           <div className="text-[13px] font-medium truncate">
             {displayName(p, locale)}{' '}
@@ -155,6 +165,14 @@ function SearchResult({
         )}
       </div>
 
+      <SectionHeading title={labels.baseStats} />
+      <BaseStatRow letter="H" base={p.baseH} />
+      <BaseStatRow letter="A" base={p.baseA} />
+      <BaseStatRow letter="B" base={p.baseB} />
+      <BaseStatRow letter="C" base={p.baseC} />
+      <BaseStatRow letter="D" base={p.baseD} />
+      <BaseStatRow letter="S" base={p.baseS} />
+
       <MinNormMaxLegend />
 
       {result.bulk && (
@@ -176,15 +194,14 @@ function SearchResult({
 
       <SectionHeading title={labels.moves} hint={labels.movesHint} />
 
-      {result.moves.length === 0 ? (
-        <div className="text-[10px] text-text-tertiary italic px-2 py-1">
-          {labels.noMoves}
-        </div>
-      ) : (
-        result.moves.map((m) => (
-          <QuickSearchMoveCard key={m.id} move={m} locale={locale} />
-        ))
-      )}
+      <MoveFilterList
+        moves={result.moves}
+        locale={locale}
+        noMovesLabel={labels.noMoves}
+        allLabel={labels.movesAll}
+        attackLabel={labels.movesAttack}
+        statusLabel={labels.movesStatus}
+      />
     </>
   );
 }

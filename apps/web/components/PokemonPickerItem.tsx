@@ -1,6 +1,9 @@
 'use client';
 
+import { useLocale } from 'next-intl';
 import type { PokemonSummary } from '@pokesearch/types';
+import type { Locale } from '../i18n';
+import { displayName } from '../lib/name';
 
 interface Props {
   pokemon: PokemonSummary;
@@ -9,6 +12,7 @@ interface Props {
 }
 
 export function PokemonPickerItem({ pokemon, selected, onSelect }: Props) {
+  const locale = useLocale() as Locale;
   return (
     <button
       type="button"
@@ -28,10 +32,7 @@ export function PokemonPickerItem({ pokemon, selected, onSelect }: Props) {
         className="shrink-0 object-contain"
       />
       <div className="flex-1 min-w-0">
-        <div className="text-[11px] truncate">{pokemon.nameEn}</div>
-        <div className="text-[9px] text-text-tertiary truncate">
-          {pokemon.nameKo}
-        </div>
+        <div className="text-[11px] truncate">{displayName(pokemon, locale)}</div>
       </div>
     </button>
   );

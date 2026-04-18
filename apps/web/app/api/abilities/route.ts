@@ -19,11 +19,10 @@ export async function GET(req: NextRequest) {
     );
   }
 
-  // For v1: the master schema does not yet track per-pokemon ability
-  // assignments, so pokemonId is accepted but ignored; we return the full
-  // ability list. A later slice can narrow this once the pokemon_abilities
-  // join table is seeded by the crawler.
   const rows = await prisma.ability.findMany({
+    where: parsed.data.pokemonId !== undefined
+      ? { pokemons: { some: { pokemonId: parsed.data.pokemonId } } }
+      : undefined,
     orderBy: { id: 'asc' },
   });
 

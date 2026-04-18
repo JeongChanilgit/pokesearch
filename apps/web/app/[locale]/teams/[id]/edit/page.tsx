@@ -5,14 +5,12 @@ import { useRouter, useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import {
   getTeam,
-  listAbilities,
   listItems,
   listNatures,
   updateTeam,
   ApiError,
 } from '@pokesearch/api-client';
 import type {
-  Ability,
   Item,
   Nature,
   PokemonFull,
@@ -58,7 +56,6 @@ export default function EditTeamPage() {
 
   const [state, dispatch] = useReducer(draftReducer, INITIAL_DRAFT);
   const [initialized, setInitialized] = useState(false);
-  const [abilities, setAbilities] = useState<Ability[]>([]);
   const [items, setItems] = useState<Item[]>([]);
   const [natures, setNatures] = useState<Nature[]>([]);
   const [picker, setPicker] = useState<PickerMode>({ kind: 'closed' });
@@ -87,13 +84,11 @@ export default function EditTeamPage() {
     setLoading(true);
     Promise.all([
       getTeam(teamId),
-      listAbilities(),
       listItems(),
       listNatures(),
     ])
-      .then(([team, a, i, n]) => {
+      .then(([team, i, n]) => {
         if (cancelled) return;
-        setAbilities(a.items);
         setItems(i.items);
         setNatures(n.items);
         const draft = teamDetailToDraft(team);
@@ -247,7 +242,6 @@ export default function EditTeamPage() {
           key={p.slotOrder}
           pokemon={p}
           level={state.level}
-          abilities={abilities}
           items={items}
           natures={natures}
           onChangeRequest={() =>

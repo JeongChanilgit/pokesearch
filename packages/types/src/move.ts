@@ -10,6 +10,8 @@ export const Move = z.object({
   power: z.number().int().nonnegative().nullable(),
   accuracy: z.number().int().nonnegative().nullable(),
   pp: z.number().int().positive(),
+  shortDescEn: z.string().optional().nullable(),
+  shortDescKo: z.string().optional().nullable(),
 });
 export type Move = z.infer<typeof Move>;
 

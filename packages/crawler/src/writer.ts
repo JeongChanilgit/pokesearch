@@ -11,8 +11,9 @@ import type { ParsedAbility } from './parsers/ability.js';
 import type { ParsedItem } from './parsers/item.js';
 import type { ParsedLearnsetEntry } from './parsers/learnset.js';
 import type { ParsedNature } from './parsers/nature.js';
+import type { PokemonAbilityLink } from './parsers/ability.js';
 
-export type EntityType = 'pokemon' | 'move' | 'ability' | 'item' | 'learnset' | 'nature';
+export type EntityType = 'pokemon' | 'move' | 'ability' | 'item' | 'learnset' | 'nature' | 'pokemon_ability';
 
 export interface WriteResult {
   written: number;
@@ -176,5 +177,28 @@ export async function writeNature(
     update: row,
   });
   await recordHash(prisma, 'nature', entityId, hash);
+  return true;
+}
+
+export async function writePokemonAbilities(
+  prisma: PrismaClient,
+  pokemonId: number,
+  abilityIds: number[]
+): Promise<boolean> {
+  const sorted = [...abilityIds].sort((a, b) => a - b);
+  const hash = hashRow(sorted);
+  const entityId = `pokemon_ability:${pokemonId}`;
+  if (!(await shouldWrite(prisma, 'pokemon_ability', entityId, hash))) return false;
+
+  await prisma.$transaction([
+    prisma.pokemonAbility.deleteMany({ where: { pokemonId } }),
+    ...(sorted.length > 0
+      ? [prisma.pokemonAbility.createMany({
+          data: sorted.map((abilityId) => ({ pokemonId, abilityId })),
+          skipDuplicates: true,
+        })]
+      : []),
+  ]);
+  await recordHash(prisma, 'pokemon_ability', entityId, hash);
   return true;
 }

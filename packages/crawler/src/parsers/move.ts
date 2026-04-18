@@ -13,6 +13,8 @@ export interface ParsedMove {
   power: number | null;
   accuracy: number | null;
   pp: number;
+  shortDescEn: string | null;
+  shortDescKo: string | null;
 }
 
 function isRecord(v: unknown): v is Record<string, unknown> {
@@ -41,7 +43,20 @@ export function buildMoveRow(
     return null;
   }
 
+  const shortDescEn = isRecord(textEntry)
+    ? (typeof textEntry.shortDesc === 'string'
+        ? textEntry.shortDesc
+        : typeof textEntry.desc === 'string'
+          ? textEntry.desc
+          : null)
+    : typeof entry.shortDesc === 'string'
+      ? entry.shortDesc
+      : null;
+
   const koEntry = lookupKo(koTables, tracker, 'moves', slug, nameEn);
+  const shortDescKo = typeof koEntry.description === 'string' && koEntry.description.length > 0
+    ? koEntry.description
+    : shortDescEn;
 
   return {
     id: assignId(manifest, 'move', slug),
@@ -52,5 +67,7 @@ export function buildMoveRow(
     power: typeof entry.basePower === 'number' && entry.basePower > 0 ? entry.basePower : null,
     accuracy: typeof entry.accuracy === 'number' ? entry.accuracy : null,
     pp: typeof entry.pp === 'number' ? entry.pp : 5,
+    shortDescEn,
+    shortDescKo,
   };
 }

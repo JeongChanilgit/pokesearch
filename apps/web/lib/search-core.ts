@@ -87,8 +87,6 @@ export async function buildQuickSearchResult(
 
   const moveRows = await prisma.move.findMany({
     where: {
-      category: { in: ['physical', 'special'] },
-      power: { not: null, gt: 0 },
       learnableBy: { some: { pokemonId: row.id } },
     },
     select: {
@@ -98,27 +96,51 @@ export async function buildQuickSearchResult(
       type: true,
       category: true,
       power: true,
+      accuracy: true,
+      shortDescEn: true,
+      shortDescKo: true,
     },
   });
 
-  const moves: QuickSearchMove[] = moveRows
-    .filter((m) => m.power !== null && m.power > 0)
-    .map((m) => {
-      const category = m.category as 'physical' | 'special';
-      const attackBase = category === 'physical' ? row.base_a : row.base_c;
-      const moveType = m.type as TypeName;
-      const isSTAB = types.includes(moveType);
-      return {
+  const rawMoves: (QuickSearchMove | null)[] = moveRows.map((m) => {
+    const moveType = m.type as TypeName;
+    const isSTAB = types.includes(moveType);
+    if (m.category === 'status') {
+      const entry: QuickSearchMove = {
         id: m.id,
         nameEn: m.nameEn,
         nameKo: m.nameKo,
         type: moveType,
-        category,
-        power: m.power as number,
-        damage: damageRange(attackBase, level, m.power as number, isSTAB),
+        category: 'status',
+        power: null,
+        accuracy: m.accuracy ?? null,
+        shortDescEn: m.shortDescEn ?? null,
+        shortDescKo: m.shortDescKo ?? null,
+        damage: null,
       };
-    })
-    .sort((a, b) => b.damage.max - a.damage.max);
+      return entry;
+    }
+    if (m.power == null || m.power <= 0) return null;
+    const category = m.category as 'physical' | 'special';
+    const attackBase = category === 'physical' ? row.base_a : row.base_c;
+    const entry: QuickSearchMove = {
+      id: m.id,
+      nameEn: m.nameEn,
+      nameKo: m.nameKo,
+      type: moveType,
+      category,
+      power: m.power,
+      accuracy: m.accuracy ?? null,
+      shortDescEn: m.shortDescEn ?? null,
+      shortDescKo: m.shortDescKo ?? null,
+      damage: damageRange(attackBase, level, m.power, isSTAB),
+    };
+    return entry;
+  });
+
+  const moves: QuickSearchMove[] = (rawMoves.filter(Boolean) as QuickSearchMove[]).sort(
+    (a, b) => (b.damage?.max ?? -1) - (a.damage?.max ?? -1),
+  );
 
   return QuickSearchResponse.parse({ pokemon, bulk, speed, moves });
 }

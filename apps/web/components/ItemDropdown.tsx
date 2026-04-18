@@ -23,6 +23,11 @@ export function ItemDropdown({ items, value, onChange }: Props) {
       className="bg-transparent text-[10px] text-right text-text-primary appearance-none cursor-pointer"
     >
       <option value="">{t('noItem')} ▾</option>
+      {value !== null && !items.some((i) => i.id === value) && (
+        <option value={value} disabled>
+          …
+        </option>
+      )}
       {items.map((i) => (
         <option key={i.id} value={i.id}>
           {locale === 'ko' ? i.nameKo : i.nameEn} ▾

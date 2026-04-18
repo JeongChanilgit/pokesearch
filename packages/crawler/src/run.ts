@@ -23,7 +23,7 @@ import {
 import { buildLegalitySets } from './parsers/legality.js';
 import { buildFormGroups, buildPokemonRow } from './parsers/pokemon.js';
 import { buildMoveRow } from './parsers/move.js';
-import { buildAbilityRow } from './parsers/ability.js';
+import { buildAbilityRow, buildPokemonAbilityLinks } from './parsers/ability.js';
 import { buildItemRow, loadEffectMultMap } from './parsers/item.js';
 import { buildLearnset } from './parsers/learnset.js';
 import { buildNatureRows } from './parsers/nature.js';
@@ -34,6 +34,7 @@ import {
   writeItem,
   writeLearnset,
   writeNature,
+  writePokemonAbilities,
 } from './writer.js';
 import { isStepDone, saveState, stepDone, type CrawlerState } from './state.js';
 
@@ -262,6 +263,37 @@ export async function runChampions(ctx: RunContext): Promise<Record<string, RunS
     totals.pokemon = stats;
   }
 
+  // ---------- Pokémon Abilities ----------
+  if (ctx.resume && isStepDone(ctx.state, 'pokemon_abilities')) {
+    ctx.log('pokemon_abilities: skipped (already done)');
+    totals.pokemon_abilities = newStats();
+  } else {
+    const stats = newStats();
+    const formGroups = buildFormGroups(basePokedex, legal.pokemon);
+    const links = buildPokemonAbilityLinks(formGroups, basePokedex, manifest);
+    const byPokemon = new Map<number, number[]>();
+    for (const { pokemonId, abilityId } of links) {
+      const list = byPokemon.get(pokemonId) ?? [];
+      list.push(abilityId);
+      byPokemon.set(pokemonId, list);
+    }
+    ctx.log(`pokemon_abilities: ${byPokemon.size} pokemon to process`);
+    for (const [pokemonId, abilityIds] of byPokemon) {
+      stats.attempted++;
+      try {
+        const wrote = await writePokemonAbilities(ctx.prisma, pokemonId, abilityIds);
+        if (wrote) stats.written++;
+        else stats.skipped++;
+      } catch (err) {
+        stats.failed++;
+        ctx.log(`pokemon_abilities ${pokemonId} failed: ${(err as Error).message}`);
+      }
+    }
+    stepDone(ctx.state, 'pokemon_abilities');
+    await saveState(ctx.statePath, ctx.state);
+    totals.pokemon_abilities = stats;
+  }
+
   // ---------- Learnsets ----------
   if (ctx.resume && isStepDone(ctx.state, 'learnsets')) {
     ctx.log('learnsets: skipped (already done)');
@@ -274,7 +306,7 @@ export async function runChampions(ctx: RunContext): Promise<Record<string, RunS
       const ourId = group.dexNum * 100 + group.slot;
       stats.attempted++;
       try {
-        const entries = buildLearnset(ourId, group.slug, modLearnsets, manifest);
+        const entries = buildLearnset(ourId, group.slug, group.baseSlug, modLearnsets, manifest);
         const wrote = await writeLearnset(ctx.prisma, ourId, entries);
         if (wrote) stats.written++;
         else stats.skipped++;

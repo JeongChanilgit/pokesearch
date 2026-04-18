@@ -31,6 +31,8 @@ export async function GET(
       power: r.move.power,
       accuracy: r.move.accuracy,
       pp: r.move.pp,
+      shortDescEn: r.move.shortDescEn,
+      shortDescKo: r.move.shortDescKo,
     })),
   });
 

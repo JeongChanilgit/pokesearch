@@ -5,14 +5,14 @@
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 
-export type StepName = 'natures' | 'abilities' | 'items' | 'moves' | 'pokemon' | 'learnsets';
+export type StepName = 'natures' | 'abilities' | 'items' | 'moves' | 'pokemon' | 'pokemon_abilities' | 'learnsets';
 
 export interface CrawlerState {
   steps: Record<StepName, 'done' | 'pending'>;
   lastRunAt: string | null;
 }
 
-const ALL_STEPS: StepName[] = ['natures', 'abilities', 'items', 'moves', 'pokemon', 'learnsets'];
+const ALL_STEPS: StepName[] = ['natures', 'abilities', 'items', 'moves', 'pokemon', 'pokemon_abilities', 'learnsets'];
 
 const DEFAULT_STATE: CrawlerState = {
   steps: {
@@ -21,6 +21,7 @@ const DEFAULT_STATE: CrawlerState = {
     items: 'pending',
     moves: 'pending',
     pokemon: 'pending',
+    pokemon_abilities: 'pending',
     learnsets: 'pending',
   },
   lastRunAt: null,

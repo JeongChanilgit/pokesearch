@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { TypeName, Level, AttackingCategory } from './common';
+import { TypeName, Level, AttackingCategory, MoveCategory } from './common';
 import { PokemonFull, PokemonSuggestion } from './pokemon';
 
 export const QuickSearchRequest = z.object({
@@ -21,9 +21,12 @@ export const QuickSearchMove = z.object({
   nameEn: z.string(),
   nameKo: z.string(),
   type: TypeName,
-  category: AttackingCategory,
-  power: z.number().int().positive(),
-  damage: StatRange,
+  category: MoveCategory,
+  power: z.number().int().positive().nullable(),
+  accuracy: z.number().int().nonnegative().nullable(),
+  shortDescEn: z.string().optional().nullable(),
+  shortDescKo: z.string().optional().nullable(),
+  damage: StatRange.nullable(),
 });
 export type QuickSearchMove = z.infer<typeof QuickSearchMove>;
 

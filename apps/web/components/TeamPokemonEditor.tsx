@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import { getPokemonMoves } from '@pokesearch/api-client';
+import { getPokemonMoves, listAbilities } from '@pokesearch/api-client';
 import type {
   Ability,
   Item,
@@ -10,7 +10,7 @@ import type {
   Nature,
 } from '@pokesearch/types';
 import { PokemonHolder } from './PokemonHolder';
-import { EVSlider } from './EVSlider';
+import { EVInputRow } from './EVInputRow';
 import { NatureSelector } from './NatureSelector';
 import { AbilityDropdown } from './AbilityDropdown';
 import { ItemDropdown } from './ItemDropdown';
@@ -24,7 +24,6 @@ import { computeDraftMetrics } from '../lib/draft-metrics';
 interface Props {
   pokemon: DraftPokemon;
   level: 50 | 100;
-  abilities: Ability[];
   items: Item[];
   natures: Nature[];
   onChangeRequest: () => void;
@@ -40,7 +39,6 @@ interface Props {
 export function TeamPokemonEditor({
   pokemon,
   level,
-  abilities,
   items,
   natures,
   onChangeRequest,
@@ -56,14 +54,32 @@ export function TeamPokemonEditor({
   const t = useTranslations('create');
 
   const [learnableMoves, setLearnableMoves] = useState<Move[]>([]);
+  const [learnableAbilities, setLearnableAbilities] = useState<Ability[]>([]);
+  const [moveFilter, setMoveFilter] = useState<'all' | 'attack' | 'status'>('all');
   const lastFetchedPokemonId = useRef<number | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    listAbilities({ pokemonId: pokemon.pokemonId })
+      .then((res) => {
+        if (cancelled) return;
+        setLearnableAbilities(res.items);
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setLearnableAbilities([]);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [pokemon.pokemonId]);
 
   // Default-select the first ability once list arrives.
   useEffect(() => {
-    if (pokemon.abilityId == null && abilities.length > 0) {
-      onSetAbility(abilities[0].id);
+    if (pokemon.abilityId == null && learnableAbilities.length > 0) {
+      onSetAbility(learnableAbilities[0].id);
     }
-  }, [pokemon.abilityId, abilities, onSetAbility]);
+  }, [pokemon.abilityId, learnableAbilities, onSetAbility]);
 
   useEffect(() => {
     let cancelled = false;
@@ -104,8 +120,8 @@ export function TeamPokemonEditor({
     [natures],
   );
   const abilityById = useMemo(
-    () => new Map(abilities.map((a) => [a.id, a])),
-    [abilities],
+    () => new Map(learnableAbilities.map((a) => [a.id, a])),
+    [learnableAbilities],
   );
   const itemById = useMemo(
     () => new Map(items.map((i) => [i.id, i])),
@@ -141,12 +157,22 @@ export function TeamPokemonEditor({
     const selected = pokemon.moves.find((m) => m.slotOrder === slot);
     const moveId = selected?.moveId ?? null;
     const damage = moveId != null ? (metrics.damageByMoveId[moveId] ?? null) : null;
+    const currentMove = moveId != null ? movesById.get(moveId) : undefined;
+    const filteredMoves = learnableMoves.filter((m) => {
+      if (moveFilter === 'all') return true;
+      if (moveFilter === 'attack') return m.category !== 'status';
+      return m.category === 'status';
+    });
+    const slotMoves =
+      currentMove && !filteredMoves.includes(currentMove)
+        ? [currentMove, ...filteredMoves]
+        : filteredMoves;
     return (
       <MoveSelectorRow
         key={slot}
         slotOrder={slot}
         selectedMoveId={moveId}
-        learnableMoves={learnableMoves}
+        learnableMoves={slotMoves}
         damage={damage}
         onChange={(id) => onSetMove(slot, id)}
       />
@@ -160,7 +186,8 @@ export function TeamPokemonEditor({
     >
       <div className="flex gap-2 items-center mb-1.5">
         <PokemonHolder
-          pokemonId={pokemon.pokemonId}
+          spriteUrl={pokemon.full.spriteUrl}
+          dexNum={Math.floor(pokemon.pokemonId / 100)}
           itemName={
             selectedItem ? itemSlugFromName(selectedItem.nameEn) : undefined
           }
@@ -189,7 +216,7 @@ export function TeamPokemonEditor({
       </div>
       <Row label={t('ability')}>
         <AbilityDropdown
-          abilities={abilities}
+          abilities={learnableAbilities}
           value={pokemon.abilityId}
           onChange={onSetAbility}
         />
@@ -235,7 +262,7 @@ export function TeamPokemonEditor({
           ['S', 's'],
         ] as const
       ).map(([letter, stat]) => (
-        <EVSlider
+        <EVInputRow
           key={stat}
           letter={letter}
           stat={stat}
@@ -252,6 +279,22 @@ export function TeamPokemonEditor({
           {t('moves')}
         </span>
         <span className="text-[9px] text-text-tertiary">{t('movesHint')}</span>
+      </div>
+      <div className="flex gap-[3px] mb-1">
+        {(['all', 'attack', 'status'] as const).map((f) => (
+          <button
+            key={f}
+            type="button"
+            onClick={() => setMoveFilter(f)}
+            className={`text-[9px] px-2 py-[2px] rounded-sm border min-h-[24px] ${
+              moveFilter === f
+                ? 'border-text-primary bg-text-primary text-bg-primary'
+                : 'border-border-tertiary text-text-secondary'
+            }`}
+          >
+            {f === 'all' ? t('movesAll') : f === 'attack' ? t('movesAttack') : t('movesStatus')}
+          </button>
+        ))}
       </div>
       {moveRows}
     </div>

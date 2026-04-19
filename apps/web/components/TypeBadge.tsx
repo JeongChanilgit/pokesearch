@@ -26,17 +26,17 @@ interface Props {
   suffix?: string;
 }
 
-function capitalize(s: string) {
-  return s.charAt(0).toUpperCase() + s.slice(1);
-}
-
 export function TypeBadge({ type, suffix = '' }: Props) {
   return (
-    <span
-      className={`inline-block px-1.5 py-[1px] rounded-sm text-[9px] font-medium mr-[3px] t-${type}`}
-    >
-      {capitalize(type)}
-      {suffix}
+    <span className="inline-flex items-center align-middle mr-[3px]">
+      <img
+        src={`/sprites/types/${type}.png`}
+        alt={type}
+        className="h-[14px] w-auto"
+        loading="lazy"
+        decoding="async"
+      />
+      {suffix && <span className="text-[9px] font-medium ml-0.5">{suffix}</span>}
     </span>
   );
 }

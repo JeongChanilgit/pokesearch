@@ -48,21 +48,53 @@ export function IconDefs() {
           <path d="M20 20l-4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
         </symbol>
 
+        {/* Move category icons — physical = sword, special = wave, status = hexagon */}
         <symbol id="cat-phy" viewBox="0 0 14 14">
-          <rect
-            x="2"
-            y="3"
-            width="10"
-            height="8"
-            rx="1.5"
+          <path
+            d="M11.2 2L12 2.8L6.6 8.2L5 9L5.8 7.4L11.2 2Z"
             fill="#D85A30"
             stroke="#712B13"
-            strokeWidth="0.5"
+            strokeWidth="0.6"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M4.6 8.2L3 9.8L4.2 11L5.8 9.4"
+            fill="none"
+            stroke="#712B13"
+            strokeWidth="0.8"
+            strokeLinecap="round"
+          />
+          <path
+            d="M2.4 10.4L1.6 12.4L3.6 11.6"
+            fill="#D85A30"
+            stroke="#712B13"
+            strokeWidth="0.6"
+            strokeLinejoin="round"
           />
         </symbol>
         <symbol id="cat-spe" viewBox="0 0 14 14">
-          <circle cx="7" cy="7" r="5.5" fill="#534AB7" stroke="#26215C" strokeWidth="0.5" />
-          <circle cx="7" cy="7" r="2" fill="#CECBF6" />
+          <path
+            d="M2.5 7C3 5.2 4.2 4 6 3.5"
+            fill="none"
+            stroke="#534AB7"
+            strokeWidth="1.2"
+            strokeLinecap="round"
+          />
+          <path
+            d="M4 8.8C4.4 7.4 5.4 6.4 6.8 6"
+            fill="none"
+            stroke="#534AB7"
+            strokeWidth="1.2"
+            strokeLinecap="round"
+          />
+          <path
+            d="M5.5 10.5C5.8 9.6 6.5 8.9 7.4 8.6"
+            fill="none"
+            stroke="#534AB7"
+            strokeWidth="1.2"
+            strokeLinecap="round"
+          />
+          <circle cx="8.8" cy="9.8" r="1.3" fill="#534AB7" />
         </symbol>
         <symbol id="cat-sta" viewBox="0 0 14 14">
           <polygon
@@ -73,78 +105,47 @@ export function IconDefs() {
           />
         </symbol>
 
-        {/* Type icons — 16×16 colored rounded square + 2-letter white initial */}
-        <symbol id="type-normal" viewBox="0 0 16 16">
-          <rect width="16" height="16" rx="4" fill="#a0a09a" />
-          <text x="8" y="11.5" textAnchor="middle" fill="white" fontSize="7" fontWeight="700" fontFamily="system-ui,sans-serif">NO</text>
+        {/* Stat meta icons — shield (physical bulk), barrier (special bulk), shoe (speed) */}
+        <symbol id="i-shield" viewBox="0 0 14 14">
+          <path
+            d="M7 1.5L11.5 3V7.2C11.5 9.6 9.6 11.6 7 12.5C4.4 11.6 2.5 9.6 2.5 7.2V3L7 1.5Z"
+            fill="currentColor"
+            stroke="currentColor"
+            strokeWidth="0.5"
+            strokeLinejoin="round"
+          />
         </symbol>
-        <symbol id="type-fire" viewBox="0 0 16 16">
-          <rect width="16" height="16" rx="4" fill="#d85a30" />
-          <text x="8" y="11.5" textAnchor="middle" fill="white" fontSize="7" fontWeight="700" fontFamily="system-ui,sans-serif">FI</text>
+        <symbol id="i-barrier" viewBox="0 0 14 14">
+          <path
+            d="M7 1.5L11.8 4V9L7 12.5L2.2 9V4L7 1.5Z"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.1"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M4.6 2.8V11.2M9.4 2.8V11.2M2.2 6.5H11.8"
+            stroke="currentColor"
+            strokeWidth="0.7"
+            strokeLinecap="round"
+            opacity="0.7"
+          />
         </symbol>
-        <symbol id="type-water" viewBox="0 0 16 16">
-          <rect width="16" height="16" rx="4" fill="#378add" />
-          <text x="8" y="11.5" textAnchor="middle" fill="white" fontSize="7" fontWeight="700" fontFamily="system-ui,sans-serif">WA</text>
-        </symbol>
-        <symbol id="type-electric" viewBox="0 0 16 16">
-          <rect width="16" height="16" rx="4" fill="#c99a0e" />
-          <text x="8" y="11.5" textAnchor="middle" fill="white" fontSize="7" fontWeight="700" fontFamily="system-ui,sans-serif">EL</text>
-        </symbol>
-        <symbol id="type-grass" viewBox="0 0 16 16">
-          <rect width="16" height="16" rx="4" fill="#3b8a1a" />
-          <text x="8" y="11.5" textAnchor="middle" fill="white" fontSize="7" fontWeight="700" fontFamily="system-ui,sans-serif">GR</text>
-        </symbol>
-        <symbol id="type-ice" viewBox="0 0 16 16">
-          <rect width="16" height="16" rx="4" fill="#185fa5" />
-          <text x="8" y="11.5" textAnchor="middle" fill="white" fontSize="7" fontWeight="700" fontFamily="system-ui,sans-serif">IC</text>
-        </symbol>
-        <symbol id="type-fighting" viewBox="0 0 16 16">
-          <rect width="16" height="16" rx="4" fill="#993c1d" />
-          <text x="8" y="11.5" textAnchor="middle" fill="white" fontSize="7" fontWeight="700" fontFamily="system-ui,sans-serif">FG</text>
-        </symbol>
-        <symbol id="type-poison" viewBox="0 0 16 16">
-          <rect width="16" height="16" rx="4" fill="#993556" />
-          <text x="8" y="11.5" textAnchor="middle" fill="white" fontSize="7" fontWeight="700" fontFamily="system-ui,sans-serif">PO</text>
-        </symbol>
-        <symbol id="type-ground" viewBox="0 0 16 16">
-          <rect width="16" height="16" rx="4" fill="#a07830" />
-          <text x="8" y="11.5" textAnchor="middle" fill="white" fontSize="7" fontWeight="700" fontFamily="system-ui,sans-serif">GD</text>
-        </symbol>
-        <symbol id="type-flying" viewBox="0 0 16 16">
-          <rect width="16" height="16" rx="4" fill="#5580c0" />
-          <text x="8" y="11.5" textAnchor="middle" fill="white" fontSize="7" fontWeight="700" fontFamily="system-ui,sans-serif">FL</text>
-        </symbol>
-        <symbol id="type-psychic" viewBox="0 0 16 16">
-          <rect width="16" height="16" rx="4" fill="#c0306a" />
-          <text x="8" y="11.5" textAnchor="middle" fill="white" fontSize="7" fontWeight="700" fontFamily="system-ui,sans-serif">PS</text>
-        </symbol>
-        <symbol id="type-bug" viewBox="0 0 16 16">
-          <rect width="16" height="16" rx="4" fill="#5a8a10" />
-          <text x="8" y="11.5" textAnchor="middle" fill="white" fontSize="7" fontWeight="700" fontFamily="system-ui,sans-serif">BU</text>
-        </symbol>
-        <symbol id="type-rock" viewBox="0 0 16 16">
-          <rect width="16" height="16" rx="4" fill="#807060" />
-          <text x="8" y="11.5" textAnchor="middle" fill="white" fontSize="7" fontWeight="700" fontFamily="system-ui,sans-serif">RO</text>
-        </symbol>
-        <symbol id="type-ghost" viewBox="0 0 16 16">
-          <rect width="16" height="16" rx="4" fill="#534ab7" />
-          <text x="8" y="11.5" textAnchor="middle" fill="white" fontSize="7" fontWeight="700" fontFamily="system-ui,sans-serif">GH</text>
-        </symbol>
-        <symbol id="type-dragon" viewBox="0 0 16 16">
-          <rect width="16" height="16" rx="4" fill="#26215c" />
-          <text x="8" y="11.5" textAnchor="middle" fill="white" fontSize="7" fontWeight="700" fontFamily="system-ui,sans-serif">DR</text>
-        </symbol>
-        <symbol id="type-dark" viewBox="0 0 16 16">
-          <rect width="16" height="16" rx="4" fill="#3a3832" />
-          <text x="8" y="11.5" textAnchor="middle" fill="white" fontSize="7" fontWeight="700" fontFamily="system-ui,sans-serif">DA</text>
-        </symbol>
-        <symbol id="type-steel" viewBox="0 0 16 16">
-          <rect width="16" height="16" rx="4" fill="#708090" />
-          <text x="8" y="11.5" textAnchor="middle" fill="white" fontSize="7" fontWeight="700" fontFamily="system-ui,sans-serif">ST</text>
-        </symbol>
-        <symbol id="type-fairy" viewBox="0 0 16 16">
-          <rect width="16" height="16" rx="4" fill="#c070a0" />
-          <text x="8" y="11.5" textAnchor="middle" fill="white" fontSize="7" fontWeight="700" fontFamily="system-ui,sans-serif">FA</text>
+        <symbol id="i-shoe" viewBox="0 0 14 14">
+          <path
+            d="M1.5 9.5V7.5C1.5 7 1.9 6.6 2.4 6.6H5.2L7.8 4.5C8.3 4.1 9 4 9.6 4.3L11.4 5.2C12.1 5.6 12.5 6.3 12.5 7.1V9.5C12.5 10 12.1 10.4 11.6 10.4H2.4C1.9 10.4 1.5 10 1.5 9.5Z"
+            fill="currentColor"
+            stroke="currentColor"
+            strokeWidth="0.4"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M1.5 9.2H12.5"
+            stroke="white"
+            strokeWidth="0.6"
+            strokeLinecap="round"
+            opacity="0.5"
+          />
         </symbol>
       </defs>
     </svg>

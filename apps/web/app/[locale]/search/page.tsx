@@ -177,17 +177,17 @@ function SearchResult({
 
       {result.bulk && (
         <>
-          <SectionHeading title={labels.physBulk} />
+          <SectionHeading title={labels.physBulk} icon="i-shield" />
           <MinNormMaxRow {...result.bulk.physical} />
 
-          <SectionHeading title={labels.specBulk} />
+          <SectionHeading title={labels.specBulk} icon="i-barrier" />
           <MinNormMaxRow {...result.bulk.special} />
         </>
       )}
 
       {result.speed && (
         <>
-          <SectionHeading title={labels.speed} />
+          <SectionHeading title={labels.speed} icon="i-shoe" />
           <MinNormMaxRow {...result.speed} />
         </>
       )}
@@ -206,10 +206,25 @@ function SearchResult({
   );
 }
 
-function SectionHeading({ title, hint }: { title: string; hint?: string }) {
+function SectionHeading({
+  title,
+  hint,
+  icon,
+}: {
+  title: string;
+  hint?: string;
+  icon?: string;
+}) {
   return (
     <div className="text-[10px] text-text-secondary font-medium mt-2 mb-[5px] flex justify-between items-center">
-      <span>{title}</span>
+      <span className="inline-flex items-center gap-1">
+        {icon && (
+          <svg width={11} height={11} aria-hidden="true">
+            <use href={`#${icon}`} />
+          </svg>
+        )}
+        {title}
+      </span>
       {hint && (
         <span className="text-[9px] text-text-tertiary font-normal">{hint}</span>
       )}

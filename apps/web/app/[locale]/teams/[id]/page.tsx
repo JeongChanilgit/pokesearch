@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { headers, cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
@@ -6,6 +7,7 @@ import { createHash } from 'node:crypto';
 import { prisma } from '@pokesearch/db';
 import { UuidSchema, type ListCommentsResponse } from '@pokesearch/types';
 import { queryTeamDetail } from '../../../../lib/team-queries';
+import { localeAlternates } from '../../../../lib/site-url';
 import {
   VIEW_DEDUP_COOKIE_PREFIX,
   VIEW_DEDUP_MAX_AGE_SECONDS,
@@ -21,6 +23,62 @@ interface Props {
 }
 
 const COMMENT_PAGE_SIZE = 20;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; id: string }>;
+}): Promise<Metadata> {
+  const { locale, id } = await params;
+  const valid = UuidSchema.safeParse(id);
+  if (!valid.success) return {};
+
+  const team = await prisma.team.findUnique({
+    where: { id },
+    select: {
+      name: true,
+      level: true,
+      pokemons: {
+        orderBy: { slotOrder: 'asc' },
+        take: 6,
+        select: {
+          pokemon: { select: { nameEn: true, nameKo: true } },
+        },
+      },
+    },
+  });
+  if (!team) return {};
+
+  const t = await getTranslations({ locale, namespace: 'meta' });
+  const names = (
+    team.pokemons as Array<{ pokemon: { nameEn: string; nameKo: string } }>
+  )
+    .map((p) => (locale === 'ko' ? p.pokemon.nameKo : p.pokemon.nameEn))
+    .filter(Boolean)
+    .join(', ');
+  const description = t('teamDetail.description', {
+    teamName: team.name,
+    level: String(team.level),
+    pokemon: names || '—',
+  });
+  const alternates = localeAlternates(locale, `/teams/${id}`);
+
+  return {
+    title: team.name,
+    description,
+    alternates,
+    openGraph: {
+      title: team.name,
+      description,
+      url: alternates.canonical,
+      type: 'article',
+    },
+    twitter: {
+      title: team.name,
+      description,
+    },
+  };
+}
 
 export default async function TeamDetailPage({ params }: Props) {
   const { locale, id } = await params;

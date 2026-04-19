@@ -1,6 +1,7 @@
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages } from 'next-intl/server';
+import { getMessages, getTranslations } from 'next-intl/server';
 import { locales, type Locale } from '../../i18n';
 import { IconDefs } from '../../components/IconDefs';
 import { TopTabs } from '../../components/TopTabs';
@@ -15,6 +16,25 @@ export function generateStaticParams() {
 interface Props {
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  if (!locales.includes(locale as Locale)) return {};
+  const t = await getTranslations({ locale, namespace: 'meta' });
+  const ogLocale = locale === 'ko' ? 'ko_KR' : 'en_US';
+  return {
+    title: { default: t('defaultTitle'), template: `%s | ${t('siteName')}` },
+    description: t('defaultDescription'),
+    openGraph: {
+      locale: ogLocale,
+      alternateLocale: locale === 'ko' ? ['en_US'] : ['ko_KR'],
+    },
+  };
 }
 
 export default async function LocaleLayout({ children, params }: Props) {

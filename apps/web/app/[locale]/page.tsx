@@ -1,13 +1,40 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 import { TeamListSort } from '@pokesearch/types';
 import { queryTeamList } from '../../lib/team-queries';
+import { localeAlternates } from '../../lib/site-url';
 import { SortDropdown } from '../../components/SortDropdown';
 import { TeamListBody } from '../../components/TeamListBody';
 
 interface Props {
   params: Promise<{ locale: string }>;
   searchParams: Promise<{ sort?: string; pokemonId?: string }>;
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'meta' });
+  const alternates = localeAlternates(locale, '');
+  return {
+    title: t('home.title'),
+    description: t('home.description'),
+    alternates,
+    openGraph: {
+      title: t('home.title'),
+      description: t('home.description'),
+      url: alternates.canonical,
+      type: 'website',
+    },
+    twitter: {
+      title: t('home.title'),
+      description: t('home.description'),
+    },
+  };
 }
 
 export default async function HomePage({ params, searchParams }: Props) {

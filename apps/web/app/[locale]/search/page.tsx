@@ -1,6 +1,8 @@
+import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { locales, type Locale } from '../../../i18n';
+import { localeAlternates } from '../../../lib/site-url';
 import { buildQuickSearchResult } from '../../../lib/search-core';
 import { displayName, secondaryName } from '../../../lib/name';
 import { TypeBadge } from '../../../components/TypeBadge';
@@ -18,6 +20,32 @@ import { effectivenessAgainst } from '@pokesearch/calc';
 interface Props {
   params: Promise<{ locale: string }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  if (!locales.includes(locale as Locale)) return {};
+  const t = await getTranslations({ locale, namespace: 'meta' });
+  const alternates = localeAlternates(locale, '/search');
+  return {
+    title: t('search.title'),
+    description: t('search.description'),
+    alternates,
+    openGraph: {
+      title: t('search.title'),
+      description: t('search.description'),
+      url: alternates.canonical,
+      type: 'website',
+    },
+    twitter: {
+      title: t('search.title'),
+      description: t('search.description'),
+    },
+  };
 }
 
 function parseLevel(raw: string | string[] | undefined): 50 | 100 {

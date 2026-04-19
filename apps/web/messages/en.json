@@ -185,5 +185,28 @@
     "title": "Page not found",
     "body": "The page you're looking for doesn't exist.",
     "home": "Back to home"
+  },
+  "meta": {
+    "siteName": "PokeSearch",
+    "defaultTitle": "PokeSearch — Share Pokémon teams, no login",
+    "defaultDescription": "Build, share, and browse Champions-format Pokémon teams. No login. Live damage calculations for every move. English and Korean.",
+    "home": {
+      "title": "Teams",
+      "description": "Browse Champions-format Pokémon teams shared by trainers. Sort by likes, views, newest, or comments."
+    },
+    "search": {
+      "title": "Quick Search",
+      "description": "Look up any Pokémon to see bulk, speed, and move damage as MIN / NORM / MAX ranges. Works in English and Korean."
+    },
+    "newTeam": {
+      "title": "Create team",
+      "description": "Build a Pokémon team with live damage calculations — abilities, items, natures, EVs, and moves. No login required."
+    },
+    "teamDetail": {
+      "description": "{teamName} — a {level}-level Champions-format Pokémon team with {pokemon}. View stats, moves, and comments."
+    },
+    "editTeam": {
+      "title": "Edit team"
+    }
   }
 }

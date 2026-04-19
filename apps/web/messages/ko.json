@@ -185,5 +185,28 @@
     "title": "페이지를 찾을 수 없습니다",
     "body": "요청하신 페이지가 존재하지 않습니다.",
     "home": "홈으로"
+  },
+  "meta": {
+    "siteName": "PokeSearch",
+    "defaultTitle": "PokeSearch — 로그인 없이 공유하는 포켓몬 팀",
+    "defaultDescription": "챔피언스 포맷 포켓몬 팀을 빌드, 공유, 탐색하세요. 로그인 불필요. 모든 기술에 실시간 데미지 계산. 한국어·영어 지원.",
+    "home": {
+      "title": "팀",
+      "description": "트레이너들이 공유한 챔피언스 포맷 포켓몬 팀을 둘러보세요. 좋아요·조회수·최신·댓글 순으로 정렬할 수 있습니다."
+    },
+    "search": {
+      "title": "빠른 검색",
+      "description": "포켓몬을 검색해 내구·스피드·기술 데미지를 MIN / NORM / MAX 범위로 확인하세요. 한국어·영어 모두 지원합니다."
+    },
+    "newTeam": {
+      "title": "팀 만들기",
+      "description": "특성·도구·성격·노력치·기술을 정하고 실시간 데미지 계산과 함께 포켓몬 팀을 빌드하세요. 로그인 없이 바로 시작할 수 있습니다."
+    },
+    "teamDetail": {
+      "description": "{teamName} — {pokemon} 등으로 구성된 레벨 {level} 챔피언스 포맷 포켓몬 팀. 스탯·기술·댓글을 확인하세요."
+    },
+    "editTeam": {
+      "title": "팀 수정"
+    }
   }
 }

@@ -3,6 +3,7 @@
 import { useLocale, useTranslations } from 'next-intl';
 import type { Move } from '@pokesearch/types';
 import { MoveTypeIcon } from './MoveTypeIcon';
+import { Combobox } from './Combobox';
 
 interface Props {
   slotOrder: number;
@@ -11,6 +12,18 @@ interface Props {
   damage: number | null;
   onChange: (moveId: number | null) => void;
 }
+
+// Sentinel for the "empty" option so Combobox can handle null selections
+const EMPTY_MOVE = {
+  id: -1,
+  nameEn: '',
+  nameKo: '',
+  type: 'normal',
+  category: 'status',
+  power: null,
+  accuracy: null,
+  pp: 1,
+} as const satisfies Move;
 
 export function MoveSelectorRow({
   slotOrder,
@@ -22,7 +35,9 @@ export function MoveSelectorRow({
   const locale = useLocale();
   const t = useTranslations('create');
   const tCommon = useTranslations('common');
+
   const selected = learnableMoves.find((m) => m.id === selectedMoveId) ?? null;
+
   const catShort =
     selected?.category === 'physical'
       ? 'phy'
@@ -35,14 +50,34 @@ export function MoveSelectorRow({
       ? (locale === 'ko' ? selected.shortDescKo : selected.shortDescEn) ?? null
       : null;
 
-  function moveLabel(m: Move): string {
-    const name = locale === 'ko' ? m.nameKo : m.nameEn;
-    const acc = m.accuracy != null ? `${m.accuracy}%` : '—';
-    if (m.category === 'status') {
+  type MoveOrEmpty = Move | typeof EMPTY_MOVE;
+
+  const allMoves: MoveOrEmpty[] = [EMPTY_MOVE, ...learnableMoves];
+
+  const comboValue: MoveOrEmpty = selected ?? EMPTY_MOVE;
+
+  function getLabel(m: MoveOrEmpty): string {
+    if (m.id === -1) return t('moveEmpty');
+    const move = m as Move;
+    const name = locale === 'ko' ? move.nameKo : move.nameEn;
+    if (move.category === 'status') {
+      const acc = move.accuracy != null ? `${move.accuracy}%` : '—';
       return `${name} · ${tCommon('statusMove')} · ${acc}`;
     }
-    const power = m.power != null ? `${m.power}` : '—';
+    const power = move.power != null ? `${move.power}` : '—';
+    const acc = move.accuracy != null ? `${move.accuracy}%` : '—';
     return `${name} · ${power} · ${acc}`;
+  }
+
+  function getSearchLabel(m: MoveOrEmpty): string {
+    if (m.id === -1) return '';
+    const move = m as Move;
+    // Return the alternate locale name so cross-language search works
+    return locale === 'ko' ? move.nameEn : move.nameKo;
+  }
+
+  function handleChange(m: MoveOrEmpty) {
+    onChange(m.id === -1 ? null : m.id);
   }
 
   return (
@@ -59,23 +94,16 @@ export function MoveSelectorRow({
           <span />
         )}
         {selected ? <MoveTypeIcon type={selected.type} /> : <span />}
-        <select
-          aria-label={`Move slot ${slotOrder}`}
-          data-testid={`move-select-${slotOrder}`}
-          value={selectedMoveId ?? ''}
-          onChange={(e) => {
-            const v = e.target.value;
-            onChange(v === '' ? null : Number.parseInt(v, 10));
-          }}
-          className="bg-transparent text-[10px] text-left text-text-primary appearance-none cursor-pointer truncate"
-        >
-          <option value="">{t('moveEmpty')}</option>
-          {learnableMoves.map((m) => (
-            <option key={m.id} value={m.id}>
-              {moveLabel(m)}
-            </option>
-          ))}
-        </select>
+        <Combobox
+          items={allMoves}
+          value={comboValue}
+          onChange={handleChange}
+          getLabel={getLabel}
+          getSearchLabel={getSearchLabel}
+          placeholder={t('moveSearch')}
+          ariaLabel={`Move slot ${slotOrder}`}
+          testId={`move-select-${slotOrder}`}
+        />
         {selected?.category === 'status' || damage == null ? (
           <span className="text-text-tertiary text-[9px] italic">—</span>
         ) : (

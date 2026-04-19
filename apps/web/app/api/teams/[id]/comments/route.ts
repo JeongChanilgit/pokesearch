@@ -93,7 +93,7 @@ export async function POST(
   }
 
   const ip = getClientIp(req);
-  if (!checkCommentRateLimit(ip)) {
+  if (!(await checkCommentRateLimit(ip))) {
     return jsonError('RATE_LIMITED', 'wait 60 seconds between comments', 429);
   }
 

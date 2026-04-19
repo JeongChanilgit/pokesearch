@@ -1,5 +1,9 @@
 # PokeSearch
 
+## Git workflow
+
+- **Main branch: `develop`** — all PRs target `develop`, not `main` or any `claude/*` branch.
+
 ## One-line summary
 
 No-login Pokémon team sharing & builder platform. Bilingual (Korean / English). Mobile web first, architected for future native mobile app. **Champions-exclusive** — only Pokémon legal in the Champions metagame. Master data from Pokémon Showdown (MIT-licensed `smogon/pokemon-showdown`, `data/mods/champions/` mod). Sprites from PokeAPI CDN (permissive).

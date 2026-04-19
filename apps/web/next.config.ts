@@ -30,6 +30,13 @@ const SECURITY_HEADERS = [
 
 const nextConfig: NextConfig = {
   outputFileTracingRoot: path.join(__dirname, '../../'),
+  outputFileTracingIncludes: {
+    '/**/*': [
+      '../../node_modules/.pnpm/@prisma+client@*/node_modules/.prisma/client/**',
+      '../../node_modules/.pnpm/@prisma+client@*/node_modules/@prisma/client/**',
+      '../../node_modules/.pnpm/prisma@*/node_modules/@prisma/engines/**',
+    ],
+  },
   reactStrictMode: true,
   async headers() {
     return [{ source: '/:path*', headers: SECURITY_HEADERS }];

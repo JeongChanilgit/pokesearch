@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import type { NatureEffect } from '@pokesearch/calc';
 import type { StatShort } from '../lib/draft-team';
 
@@ -31,28 +32,41 @@ export function EVInputRow({
         ? 'text-nature-down'
         : '';
 
+  // Local string state so the field can show "" while the user is typing/backspacing.
+  // The parent always holds a number; we sync inward when ev changes externally (e.g. reset).
+  const [local, setLocal] = useState<string>(String(ev));
+
+  useEffect(() => {
+    setLocal(String(ev));
+  }, [ev]);
+
   const clamp = (raw: number): number => {
     const capped = Math.min(raw, 252, maxAllowed);
-    const floored = Math.max(0, capped);
-    return floored;
+    return Math.max(0, capped);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const raw = Number.parseInt(e.target.value, 10);
-    if (Number.isNaN(raw)) return;
-    onChange(clamp(raw));
+    const raw = e.target.value;
+    setLocal(raw);
+    const parsed = Number.parseInt(raw, 10);
+    if (!Number.isNaN(parsed)) {
+      onChange(clamp(parsed));
+    }
+    // empty string or non-numeric: keep local state updated but defer onChange to blur
   };
 
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     const raw = Number.parseInt(e.target.value, 10);
     if (Number.isNaN(raw)) {
       onChange(0);
+      setLocal('0');
       return;
     }
     const clamped = clamp(raw);
     // Round down to nearest multiple of 4
     const rounded = Math.floor(clamped / 4) * 4;
     onChange(rounded);
+    setLocal(String(rounded));
   };
 
   // Bar fractions: base layer = non-EV portion up to 252, EV layer stacked on top
@@ -81,7 +95,7 @@ export function EVInputRow({
         min={0}
         max={Math.min(252, maxAllowed)}
         step={4}
-        value={ev}
+        value={local}
         aria-label={`EV ${letter}`}
         data-testid={`ev-input-${stat}`}
         onChange={handleChange}

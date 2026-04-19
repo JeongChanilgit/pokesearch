@@ -24,8 +24,8 @@ export default async function LocaleLayout({ children, params }: Props) {
   const messages = await getMessages();
 
   return (
-    <html lang={locale}>
-      <body className="min-h-screen bg-bg-tertiary">
+    <html lang={locale} suppressHydrationWarning>
+      <body className="min-h-screen bg-bg-tertiary" suppressHydrationWarning>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <QueryProvider>
             <IconDefs />

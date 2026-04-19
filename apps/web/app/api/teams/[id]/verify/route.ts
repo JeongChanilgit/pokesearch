@@ -36,7 +36,7 @@ export async function POST(
   const ip = getClientIp(req);
   const rlKey = `${ip}:${id}`;
 
-  const pre = checkVerifyRateLimit(rlKey);
+  const pre = await checkVerifyRateLimit(rlKey);
   if (!pre.allowed) {
     return NextResponse.json(
       { error: 'rate_limited', retryAfter: pre.retryAfterSeconds },
@@ -54,7 +54,7 @@ export async function POST(
 
   const ok = await verifyPassword(parsed.data.password, team.passwordHash);
   if (!ok) {
-    const result = recordVerifyFailure(rlKey);
+    const result = await recordVerifyFailure(rlKey);
     if (!result.allowed) {
       return NextResponse.json(
         { error: 'rate_limited', retryAfter: result.retryAfterSeconds },
@@ -67,7 +67,7 @@ export async function POST(
     return NextResponse.json({ error: 'invalid_password' }, { status: 401 });
   }
 
-  recordVerifySuccess(rlKey);
+  await recordVerifySuccess(rlKey);
 
   const { token, expiresAt } = await signVerifyToken(id);
   return NextResponse.json({ token, expiresAt: expiresAt.toISOString() });

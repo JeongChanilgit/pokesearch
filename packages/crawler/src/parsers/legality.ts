@@ -4,8 +4,11 @@
 // - Pokémon: slugs in formats-data with `tier === 'OU'`.
 // - Moves: `isNonstandard !== 'Past'` after mod merge (the mod tags
 //   every pre-Champions-removed move as "Past").
-// - Items: `isNonstandard === null` after mod merge (mod explicitly
-//   un-flags Champions-legal mega stones by setting it to null).
+// - Items: everything except `isNonstandard === 'Past' | 'Unobtainable'`.
+//   Standard held items (berries, leftovers, focus sash, …) have
+//   `isNonstandard === undefined` in base, and the Champions mod re-enables
+//   Mega Stones by setting it to null. Anything still tagged Past or
+//   Unobtainable after the mod merge is genuinely banned in this format.
 // - Abilities: every ability referenced by a Champions-legal Pokémon
 //   (so we also include things like Overgrow that the mod file doesn't
 //   touch).
@@ -41,7 +44,9 @@ export function buildLegalitySets(
   const items = new Set<string>();
   for (const [slug, entry] of Object.entries(mergedItems)) {
     if (!isRecord(entry)) continue;
-    if (entry.isNonstandard === null) items.add(slug);
+    if (entry.isNonstandard === 'Past') continue;
+    if (entry.isNonstandard === 'Unobtainable') continue;
+    items.add(slug);
   }
 
   const abilities = new Set<string>();

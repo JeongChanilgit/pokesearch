@@ -2,6 +2,7 @@
 
 import { useLocale, useTranslations } from 'next-intl';
 import type { Item } from '@pokesearch/types';
+import { Combobox } from './Combobox';
 
 interface Props {
   items: Item[];
@@ -12,27 +13,44 @@ interface Props {
 export function ItemDropdown({ items, value, onChange }: Props) {
   const locale = useLocale();
   const t = useTranslations('create');
+
+  const NO_ITEM_SENTINEL = { id: -1, nameEn: t('noItem'), nameKo: t('noItem') } satisfies Pick<
+    Item,
+    'id' | 'nameEn' | 'nameKo'
+  >;
+
+  // Full list: "(no item)" sentinel first, then real items
+  type ItemOrSentinel = (typeof NO_ITEM_SENTINEL) | Item;
+  const allItems: ItemOrSentinel[] = [NO_ITEM_SENTINEL, ...items];
+
+  const selectedItem: ItemOrSentinel =
+    value === null
+      ? NO_ITEM_SENTINEL
+      : (items.find((i) => i.id === value) ?? NO_ITEM_SENTINEL);
+
+  function getLabel(item: ItemOrSentinel): string {
+    return locale === 'ko' ? item.nameKo : item.nameEn;
+  }
+
+  function getSearchLabel(item: ItemOrSentinel): string {
+    // Always return the alternate locale name so cross-language search works
+    return locale === 'ko' ? item.nameEn : item.nameKo;
+  }
+
+  function handleChange(item: ItemOrSentinel) {
+    onChange(item.id === -1 ? null : item.id);
+  }
+
   return (
-    <select
-      data-testid="item-select"
-      value={value ?? ''}
-      onChange={(e) => {
-        const v = e.target.value;
-        onChange(v === '' ? null : Number.parseInt(v, 10));
-      }}
-      className="bg-transparent text-[10px] text-right text-text-primary appearance-none cursor-pointer"
-    >
-      <option value="">{t('noItem')} ▾</option>
-      {value !== null && !items.some((i) => i.id === value) && (
-        <option value={value} disabled>
-          …
-        </option>
-      )}
-      {items.map((i) => (
-        <option key={i.id} value={i.id}>
-          {locale === 'ko' ? i.nameKo : i.nameEn} ▾
-        </option>
-      ))}
-    </select>
+    <Combobox
+      items={allItems}
+      value={selectedItem}
+      onChange={handleChange}
+      getLabel={getLabel}
+      getSearchLabel={getSearchLabel}
+      placeholder={t('noItem')}
+      ariaLabel={t('item')}
+      testId="item-select"
+    />
   );
 }

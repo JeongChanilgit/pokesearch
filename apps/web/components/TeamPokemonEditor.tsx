@@ -10,6 +10,7 @@ import type {
   Nature,
 } from '@pokesearch/types';
 import { PokemonHolder } from './PokemonHolder';
+import { TypeBadge, type PokemonType } from './TypeBadge';
 import { EVInputRow } from './EVInputRow';
 import { NatureSelector } from './NatureSelector';
 import { AbilityDropdown } from './AbilityDropdown';
@@ -192,8 +193,13 @@ export function TeamPokemonEditor({
           }
           size={44}
         />
-        <div className="flex-1 text-[11px] font-medium truncate">
-          {speciesName}
+        <div className="flex-1 min-w-0 flex flex-col gap-0.5">
+          <div className="text-[11px] font-medium truncate">{speciesName}</div>
+          <div className="flex items-center gap-0.5">
+            {pokemon.full.types.map((t) => (
+              <TypeBadge key={t} type={t as PokemonType} />
+            ))}
+          </div>
         </div>
         <button
           type="button"

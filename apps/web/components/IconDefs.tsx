@@ -1,163 +1,177 @@
-// 18 type icons + UI glyphs. Textless, rendered as self-contained SVG symbols
-// so they stay legible at small sizes where PokeAPI raster pills blur out.
-// Each type symbol is a rounded colored square (20x20) with a white glyph.
+// 18 type icons + UI glyphs. Textless, self-contained SVG symbols so they stay
+// legible at small sizes. Each type symbol is a rounded colored square with a
+// white glyph modeled on the official Pokémon type chart iconography.
 
 const TYPE_COLORS: Record<string, string> = {
-  normal: '#A8A77A',
-  fire: '#EE8130',
-  water: '#6390F0',
-  electric: '#F7D02C',
-  grass: '#7AC74C',
-  ice: '#96D9D6',
-  fighting: '#C22E28',
-  poison: '#A33EA1',
-  ground: '#E2BF65',
-  flying: '#A98FF3',
-  psychic: '#F95587',
-  bug: '#A6B91A',
-  rock: '#B6A136',
-  ghost: '#735797',
-  dragon: '#6F35FC',
-  dark: '#705746',
-  steel: '#B7B7CE',
-  fairy: '#D685AD',
+  normal: '#9FA19F',
+  fire: '#E62829',
+  water: '#2980EF',
+  electric: '#FAC000',
+  grass: '#3FA129',
+  ice: '#3DCEF3',
+  fighting: '#FF8000',
+  poison: '#9141CB',
+  ground: '#915121',
+  flying: '#81B9EF',
+  psychic: '#EF4179',
+  bug: '#91A119',
+  rock: '#AFA981',
+  ghost: '#704170',
+  dragon: '#5060E1',
+  dark: '#624D4E',
+  steel: '#60A1B8',
+  fairy: '#EF70EF',
 };
 
 const TYPE_GLYPHS: Record<string, React.ReactNode> = {
-  // normal — horizontal double bar
+  // normal — hollow ring
   normal: (
-    <g fill="white">
-      <rect x="5" y="8" width="10" height="1.6" rx="0.8" />
-      <rect x="5" y="10.4" width="10" height="1.6" rx="0.8" />
-    </g>
+    <circle cx="10" cy="10" r="3.8" fill="none" stroke="white" strokeWidth="1.6" />
   ),
   // fire — flame
   fire: (
     <path
       fill="white"
-      d="M10 3.5C10.8 5.2 12.5 6 12.8 8.2c0.3 1.9-0.8 3.4-2.4 3.9 0.6-0.8 0.5-2-0.4-2.7-0.3 1.2-1.4 1.5-1.4 2.7 0 0.8 0.5 1.4 1.2 1.7-2.3 0.3-4.4-1.3-4.4-3.6 0-1.6 1.1-2.4 1.8-3.5 0.7-1.1 0.8-2.2 0.5-3.2 1 0.4 1.9 1.2 2.3 2z"
+      d="M10 3.2c0.2 2 1.3 3.2 2.4 4.5 1.2 1.3 1.9 2.5 1.9 4 0 2.5-2 4.5-4.3 4.5s-4.3-2-4.3-4.5c0-1.2 0.5-2 1.3-2.7-0.1 1.5 0.5 2.4 1.5 2.4-0.1-2 0.6-3.5 1.5-4.7C10.6 5.6 10.2 4.5 10 3.2z"
     />
   ),
-  // water — droplet
+  // water — teardrop
   water: (
     <path
       fill="white"
-      d="M10 3.5C10 3.5 5.5 8.2 5.5 11.4c0 2.5 2 4.4 4.5 4.4s4.5-1.9 4.5-4.4C14.5 8.2 10 3.5 10 3.5z"
+      d="M10 3.5C10 3.5 5.7 8.4 5.7 11.5c0 2.4 1.9 4.3 4.3 4.3s4.3-1.9 4.3-4.3C14.3 8.4 10 3.5 10 3.5z"
     />
+  ),
+  // grass — three blades
+  grass: (
+    <g fill="white">
+      <path d="M5.8 14.5c-0.3-1.8 0.2-3.5 1.5-4.9-0.2 1-0.1 1.9 0.3 2.7 0.6-2.7 2-4.6 4-6 0 1.2-0.1 2.4-0.3 3.5 0.8-0.8 1.7-1.3 2.7-1.5-0.9 1.7-1.5 3.7-1.7 6.2z" />
+    </g>
   ),
   // electric — lightning bolt
   electric: (
     <path
       fill="white"
-      d="M11.5 3L6 10.5h3L8 17l6-8h-3l1-6z"
+      d="M11.5 3L5.5 11h3.3L8 17l6.5-8h-3.5L11.5 3z"
     />
   ),
-  // grass — leaf
-  grass: (
-    <path
-      fill="white"
-      d="M15 4.5c-0.5 5.5-3 8.5-7.5 9 0.5-1.5 1-2.5 2-3.5-1.8 0.2-2.8 0.5-4 1.5 0.5-4.5 4-7.5 9.5-7z"
-    />
-  ),
-  // ice — 6-point snowflake
+  // ice — radiant snowflake (sun-like burst)
   ice: (
-    <g stroke="white" strokeWidth="1.3" strokeLinecap="round" fill="none">
-      <path d="M10 3.5v13" />
-      <path d="M4.4 6.75l11.2 6.5" />
-      <path d="M4.4 13.25l11.2-6.5" />
-      <path d="M10 5l-1.3 1.3M10 5l1.3 1.3M10 15l-1.3-1.3M10 15l1.3-1.3" />
-      <path d="M5 7.3l1.8 0.3M5 7.3l0.3 1.8M15 12.7l-1.8-0.3M15 12.7l-0.3-1.8" />
-      <path d="M5 12.7l1.8-0.3M5 12.7l0.3-1.8M15 7.3l-1.8 0.3M15 7.3l-0.3 1.8" />
+    <g fill="white">
+      <circle cx="10" cy="10" r="2" />
+      <g stroke="white" strokeWidth="1.3" strokeLinecap="round">
+        <path d="M10 4v2.5" />
+        <path d="M10 13.5V16" />
+        <path d="M4 10h2.5" />
+        <path d="M13.5 10H16" />
+        <path d="M5.8 5.8l1.8 1.8" />
+        <path d="M12.4 12.4l1.8 1.8" />
+        <path d="M14.2 5.8l-1.8 1.8" />
+        <path d="M7.6 12.4l-1.8 1.8" />
+      </g>
     </g>
   ),
-  // fighting — fist (rounded square with knuckles)
+  // fighting — fist (knuckles up)
   fighting: (
     <g fill="white">
-      <rect x="5" y="7" width="10" height="7" rx="1.5" />
-      <rect x="5.5" y="6" width="2" height="2" rx="0.5" />
-      <rect x="8" y="6" width="2" height="2" rx="0.5" />
-      <rect x="10.5" y="6" width="2" height="2" rx="0.5" />
-      <rect x="13" y="6" width="2" height="2" rx="0.5" />
+      <rect x="5.5" y="7.5" width="9" height="6" rx="1.3" />
+      <rect x="5.8" y="6" width="1.8" height="2.2" rx="0.6" />
+      <rect x="7.9" y="5.5" width="1.8" height="2.7" rx="0.6" />
+      <rect x="10.0" y="5.5" width="1.8" height="2.7" rx="0.6" />
+      <rect x="12.1" y="6" width="1.8" height="2.2" rx="0.6" />
     </g>
   ),
-  // poison — droplet with dot
+  // poison — droplet + 3 bubbles
   poison: (
     <g fill="white">
-      <circle cx="10" cy="10" r="4.5" />
-      <circle cx="10" cy="8.5" r="1" fill="#A33EA1" />
-      <circle cx="10" cy="11.5" r="1" fill="#A33EA1" />
+      <ellipse cx="10" cy="11" rx="3.8" ry="3.2" />
+      <circle cx="7" cy="7" r="1.1" />
+      <circle cx="10" cy="5.5" r="1.1" />
+      <circle cx="13" cy="7" r="1.1" />
     </g>
   ),
-  // ground — mountains
+  // ground — stacked plates
   ground: (
-    <path
-      fill="white"
-      d="M3 15l4-6 3 4 3-5 4 7H3z"
-    />
+    <g fill="white">
+      <ellipse cx="10" cy="6.5" rx="3" ry="1" />
+      <ellipse cx="10" cy="10" rx="4.5" ry="1.2" />
+      <ellipse cx="10" cy="13.5" rx="6" ry="1.4" />
+    </g>
   ),
-  // flying — wing
+  // flying — feather/wing
   flying: (
     <path
       fill="white"
-      d="M3 12c3-0.5 5-2 7-4.5 2 2 4 3.5 7 4-3 1-5 2-7 4-2-2-4-3-7-3.5z"
+      d="M4 15c0.5-4 2-7 5.5-9.5 2 0 4 0.8 5.5 2.5-1 0-2 0.3-3 0.8 1.5 0.2 2.5 0.8 3.5 2-1.2 0-2.3 0.2-3.3 0.7 1.2 0.2 2.2 0.7 3 1.7-2.5 0.5-5 1-7 2-1.5 0-3 0-4.2-0.2z"
     />
   ),
-  // psychic — eye
+  // psychic — atom / orbit
   psychic: (
-    <g>
-      <ellipse cx="10" cy="10" rx="6" ry="3.5" fill="white" />
-      <circle cx="10" cy="10" r="1.8" fill="#F95587" />
+    <g stroke="white" strokeWidth="1.1" fill="none">
+      <ellipse cx="10" cy="10" rx="5.5" ry="2.2" />
+      <ellipse cx="10" cy="10" rx="5.5" ry="2.2" transform="rotate(60 10 10)" />
+      <ellipse cx="10" cy="10" rx="5.5" ry="2.2" transform="rotate(-60 10 10)" />
+      <circle cx="10" cy="10" r="1.3" fill="white" stroke="none" />
     </g>
   ),
-  // bug — oval with antennas
+  // bug — antennae + body
   bug: (
     <g fill="white">
-      <ellipse cx="10" cy="11" rx="3.5" ry="4" />
-      <path d="M7.5 8l-2-2.5M12.5 8l2-2.5" stroke="white" strokeWidth="1.3" strokeLinecap="round" fill="none" />
+      <path
+        d="M10 4l-3 4h6z"
+        stroke="white"
+        strokeWidth="0.5"
+        strokeLinejoin="round"
+      />
+      <circle cx="10" cy="12" r="3.5" />
+      <rect x="9.5" y="7" width="1" height="2" />
     </g>
   ),
-  // rock — hexagon
+  // rock — boulder
   rock: (
-    <polygon
+    <path
       fill="white"
-      points="10,4 15,7 15,13 10,16 5,13 5,7"
+      d="M5 13.5l1.5-4 2-2 3-1 3 1.5 1 3-1 2.5-2 1h-7z"
+      stroke="white"
+      strokeWidth="0.5"
+      strokeLinejoin="round"
     />
   ),
-  // ghost — ghost shape
+  // ghost — classic ghost silhouette
   ghost: (
     <path
       fill="white"
-      d="M5 10c0-2.8 2.2-5 5-5s5 2.2 5 5v5l-1.5-1-1.5 1-1.5-1-1.5 1-1.5-1-1.5 1V10z"
+      d="M5.5 10c0-2.5 2-4.5 4.5-4.5s4.5 2 4.5 4.5v5l-1.3-1-1.3 1-1.3-1-1.3 1-1.3-1-1.3 1-1.1-0.9V10z"
     />
   ),
-  // dragon — flame-spike
+  // dragon — sharp flame / fang
   dragon: (
     <path
       fill="white"
-      d="M10 3l3 5-2 1 3 3-2.5 0.5 1.5 3.5L10 13l-3 3 1.5-3.5L6 12l3-3-2-1 3-5z"
+      d="M10 3c0.5 2 1.5 3.5 2.8 4.5 1.3 1 2 2.3 2 3.8 0 2.6-2.1 4.7-4.8 4.7S5.2 13.9 5.2 11.3c0-1.2 0.5-2.1 1.3-2.7-0.1 1.3 0.4 2 1.3 2 0.2-2 1.2-4.2 2.2-7.6z"
     />
   ),
-  // dark — crescent moon
+  // dark — crescent moon (like ember)
   dark: (
     <path
       fill="white"
-      d="M13 4.5c-3.5 0.5-6 3.5-6 7s2.5 6.5 6 7c-5 0-8-3.2-8-7s3-7 8-7z"
+      d="M13.5 5c-2.5 0-5 2-5 5s2.5 5 5 5c-4 0-7-2.5-7-5s3-5 7-5z"
     />
   ),
   // steel — gear
   steel: (
     <g fill="white">
-      <polygon points="10,3 11.3,5 13.5,4.5 13,6.7 15,8 13,9.3 13.5,11.5 11.3,11 10,13 8.7,11 6.5,11.5 7,9.3 5,8 7,6.7 6.5,4.5 8.7,5" />
-      <circle cx="10" cy="8" r="1.5" fill="#B7B7CE" />
-      <rect x="8.5" y="12" width="3" height="5" rx="0.5" />
+      <path d="M10 3.3l1.3 1.5 1.9-0.5 0.3 2 1.8 0.9-0.7 1.8 1.3 1.5-1.3 1.5 0.7 1.8-1.8 0.9-0.3 2-1.9-0.5L10 16.7l-1.3-1.5-1.9 0.5-0.3-2-1.8-0.9 0.7-1.8L4.1 9.5l1.3-1.5-0.7-1.8 1.8-0.9 0.3-2 1.9 0.5z" />
+      <circle cx="10" cy="10" r="2" fill={TYPE_COLORS.steel} />
     </g>
   ),
-  // fairy — 4-point star
+  // fairy — butterfly / ribbon
   fairy: (
-    <path
-      fill="white"
-      d="M10 3l1.5 5 5 1.5-5 1.5-1.5 5-1.5-5-5-1.5 5-1.5z"
-    />
+    <g fill="white">
+      <path d="M10 10l-4-3.5c-1.3-1-2-0.3-2 0.8s0.8 3.2 2.5 4.2c-1.5 0.5-2.2 1.5-2.2 2.3s0.7 1.3 1.7 1.3c1.3 0 3.2-1.1 4-2.8" />
+      <path d="M10 10l4-3.5c1.3-1 2-0.3 2 0.8s-0.8 3.2-2.5 4.2c1.5 0.5 2.2 1.5 2.2 2.3s-0.7 1.3-1.7 1.3c-1.3 0-3.2-1.1-4-2.8" />
+      <circle cx="10" cy="10" r="1.3" />
+    </g>
   ),
 };
 
@@ -181,20 +195,23 @@ export function IconDefs() {
           <path d="M20 20l-4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
         </symbol>
 
-        {/* Move category — physical: crossed blades, special: starburst, status: hex */}
+        {/* Move category — physical: single sword, special: starburst, status: hex */}
         <symbol id="cat-phy" viewBox="0 0 16 16">
           <rect x="0.5" y="0.5" width="15" height="15" rx="3" fill="#F26B3A" />
-          <g stroke="white" strokeWidth="1.8" strokeLinecap="round">
-            <path d="M4 4l8 8" />
-            <path d="M12 4l-8 8" />
+          {/* Sword — diagonal blade with crossguard + pommel */}
+          <g stroke="white" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" fill="white">
+            <path d="M12 4l-6.2 6.2" strokeWidth="2" />
+            <path d="M11.2 4.8L13 3" strokeWidth="2" />
+            <path d="M4.4 10.4l1.8 1.8" strokeWidth="1.6" />
+            <path d="M3.4 11.4l1 2.2 2.2 1-0.8-1.4-1.4-0.8z" fill="white" stroke="none" />
           </g>
-          <circle cx="8" cy="8" r="1.2" fill="white" />
         </symbol>
         <symbol id="cat-spe" viewBox="0 0 16 16">
           <rect x="0.5" y="0.5" width="15" height="15" rx="3" fill="#6C63D9" />
-          <g fill="white">
-            <path d="M8 2l1.3 4.3L13.5 8l-4.2 1.7L8 14l-1.3-4.3L2.5 8l4.2-1.7z" />
-          </g>
+          <path
+            d="M8 2l1.3 4.3L13.5 8l-4.2 1.7L8 14l-1.3-4.3L2.5 8l4.2-1.7z"
+            fill="white"
+          />
         </symbol>
         <symbol id="cat-sta" viewBox="0 0 16 16">
           <rect x="0.5" y="0.5" width="15" height="15" rx="3" fill="#8A8880" />

@@ -7,7 +7,6 @@ import { IconDefs } from '../../components/IconDefs';
 import { TopTabs } from '../../components/TopTabs';
 import { LocaleToggle } from '../../components/LocaleToggle';
 import { QueryProvider } from '../../components/QueryProvider';
-import { InstallPrompt } from '../../components/InstallPrompt';
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -50,7 +49,6 @@ export default async function LocaleLayout({ children, params }: Props) {
           <QueryProvider>
             <IconDefs />
             <div className="mx-auto max-w-[480px] min-h-screen bg-bg-primary flex flex-col">
-              <InstallPrompt />
               <header className="flex items-center justify-between px-4 py-2 border-b border-border-tertiary">
                 <span className="text-[14px] font-medium">PokeSearch</span>
                 <LocaleToggle />

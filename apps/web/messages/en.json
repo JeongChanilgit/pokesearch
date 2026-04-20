@@ -170,13 +170,6 @@
     "validationNoPokemon": "Add at least one Pokémon to save.",
     "validationNoAbility": "All Pokémon need an ability selected."
   },
-  "install": {
-    "title": "Install PokeSearch",
-    "body": "Add to your home screen for quick access.",
-    "bodyIos": "Tap Share, then 'Add to Home Screen'.",
-    "install": "Install",
-    "dismiss": "Dismiss"
-  },
   "error": {
     "title": "Something went wrong",
     "body": "An unexpected error occurred. Please try again.",

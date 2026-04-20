@@ -175,6 +175,7 @@ export function TeamPokemonEditor({
         selectedMoveId={moveId}
         learnableMoves={slotMoves}
         damage={damage}
+        damageByMoveId={metrics.damageByMoveId}
         onChange={(id) => onSetMove(slot, id)}
       />
     );

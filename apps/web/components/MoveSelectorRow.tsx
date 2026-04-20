@@ -10,6 +10,8 @@ interface Props {
   selectedMoveId: number | null;
   learnableMoves: Move[];
   damage: number | null;
+  /** Pre-computed damage per move id for the current draft setting. */
+  damageByMoveId: Record<number, number | null>;
   onChange: (moveId: number | null) => void;
 }
 
@@ -25,11 +27,18 @@ const EMPTY_MOVE = {
   pp: 1,
 } as const satisfies Move;
 
+function catShort(m: Move): 'phy' | 'spe' | 'sta' {
+  if (m.category === 'physical') return 'phy';
+  if (m.category === 'special') return 'spe';
+  return 'sta';
+}
+
 export function MoveSelectorRow({
   slotOrder,
   selectedMoveId,
   learnableMoves,
   damage,
+  damageByMoveId,
   onChange,
 }: Props) {
   const locale = useLocale();
@@ -37,13 +46,6 @@ export function MoveSelectorRow({
   const tCommon = useTranslations('common');
 
   const selected = learnableMoves.find((m) => m.id === selectedMoveId) ?? null;
-
-  const catShort =
-    selected?.category === 'physical'
-      ? 'phy'
-      : selected?.category === 'special'
-        ? 'spe'
-        : 'sta';
 
   const shortDesc =
     selected?.category === 'status'
@@ -72,12 +74,40 @@ export function MoveSelectorRow({
   function getSearchLabel(m: MoveOrEmpty): string {
     if (m.id === -1) return '';
     const move = m as Move;
-    // Return the alternate locale name so cross-language search works
     return locale === 'ko' ? move.nameEn : move.nameKo;
   }
 
   function handleChange(m: MoveOrEmpty) {
     onChange(m.id === -1 ? null : m.id);
+  }
+
+  function renderOption(m: MoveOrEmpty) {
+    if (m.id === -1) {
+      return <span className="text-text-tertiary">{t('moveEmpty')}</span>;
+    }
+    const move = m as Move;
+    const name = locale === 'ko' ? move.nameKo : move.nameEn;
+    const power = move.power != null ? `${move.power}` : '—';
+    const acc = move.accuracy != null ? `${move.accuracy}%` : '—';
+    const dmg = damageByMoveId[move.id];
+    const showDamage = move.category !== 'status' && dmg != null;
+    return (
+      <div className="w-full grid items-center gap-[6px]" style={{ gridTemplateColumns: '14px 16px 1fr auto' }}>
+        <svg width={14} height={14} aria-hidden="true">
+          <use href={`#cat-${catShort(move)}`} />
+        </svg>
+        <MoveTypeIcon type={move.type} />
+        <span className="truncate">
+          {name}
+          <span className="text-text-tertiary"> · {power} · {acc}</span>
+        </span>
+        {showDamage ? (
+          <span className="font-medium tabular-nums">{dmg.toLocaleString()}</span>
+        ) : (
+          <span className="text-text-tertiary italic">—</span>
+        )}
+      </div>
+    );
   }
 
   return (
@@ -88,7 +118,7 @@ export function MoveSelectorRow({
       >
         {selected ? (
           <svg width={14} height={14} aria-hidden="true">
-            <use href={`#cat-${catShort}`} />
+            <use href={`#cat-${catShort(selected)}`} />
           </svg>
         ) : (
           <span />
@@ -100,6 +130,7 @@ export function MoveSelectorRow({
           onChange={handleChange}
           getLabel={getLabel}
           getSearchLabel={getSearchLabel}
+          renderOption={renderOption}
           placeholder={t('moveSearch')}
           ariaLabel={`Move slot ${slotOrder}`}
           testId={`move-select-${slotOrder}`}

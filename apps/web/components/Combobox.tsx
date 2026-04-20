@@ -14,6 +14,13 @@ interface Props<T> {
    * getSearchLabel so "Life" finds "생명의구슬" and "생명" finds "Life Orb".
    */
   getSearchLabel?: (item: T) => string;
+  /**
+   * Optional custom renderer for an option row. When omitted, the option
+   * shows the plain `getLabel(item)` text. When provided, this replaces the
+   * inner content of the <li> so callers can render icons, tabular data, etc.
+   * The list item wrapper (role, highlight, click handlers) stays the same.
+   */
+  renderOption?: (item: T) => React.ReactNode;
   placeholder?: string;
   disabled?: boolean;
   /** aria-label for the input (falls back to placeholder) */
@@ -32,6 +39,7 @@ export function Combobox<T>({
   onChange,
   getLabel,
   getSearchLabel,
+  renderOption,
   placeholder = '',
   disabled = false,
   ariaLabel,
@@ -226,7 +234,7 @@ export function Combobox<T>({
                 }}
                 onMouseEnter={() => setActiveIndex(idx)}
               >
-                {label}
+                {renderOption ? renderOption(item) : label}
               </li>
             );
           })}

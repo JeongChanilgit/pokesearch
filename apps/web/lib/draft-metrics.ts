@@ -167,14 +167,9 @@ export function computeDraftMetrics(
   const itemEffect = item?.effectMult ?? null;
 
   const damageByMoveId: Record<number, number | null> = {};
-  for (const m of dp.moves) {
-    const move = moves.get(m.moveId);
-    if (!move) {
-      damageByMoveId[m.moveId] = null;
-      continue;
-    }
+  for (const move of moves.values()) {
     if (move.category === 'status' || move.power == null) {
-      damageByMoveId[m.moveId] = null;
+      damageByMoveId[move.id] = null;
       continue;
     }
     const effectiveType = reclassifyMoveType(abilityNameEn, move.type);
@@ -182,7 +177,7 @@ export function computeDraftMetrics(
     const attackStat = move.category === 'physical' ? atk : spa;
     const itemMultiplier = itemMultFor(move.category, itemEffect);
     const abMult = abilityMultiplier(abilityNameEn, effectiveType);
-    damageByMoveId[m.moveId] = damageOutput({
+    damageByMoveId[move.id] = damageOutput({
       attackStat,
       movePower: move.power,
       isSTAB,

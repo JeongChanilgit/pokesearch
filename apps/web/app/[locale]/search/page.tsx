@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { locales, type Locale } from '../../../i18n';
 import { localeAlternates } from '../../../lib/site-url';
-import { buildQuickSearchResult } from '../../../lib/search-core';
+import { buildQuickSearchResult, findPokemonByNamePrefix } from '../../../lib/search-core';
 import { displayName } from '../../../lib/name';
 import { TypeBadge } from '../../../components/TypeBadge';
 import type { PokemonType } from '../../../components/TypeBadge';
@@ -84,6 +84,17 @@ export default async function SearchPage({ params, searchParams }: Props) {
   const sp = await searchParams;
   const q = firstString(sp.q).slice(0, 32);
   const level = parseLevel(sp.level);
+
+  if (q) {
+    const match = await findPokemonByNamePrefix(q);
+    if (match?.showdown_id) {
+      const dest =
+        level === 100
+          ? `/${locale}/pokemon/${match.showdown_id}?level=100`
+          : `/${locale}/pokemon/${match.showdown_id}`;
+      redirect(dest);
+    }
+  }
 
   const t = await getTranslations({ locale, namespace: 'search' });
 

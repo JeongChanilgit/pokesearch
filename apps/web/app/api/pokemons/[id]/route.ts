@@ -24,6 +24,7 @@ export async function GET(
     nameKo: row.nameKo,
     types: normalizeTypes(row.types),
     spriteUrl: row.spriteUrl,
+    showdownId: row.showdownId,
     baseH: row.baseH,
     baseA: row.baseA,
     baseB: row.baseB,

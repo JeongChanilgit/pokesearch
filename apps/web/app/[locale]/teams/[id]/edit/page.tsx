@@ -381,6 +381,7 @@ function teamDetailToDraft(team: TeamDetail): DraftTeam {
         nameKo: tp.pokemon.nameKo,
         types: tp.pokemon.types,
         spriteUrl: tp.pokemon.spriteUrl,
+        showdownId: tp.pokemon.showdownId,
         baseH: tp.pokemon.baseH,
         baseA: tp.pokemon.baseA,
         baseB: tp.pokemon.baseB,

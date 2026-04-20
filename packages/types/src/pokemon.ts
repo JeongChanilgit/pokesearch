@@ -7,6 +7,7 @@ export const PokemonSummary = z.object({
   nameKo: z.string(),
   types: z.array(TypeName).min(1).max(2),
   spriteUrl: z.string(),
+  showdownId: z.string().nullable(),
 });
 export type PokemonSummary = z.infer<typeof PokemonSummary>;
 

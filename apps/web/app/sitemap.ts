@@ -40,6 +40,30 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   }
 
+  const pokemons = await prisma.pokemon
+    .findMany({
+      where: { showdownId: { not: null } },
+      select: { showdownId: true },
+      orderBy: { id: 'asc' },
+    })
+    .catch(() => [] as { showdownId: string | null }[]);
+
+  const pokemonEntries: MetadataRoute.Sitemap = [];
+  for (const p of pokemons) {
+    if (!p.showdownId) continue;
+    for (const loc of locales) {
+      pokemonEntries.push({
+        url: `${base}/${loc}/pokemon/${p.showdownId}`,
+        lastModified: now,
+        changeFrequency: 'monthly',
+        priority: 0.7,
+        alternates: {
+          languages: localizedUrls(base, `/pokemon/${p.showdownId}`),
+        },
+      });
+    }
+  }
+
   const teams = await prisma.team
     .findMany({
       select: { id: true, updatedAt: true },
@@ -63,5 +87,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   }
 
-  return [...staticEntries, ...teamEntries];
+  return [...staticEntries, ...pokemonEntries, ...teamEntries];
 }

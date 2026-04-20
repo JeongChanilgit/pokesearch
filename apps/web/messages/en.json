@@ -209,6 +209,12 @@
     },
     "editTeam": {
       "title": "Edit team"
+    },
+    "pokemon": {
+      "title": "{name} — Stats, Moves, Bulk · PokeSearch",
+      "description": "{name} base stats, every learnable move with MIN/NORM/MAX damage, physical/special bulk and speed at level {level}. Champions-format Pokémon data.",
+      "breadcrumbHome": "Home",
+      "breadcrumbPokedex": "Pokémon"
     }
   }
 }

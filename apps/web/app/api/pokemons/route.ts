@@ -46,6 +46,7 @@ export async function GET(req: NextRequest) {
       nameKo: true,
       types: true,
       spriteUrl: true,
+      showdownId: true,
     },
   });
 
@@ -59,6 +60,7 @@ export async function GET(req: NextRequest) {
       nameKo: p.nameKo,
       types: normalizeTypes(p.types),
       spriteUrl: p.spriteUrl,
+      showdownId: p.showdownId,
     })),
     nextCursor: hasMore ? page[page.length - 1].id : null,
   });

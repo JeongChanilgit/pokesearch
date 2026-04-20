@@ -15,7 +15,7 @@ import {
   type TypeName,
 } from '@pokesearch/types';
 
-type PokemonRow = {
+export type PokemonRow = {
   id: number;
   name_en: string;
   name_ko: string;
@@ -28,12 +28,13 @@ type PokemonRow = {
   base_s: number;
   sprite_url: string;
   form_of: number | null;
+  showdown_id: string | null;
 };
 
 export async function findPokemonByNamePrefix(q: string): Promise<PokemonRow | null> {
   const rows = await prisma.$queryRaw<PokemonRow[]>`
     SELECT id, name_en, name_ko, types, base_h, base_a, base_b, base_c, base_d, base_s,
-           sprite_url, form_of
+           sprite_url, form_of, showdown_id
     FROM pokemons
     WHERE name_en ILIKE ${q} || '%'
        OR name_ko ILIKE ${q} || '%'
@@ -49,15 +50,21 @@ export async function findPokemonByNamePrefix(q: string): Promise<PokemonRow | n
   return rows[0] ?? null;
 }
 
-export async function buildQuickSearchResult(
-  q: string,
+export async function findPokemonByShowdownId(slug: string): Promise<PokemonRow | null> {
+  const rows = await prisma.$queryRaw<PokemonRow[]>`
+    SELECT id, name_en, name_ko, types, base_h, base_a, base_b, base_c, base_d, base_s,
+           sprite_url, form_of, showdown_id
+    FROM pokemons
+    WHERE showdown_id = ${slug}
+    LIMIT 1
+  `;
+  return rows[0] ?? null;
+}
+
+async function buildQuickSearchResponseFromRow(
+  row: PokemonRow,
   level: Level,
 ): Promise<QuickSearchResponseType> {
-  const row = await findPokemonByNamePrefix(q);
-  if (!row) {
-    return QuickSearchResponse.parse({ pokemon: null, moves: [] });
-  }
-
   const types = row.types as TypeName[];
 
   const pokemon = {
@@ -66,6 +73,7 @@ export async function buildQuickSearchResult(
     nameKo: row.name_ko,
     types,
     spriteUrl: row.sprite_url,
+    showdownId: row.showdown_id,
     baseH: row.base_h,
     baseA: row.base_a,
     baseB: row.base_b,
@@ -143,4 +151,26 @@ export async function buildQuickSearchResult(
   );
 
   return QuickSearchResponse.parse({ pokemon, bulk, speed, moves });
+}
+
+export async function buildQuickSearchResult(
+  q: string,
+  level: Level,
+): Promise<QuickSearchResponseType> {
+  const row = await findPokemonByNamePrefix(q);
+  if (!row) {
+    return QuickSearchResponse.parse({ pokemon: null, moves: [] });
+  }
+  return buildQuickSearchResponseFromRow(row, level);
+}
+
+export async function buildQuickSearchResultBySlug(
+  slug: string,
+  level: Level,
+): Promise<QuickSearchResponseType> {
+  const row = await findPokemonByShowdownId(slug);
+  if (!row) {
+    return QuickSearchResponse.parse({ pokemon: null, moves: [] });
+  }
+  return buildQuickSearchResponseFromRow(row, level);
 }

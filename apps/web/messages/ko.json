@@ -209,6 +209,12 @@
     },
     "editTeam": {
       "title": "팀 수정"
+    },
+    "pokemon": {
+      "title": "{name} 스탯 · 기술배치 · 약점 · 실수치 · PokeSearch",
+      "description": "{name}의 종족값, 배울 수 있는 모든 기술의 MIN/NORM/MAX 데미지, 물리·특수 내구와 스피드 실수치(레벨 {level}). 챔피언스 메타 기반 데이터.",
+      "breadcrumbHome": "홈",
+      "breadcrumbPokedex": "포켓몬"
     }
   }
 }

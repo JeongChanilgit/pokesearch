@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
 import { PokemonHolder } from './PokemonHolder';
 import { KeyMetricsRow } from './KeyMetricsRow';
@@ -104,7 +105,16 @@ export function TeamPokemonCard({ pokemon, metrics }: Props) {
           />
           <div className="min-w-0">
             <div className="flex items-center gap-1 flex-wrap">
-              <span className="text-[11px] font-medium truncate">{speciesName}</span>
+              {pokemon.pokemon.showdownId ? (
+                <Link
+                  href={`/${locale}/pokemon/${pokemon.pokemon.showdownId}`}
+                  className="text-[11px] font-medium truncate hover:underline"
+                >
+                  {speciesName}
+                </Link>
+              ) : (
+                <span className="text-[11px] font-medium truncate">{speciesName}</span>
+              )}
               {defenderTypes.map((type) => (
                 <TypeBadge key={type} type={type as PokemonType} />
               ))}

@@ -1,4 +1,5 @@
-import { StatRow } from './StatRow';
+import { useTranslations } from 'next-intl';
+import { StatRow, StatRankHeader } from './StatRow';
 import type { StatRowData } from '../lib/team-calc';
 
 interface Props {
@@ -8,8 +9,12 @@ interface Props {
 }
 
 export function StatTable({ rows, stages, onStageChange }: Props) {
+  const t = useTranslations('teamDetail');
   return (
     <div>
+      {onStageChange && (
+        <StatRankHeader decLabel={t('stageDown')} incLabel={t('stageUp')} />
+      )}
       {rows.map((r) => (
         <StatRow
           key={r.letter}

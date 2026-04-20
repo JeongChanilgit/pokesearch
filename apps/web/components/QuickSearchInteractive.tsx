@@ -9,7 +9,7 @@ import {
   damageRangeWithStage,
   type StatRange,
 } from '@pokesearch/calc';
-import { BaseStatRow } from './BaseStatRow';
+import { BaseStatRow, BaseStatRankHeader } from './BaseStatRow';
 import { MinNormMaxLegend } from './MinNormMaxLegend';
 import { MinNormMaxRow } from './MinNormMaxRow';
 import { MoveFilterList } from './MoveFilterList';
@@ -82,6 +82,7 @@ export function QuickSearchInteractive({ locale, result, level, labels }: Props)
   return (
     <>
       <SectionHeading title={labels.baseStats} />
+      <BaseStatRankHeader decLabel={labels.stageDown} incLabel={labels.stageUp} />
       <BaseStatRow letter="H" base={p.baseH} />
       <BaseStatRow letter="A" base={p.baseA} stage={ranks.A} onStageChange={setRank('A')} incLabel={labels.stageUp} decLabel={labels.stageDown} />
       <BaseStatRow letter="B" base={p.baseB} stage={ranks.B} onStageChange={setRank('B')} incLabel={labels.stageUp} decLabel={labels.stageDown} />

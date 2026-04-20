@@ -12,6 +12,8 @@ interface Props {
   onStageChange?: (next: number) => void;
 }
 
+const GRID_COLS = '12px 1fr 10px 24px 36px auto';
+
 export function StatRow({
   letter,
   finalStat,
@@ -39,7 +41,7 @@ export function StatRow({
   return (
     <div
       className="grid items-center gap-1 text-[10px] py-0.5 tabular-nums"
-      style={{ gridTemplateColumns: '12px 48px 10px 24px 36px auto' }}
+      style={{ gridTemplateColumns: GRID_COLS }}
     >
       <span className="text-text-secondary font-medium text-center">{letter}</span>
       <div className="h-[4px] bg-bg-secondary rounded-sm overflow-hidden flex">
@@ -64,9 +66,9 @@ export function StatRow({
             onClick={() => onStageChange(Math.max(MIN_STAGE, s - 1))}
             disabled={s <= MIN_STAGE}
             aria-label={`${decLabel} ${letter}`}
-            className="inline-flex items-center justify-center min-w-[44px] min-h-[44px] -my-2 px-1 text-[10px] text-text-secondary disabled:opacity-30 disabled:cursor-not-allowed"
+            className="inline-flex items-center justify-center min-w-[32px] min-h-[44px] -my-2 text-[14px] text-text-secondary disabled:opacity-30 disabled:cursor-not-allowed"
           >
-            {decLabel}
+            −
           </button>
           <span
             className={`w-6 text-center text-[10px] tabular-nums ${
@@ -80,14 +82,34 @@ export function StatRow({
             onClick={() => onStageChange(Math.min(MAX_STAGE, s + 1))}
             disabled={s >= MAX_STAGE}
             aria-label={`${incLabel} ${letter}`}
-            className="inline-flex items-center justify-center min-w-[44px] min-h-[44px] -my-2 px-1 text-[10px] text-text-secondary disabled:opacity-30 disabled:cursor-not-allowed"
+            className="inline-flex items-center justify-center min-w-[32px] min-h-[44px] -my-2 text-[14px] text-text-secondary disabled:opacity-30 disabled:cursor-not-allowed"
           >
-            {incLabel}
+            +
           </button>
         </div>
       ) : (
         <div />
       )}
+    </div>
+  );
+}
+
+export function StatRankHeader({ decLabel, incLabel }: { decLabel: string; incLabel: string }) {
+  return (
+    <div
+      className="grid items-center gap-1 text-[9px] text-text-tertiary"
+      style={{ gridTemplateColumns: GRID_COLS }}
+    >
+      <span />
+      <span />
+      <span />
+      <span />
+      <span />
+      <div className="flex items-center justify-end gap-1">
+        <span className="min-w-[32px] text-center">{decLabel}</span>
+        <span className="w-6" />
+        <span className="min-w-[32px] text-center">{incLabel}</span>
+      </div>
     </div>
   );
 }

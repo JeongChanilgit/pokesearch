@@ -1,11 +1,8 @@
 export function MoveTypeIcon({ type, className }: { type: string; className?: string }) {
+  const name = type.toLowerCase();
   return (
-    <img
-      src={`/sprites/types/${type.toLowerCase()}.png`}
-      alt={type}
-      className={className ?? 'h-[14px] w-auto'}
-      loading="lazy"
-      decoding="async"
-    />
+    <svg className={className ?? 'w-4 h-4'} aria-label={name}>
+      <use href={`#type-${name}`} />
+    </svg>
   );
 }

@@ -11,7 +11,6 @@
     "start": "tsx src/index.ts",
     "download-sprites": "tsx src/download-sprites.ts",
     "download-item-sprites": "tsx src/download-item-sprites.ts",
-    "download-type-sprites": "tsx src/download-type-sprites.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",

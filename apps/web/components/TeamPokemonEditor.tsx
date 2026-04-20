@@ -308,9 +308,9 @@ function Row({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex items-center justify-between border-b border-border-tertiary py-[5px] text-[10px]">
-      <span className="text-text-secondary">{label}</span>
-      {children}
+    <div className="flex items-center gap-2 border-b border-border-tertiary py-[5px] text-[10px]">
+      <span className="text-text-secondary shrink-0 whitespace-nowrap">{label}</span>
+      <div className="flex-1 min-w-0">{children}</div>
     </div>
   );
 }

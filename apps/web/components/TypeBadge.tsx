@@ -29,13 +29,9 @@ interface Props {
 export function TypeBadge({ type, suffix = '' }: Props) {
   return (
     <span className="inline-flex items-center align-middle mr-[3px]">
-      <img
-        src={`/sprites/types/${type}.png`}
-        alt={type}
-        className="h-[14px] w-auto"
-        loading="lazy"
-        decoding="async"
-      />
+      <svg width={16} height={16} aria-label={type}>
+        <use href={`#type-${type}`} />
+      </svg>
       {suffix && <span className="text-[9px] font-medium ml-0.5">{suffix}</span>}
     </span>
   );

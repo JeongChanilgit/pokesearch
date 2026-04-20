@@ -183,6 +183,9 @@ interface PokeApiPokemon {
       home: {
         front_default: string | null;
       };
+      'official-artwork'?: {
+        front_default: string | null;
+      };
     };
   };
 }
@@ -198,7 +201,12 @@ async function fetchSpriteUrl(
     return { error: `HTTP ${res.status}` };
   }
   const data = (await res.json()) as PokeApiPokemon;
-  const url = data?.sprites?.other?.home?.front_default ?? null;
+  // Prefer the cleaner "home" render; fall back to official artwork for forms
+  // (e.g. Floette-Eternal, some Mega forms) where PokeAPI has no home sprite.
+  const url =
+    data?.sprites?.other?.home?.front_default ??
+    data?.sprites?.other?.['official-artwork']?.front_default ??
+    null;
   if (!url) {
     return { missing: true };
   }

@@ -164,7 +164,7 @@ function SearchResult({
           </div>
         </div>
 
-        <div className="flex-1 min-w-[140px] text-[9px] text-text-secondary leading-[1.5]">
+        <div className="ml-auto min-w-[140px] text-right text-[9px] text-text-secondary leading-[1.5]">
           <div>
             <b className="text-text-secondary">{labels.weak}</b>&nbsp;
             {p.weaknesses.map((w) => {
@@ -184,14 +184,12 @@ function SearchResult({
               <TypeBadge key={r} type={r as PokemonType} />
             ))}
           </div>
-          {p.immunities.length > 0 && (
-            <div>
-              <b className="text-text-secondary">{labels.immune}</b>&nbsp;
-              {p.immunities.map((im) => (
-                <TypeBadge key={im} type={im as PokemonType} />
-              ))}
-            </div>
-          )}
+          <div>
+            <b className="text-text-secondary">{labels.immune}</b>&nbsp;
+            {p.immunities.map((im) => (
+              <TypeBadge key={im} type={im as PokemonType} />
+            ))}
+          </div>
         </div>
       </div>
 

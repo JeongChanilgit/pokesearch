@@ -82,4 +82,44 @@ describe('buildFormGroups', () => {
     expect(groups.every((g) => g.slug === 'charizard')).toBe(true);
     expect(groups).toHaveLength(1);
   });
+
+  it('keeps alt forms when the base form is illegal (e.g. Floette)', () => {
+    const pokedex: ShowdownRecord = {
+      floette: {
+        num: 670,
+        name: 'Floette',
+        types: ['Fairy'],
+        baseStats: { hp: 54, atk: 45, def: 47, spa: 75, spd: 98, spe: 52 },
+        abilities: { 0: 'Flower Veil' },
+        formeOrder: ['Floette', 'Floette-Eternal', 'Floette-Mega'],
+        otherFormes: ['Floette-Eternal', 'Floette-Mega'],
+      },
+      floetteeternal: {
+        num: 670,
+        name: 'Floette-Eternal',
+        baseSpecies: 'Floette',
+        forme: 'Eternal',
+        types: ['Fairy'],
+        baseStats: { hp: 74, atk: 65, def: 67, spa: 125, spd: 128, spe: 92 },
+        abilities: { 0: 'Flower Veil' },
+      },
+      floettemega: {
+        num: 670,
+        name: 'Floette-Mega',
+        baseSpecies: 'Floette',
+        forme: 'Mega',
+        types: ['Fairy'],
+        baseStats: { hp: 74, atk: 85, def: 87, spa: 155, spd: 148, spe: 102 },
+        abilities: { 0: 'Fairy Aura' },
+      },
+    };
+    // Base Floette is tier:Illegal in Champions — not in the legal set.
+    const legal = new Set(['floetteeternal', 'floettemega']);
+    const groups = buildFormGroups(pokedex, legal).filter((g) => g.dexNum === 670);
+    expect(groups.map((g) => g.slug)).toEqual(['floetteeternal', 'floettemega']);
+    expect(groups[0].slot).toBe(0);
+    expect(groups[1].slot).toBe(1);
+    expect(groups[0].baseSlug).toBe('floetteeternal');
+    expect(groups[1].baseSlug).toBe('floetteeternal');
+  });
 });

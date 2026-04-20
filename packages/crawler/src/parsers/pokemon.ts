@@ -77,41 +77,71 @@ export function buildFormGroups(
   const groups: FormGroup[] = [];
 
   for (const [dexNum, slugs] of byDex) {
-    const base = slugs.find((s) => !isRecord(mergedPokedex[s]) || !(mergedPokedex[s] as Record<string, unknown>).baseSpecies);
-    if (!base) continue;
-    const baseEntry = mergedPokedex[base] as Record<string, unknown>;
+    // The "true" base (baseSpecies-less) may itself be illegal — e.g.
+    // Floette base is tier:Illegal in Champions while Floette-Eternal /
+    // Floette-Mega are OU. We still want to keep the legal alts, so look
+    // up the true base in the full pokedex (legal or not) purely for
+    // ordering info (formeOrder) and fall back to promoting the first
+    // legal alt to slot 0.
+    const legalBase = slugs.find((s) => !isRecord(mergedPokedex[s]) || !(mergedPokedex[s] as Record<string, unknown>).baseSpecies);
 
-    // Determine order. Use `formeOrder` from the base entry if present
-    // (it lists Showdown internal names like "Venusaur-Mega"), otherwise
-    // base first then alphabetical alts.
-    const formeOrder = Array.isArray(baseEntry.formeOrder) ? baseEntry.formeOrder as string[] : null;
-    const alts = slugs.filter((s) => s !== base);
+    let trueBase: string | null = null;
+    for (const [slug, entry] of Object.entries(mergedPokedex)) {
+      if (!isRecord(entry)) continue;
+      if (entry.num !== dexNum) continue;
+      if (!entry.baseSpecies) { trueBase = slug; break; }
+    }
+    const baseEntry = trueBase ? (mergedPokedex[trueBase] as Record<string, unknown>) : null;
+
+    const formeOrder = baseEntry && Array.isArray(baseEntry.formeOrder) ? baseEntry.formeOrder as string[] : null;
+    const baseNameId = baseEntry ? toId((baseEntry.name as string) ?? trueBase ?? '') : '';
 
     let ordered: string[];
-    if (formeOrder && formeOrder.length > 1) {
-      // Map Showdown display names → slugs for alts.
-      const altMap = new Map<string, string>(alts.map((s) => [toId((mergedPokedex[s] as Record<string, unknown>).name as string ?? s), s]));
-      ordered = [base];
-      for (const formeName of formeOrder) {
-        const id = toId(formeName);
-        if (id === toId((baseEntry.name as string) ?? base)) continue;
-        const altSlug = altMap.get(id);
-        if (altSlug) ordered.push(altSlug);
-      }
-      // Append any alts not in formeOrder.
-      for (const alt of alts) {
-        if (!ordered.includes(alt)) ordered.push(alt);
+    if (legalBase) {
+      const alts = slugs.filter((s) => s !== legalBase);
+      if (formeOrder && formeOrder.length > 1) {
+        const altMap = new Map<string, string>(alts.map((s) => [toId((mergedPokedex[s] as Record<string, unknown>).name as string ?? s), s]));
+        ordered = [legalBase];
+        for (const formeName of formeOrder) {
+          const id = toId(formeName);
+          if (id === baseNameId) continue;
+          const altSlug = altMap.get(id);
+          if (altSlug) ordered.push(altSlug);
+        }
+        for (const alt of alts) {
+          if (!ordered.includes(alt)) ordered.push(alt);
+        }
+      } else {
+        ordered = [legalBase, ...alts.sort()];
       }
     } else {
-      ordered = [base, ...alts.sort()];
+      // No legal base form — order legal alts by formeOrder when present,
+      // else alphabetical.
+      if (formeOrder && formeOrder.length > 0) {
+        const altMap = new Map<string, string>(slugs.map((s) => [toId((mergedPokedex[s] as Record<string, unknown>).name as string ?? s), s]));
+        ordered = [];
+        for (const formeName of formeOrder) {
+          const id = toId(formeName);
+          if (id === baseNameId) continue;
+          const altSlug = altMap.get(id);
+          if (altSlug && !ordered.includes(altSlug)) ordered.push(altSlug);
+        }
+        for (const alt of slugs) {
+          if (!ordered.includes(alt)) ordered.push(alt);
+        }
+      } else {
+        ordered = [...slugs].sort();
+      }
     }
+
+    const effectiveBase = legalBase ?? ordered[0];
 
     for (let slot = 0; slot < ordered.length; slot++) {
       groups.push({
         slug: ordered[slot],
         dexNum,
         slot,
-        baseSlug: base,
+        baseSlug: effectiveBase,
       });
     }
   }

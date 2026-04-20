@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
 import { createApiClient } from '@pokesearch/api-client';
 import type { PokemonSuggestion } from '@pokesearch/types';
-import { displayName, secondaryName } from '../lib/name';
+import { displayName } from '../lib/name';
 import type { Locale } from '../i18n';
 
 const RECENT_KEY = 'recent_searches_v1';
@@ -180,9 +180,6 @@ export function SearchInput({ initialQuery, level }: Props) {
               <div className="flex-1 min-w-0">
                 <div className="text-text-primary truncate">
                   {displayName(item, locale)}
-                </div>
-                <div className="text-text-tertiary text-[9px] truncate">
-                  {secondaryName(item, locale)}
                 </div>
               </div>
             </button>

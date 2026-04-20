@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { locales, type Locale } from '../../../i18n';
 import { localeAlternates } from '../../../lib/site-url';
 import { buildQuickSearchResult } from '../../../lib/search-core';
-import { displayName, secondaryName } from '../../../lib/name';
+import { displayName } from '../../../lib/name';
 import { TypeBadge } from '../../../components/TypeBadge';
 import type { PokemonType } from '../../../components/TypeBadge';
 import { PokemonHolder } from '../../../components/PokemonHolder';
@@ -151,10 +151,7 @@ function SearchResult({
           <PokemonHolder spriteUrl={p.spriteUrl} size={32} />
           <div className="min-w-0">
             <div className="text-[13px] font-medium truncate">
-              {displayName(p, locale)}{' '}
-              <span className="text-text-tertiary text-[10px] font-normal">
-                · {secondaryName(p, locale)}
-              </span>
+              {displayName(p, locale)}
             </div>
             <div className="mt-0.5 flex items-center gap-0.5 flex-wrap">
               {(p.types as TypeName[]).map((type) => (

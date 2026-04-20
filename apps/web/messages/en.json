@@ -45,7 +45,9 @@
     "commentsCount": "{count, plural, =1 {# comment} other {# comments}}",
     "commentsHeading": "Comments ({count})",
     "edit": "Edit",
-    "delete": "Delete"
+    "delete": "Delete",
+    "stageUp": "Rank up",
+    "stageDown": "Rank down"
   },
   "edit": {
     "title": "Edit team",
@@ -120,8 +122,8 @@
     "baseStats": "Base stats",
     "recent": "Recent searches",
     "clearRecent": "Clear",
-    "stageUp": "Raise stage",
-    "stageDown": "Lower stage",
+    "stageUp": "Rank up",
+    "stageDown": "Rank down",
     "moveSearchPlaceholder": "Search moves",
     "moveSearchClear": "Clear search",
     "moveSearchNoMatches": "No matches."

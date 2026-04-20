@@ -1,13 +1,20 @@
+'use client';
+
+import { useMemo, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { PokemonHolder } from './PokemonHolder';
 import { KeyMetricsRow } from './KeyMetricsRow';
 import { StatTable } from './StatTable';
 import { MovesList } from './MovesList';
 import { TypeBadge, type PokemonType } from './TypeBadge';
-import { itemSlugFromName, type TeamPokemonMetrics } from '../lib/team-calc';
+import { itemSlugFromName, itemMultFor, type TeamPokemonMetrics } from '../lib/team-calc';
 import type { TeamPokemonDetail } from '@pokesearch/types';
 import type { TypeName } from '@pokesearch/types';
 import {
+  applyStage,
+  damageOutput,
+  physicalBulk,
+  specialBulk,
   effectivenessAgainst,
   getImmunities,
   getResistances,
@@ -39,6 +46,49 @@ export function TeamPokemonCard({ pokemon, metrics }: Props) {
   const weaknesses = getWeaknesses(defenderTypes);
   const resistances = getResistances(defenderTypes);
   const immunities = getImmunities(defenderTypes);
+
+  const [ranks, setRanks] = useState<Record<'A' | 'B' | 'C' | 'D' | 'S', number>>({
+    A: 0, B: 0, C: 0, D: 0, S: 0,
+  });
+  const handleStageChange = (letter: 'A' | 'B' | 'C' | 'D' | 'S', next: number) => {
+    setRanks((r) => ({ ...r, [letter]: next }));
+  };
+
+  const effective = useMemo(() => {
+    const effAtk = applyStage(metrics.atk, ranks.A);
+    const effDef = applyStage(metrics.def, ranks.B);
+    const effSpa = applyStage(metrics.spa, ranks.C);
+    const effSpd = applyStage(metrics.spd, ranks.D);
+    const effSpe = applyStage(metrics.speed, ranks.S);
+    return {
+      physicalBulk: physicalBulk(metrics.hp, effDef),
+      specialBulk: specialBulk(metrics.hp, effSpd),
+      speed: effSpe,
+      atk: effAtk,
+      spa: effSpa,
+    };
+  }, [metrics, ranks]);
+
+  const recomputedMoves = useMemo(() => {
+    const pokemonTypes = pokemon.pokemon.types as TypeName[];
+    const itemEffect = pokemon.item?.effectMult ?? null;
+    return metrics.moves.map((m) => {
+      if (m.move.category === 'status' || m.move.power == null) {
+        return m;
+      }
+      const attackStat = m.move.category === 'physical' ? effective.atk : effective.spa;
+      const isSTAB = pokemonTypes.includes(m.move.type as TypeName);
+      const itemMultiplier = itemMultFor(m.move.category, itemEffect);
+      const damage = damageOutput({
+        attackStat,
+        movePower: m.move.power,
+        isSTAB,
+        abilityMultiplier: 1.0,
+        itemMultiplier,
+      });
+      return { ...m, damage };
+    });
+  }, [metrics.moves, pokemon.pokemon.types, pokemon.item, effective.atk, effective.spa]);
 
   return (
     <div
@@ -97,13 +147,17 @@ export function TeamPokemonCard({ pokemon, metrics }: Props) {
       </div>
 
       <KeyMetricsRow
-        physicalBulk={metrics.physicalBulk}
-        specialBulk={metrics.specialBulk}
-        speed={metrics.speed}
+        physicalBulk={effective.physicalBulk}
+        specialBulk={effective.specialBulk}
+        speed={effective.speed}
       />
-      <StatTable rows={metrics.statRows} />
+      <StatTable
+        rows={metrics.statRows}
+        stages={ranks}
+        onStageChange={handleStageChange}
+      />
       <div className="mt-[7px]">
-        <MovesList moves={metrics.moves} />
+        <MovesList moves={recomputedMoves} />
       </div>
     </div>
   );

@@ -45,7 +45,9 @@
     "commentsCount": "댓글 {count}",
     "commentsHeading": "댓글 ({count}개)",
     "edit": "수정",
-    "delete": "삭제"
+    "delete": "삭제",
+    "stageUp": "랭크 업",
+    "stageDown": "랭크 다운"
   },
   "edit": {
     "title": "팀 수정",
@@ -120,8 +122,8 @@
     "baseStats": "종족값",
     "recent": "최근 검색",
     "clearRecent": "지우기",
-    "stageUp": "랭크 상승",
-    "stageDown": "랭크 하락",
+    "stageUp": "랭크 업",
+    "stageDown": "랭크 다운",
     "moveSearchPlaceholder": "기술 검색",
     "moveSearchClear": "검색 지우기",
     "moveSearchNoMatches": "일치하는 기술이 없습니다."

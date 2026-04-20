@@ -59,7 +59,7 @@ function clamp01(n: number): number {
   return n;
 }
 
-function itemMultFor(
+export function itemMultFor(
   category: 'physical' | 'special',
   effect: Record<string, number> | null | undefined,
 ): number {

@@ -26,13 +26,16 @@
   --color-spd-fg: #04342c;
   --color-spd-label: #0f6e56;
 
-  /* MIN / NORM / MAX */
+  /* MIN / BASE / HIGH / MAX (fields min/norm/high/max) */
   --color-min-bg: #fcebeb;
   --color-min-fg: #501313;
   --color-min-label: #a32d2d;
   --color-norm-bg: #e6f1fb;
   --color-norm-fg: #042c53;
   --color-norm-label: #185fa5;
+  --color-high-bg: #fbf2d9;
+  --color-high-fg: #4a3806;
+  --color-high-label: #a37013;
   --color-max-bg: #eaf3de;
   --color-max-fg: #173404;
   --color-max-label: #3b6d11;

@@ -35,7 +35,7 @@ export function QuickSearchMoveCard({ move, locale }: Props) {
         )
       ) : (
         move.damage && (
-          <div className="grid grid-cols-3 gap-1 text-center">
+          <div className="grid grid-cols-4 gap-1 text-center">
             <div className="bg-min-bg rounded-sm px-[2px] py-1">
               <div className="text-[11px] font-medium text-min-fg tabular-nums">
                 {move.damage.min.toLocaleString()}
@@ -44,6 +44,11 @@ export function QuickSearchMoveCard({ move, locale }: Props) {
             <div className="bg-norm-bg rounded-sm px-[2px] py-1">
               <div className="text-[11px] font-medium text-norm-fg tabular-nums">
                 {move.damage.norm.toLocaleString()}
+              </div>
+            </div>
+            <div className="bg-high-bg rounded-sm px-[2px] py-1">
+              <div className="text-[11px] font-medium text-high-fg tabular-nums">
+                {move.damage.high.toLocaleString()}
               </div>
             </div>
             <div className="bg-max-bg rounded-sm px-[2px] py-1">

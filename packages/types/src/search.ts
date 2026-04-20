@@ -12,6 +12,7 @@ export type QuickSearchInput = z.input<typeof QuickSearchRequest>;
 export const StatRange = z.object({
   min: z.number().int().nonnegative(),
   norm: z.number().int().nonnegative(),
+  high: z.number().int().nonnegative(),
   max: z.number().int().nonnegative(),
 });
 export type StatRange = z.infer<typeof StatRange>;

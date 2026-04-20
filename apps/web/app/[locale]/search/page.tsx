@@ -10,10 +10,7 @@ import type { PokemonType } from '../../../components/TypeBadge';
 import { PokemonHolder } from '../../../components/PokemonHolder';
 import { SearchInput } from '../../../components/SearchInput';
 import { LevelToggle } from '../../../components/LevelToggle';
-import { MinNormMaxLegend } from '../../../components/MinNormMaxLegend';
-import { MinNormMaxRow } from '../../../components/MinNormMaxRow';
-import { MoveFilterList } from '../../../components/MoveFilterList';
-import { BaseStatRow } from '../../../components/BaseStatRow';
+import { QuickSearchInteractive } from '../../../components/QuickSearchInteractive';
 import type { TypeName, QuickSearchResponse } from '@pokesearch/types';
 import { effectivenessAgainst } from '@pokesearch/calc';
 
@@ -72,6 +69,11 @@ interface Labels {
   movesAll: string;
   movesAttack: string;
   movesStatus: string;
+  stageUp: string;
+  stageDown: string;
+  moveSearchPlaceholder: string;
+  moveSearchClear: string;
+  moveSearchNoMatches: string;
 }
 
 export default async function SearchPage({ params, searchParams }: Props) {
@@ -100,6 +102,11 @@ export default async function SearchPage({ params, searchParams }: Props) {
     movesAll: tCreate('movesAll'),
     movesAttack: tCreate('movesAttack'),
     movesStatus: tCreate('movesStatus'),
+    stageUp: t('stageUp'),
+    stageDown: t('stageDown'),
+    moveSearchPlaceholder: t('moveSearchPlaceholder'),
+    moveSearchClear: t('moveSearchClear'),
+    moveSearchNoMatches: t('moveSearchNoMatches'),
   };
 
   const result = q ? await buildQuickSearchResult(q, level) : null;
@@ -126,7 +133,7 @@ export default async function SearchPage({ params, searchParams }: Props) {
       )}
 
       {q && result && result.pokemon && (
-        <SearchResult locale={locale} result={result} labels={labels} />
+        <SearchResult locale={locale} result={result} level={level} labels={labels} />
       )}
     </div>
   );
@@ -135,10 +142,12 @@ export default async function SearchPage({ params, searchParams }: Props) {
 function SearchResult({
   locale,
   result,
+  level,
   labels,
 }: {
   locale: Locale;
   result: QuickSearchResponse;
+  level: 50 | 100;
   labels: Labels;
 }) {
   const p = result.pokemon!;
@@ -194,69 +203,12 @@ function SearchResult({
         </div>
       </div>
 
-      <SectionHeading title={labels.baseStats} />
-      <BaseStatRow letter="H" base={p.baseH} />
-      <BaseStatRow letter="A" base={p.baseA} />
-      <BaseStatRow letter="B" base={p.baseB} />
-      <BaseStatRow letter="C" base={p.baseC} />
-      <BaseStatRow letter="D" base={p.baseD} />
-      <BaseStatRow letter="S" base={p.baseS} />
-
-      <MinNormMaxLegend />
-
-      {result.bulk && (
-        <>
-          <SectionHeading title={labels.physBulk} icon="i-shield" />
-          <MinNormMaxRow {...result.bulk.physical} />
-
-          <SectionHeading title={labels.specBulk} icon="i-barrier" />
-          <MinNormMaxRow {...result.bulk.special} />
-        </>
-      )}
-
-      {result.speed && (
-        <>
-          <SectionHeading title={labels.speed} icon="i-shoe" />
-          <MinNormMaxRow {...result.speed} />
-        </>
-      )}
-
-      <SectionHeading title={labels.moves} hint={labels.movesHint} />
-
-      <MoveFilterList
-        moves={result.moves}
+      <QuickSearchInteractive
         locale={locale}
-        noMovesLabel={labels.noMoves}
-        allLabel={labels.movesAll}
-        attackLabel={labels.movesAttack}
-        statusLabel={labels.movesStatus}
+        result={result}
+        level={level}
+        labels={labels}
       />
     </>
-  );
-}
-
-function SectionHeading({
-  title,
-  hint,
-  icon,
-}: {
-  title: string;
-  hint?: string;
-  icon?: string;
-}) {
-  return (
-    <div className="text-[10px] text-text-secondary font-medium mt-2 mb-[5px] flex justify-between items-center">
-      <span className="inline-flex items-center gap-1">
-        {icon && (
-          <svg width={11} height={11} aria-hidden="true">
-            <use href={`#${icon}`} />
-          </svg>
-        )}
-        {title}
-      </span>
-      {hint && (
-        <span className="text-[9px] text-text-tertiary font-normal">{hint}</span>
-      )}
-    </div>
   );
 }

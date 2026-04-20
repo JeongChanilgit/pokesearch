@@ -1,3 +1,4 @@
+import type { StatRange } from '@pokesearch/calc';
 import type { QuickSearchMove } from '@pokesearch/types';
 import type { Locale } from '../i18n';
 import { displayName } from '../lib/name';
@@ -6,14 +7,16 @@ import { MoveTypeIcon } from './MoveTypeIcon';
 interface Props {
   move: QuickSearchMove;
   locale: Locale;
+  damageOverride?: StatRange | null;
 }
 
-export function QuickSearchMoveCard({ move, locale }: Props) {
+export function QuickSearchMoveCard({ move, locale, damageOverride }: Props) {
   const isStatus = move.category === 'status';
   const accStr = move.accuracy != null ? `${move.accuracy}%` : '—';
   const shortDesc = isStatus
     ? (locale === 'ko' ? move.shortDescKo : move.shortDescEn) ?? null
     : null;
+  const damage = damageOverride !== undefined ? damageOverride : move.damage;
 
   return (
     <div className="border border-border-tertiary rounded-sm px-2 py-1.5 mb-1">
@@ -34,26 +37,26 @@ export function QuickSearchMoveCard({ move, locale }: Props) {
           <p className="text-[9px] text-text-tertiary italic">{shortDesc}</p>
         )
       ) : (
-        move.damage && (
+        damage && (
           <div className="grid grid-cols-4 gap-1 text-center">
             <div className="bg-min-bg rounded-sm px-[2px] py-1">
               <div className="text-[11px] font-medium text-min-fg tabular-nums">
-                {move.damage.min.toLocaleString()}
+                {damage.min.toLocaleString()}
               </div>
             </div>
             <div className="bg-norm-bg rounded-sm px-[2px] py-1">
               <div className="text-[11px] font-medium text-norm-fg tabular-nums">
-                {move.damage.norm.toLocaleString()}
+                {damage.norm.toLocaleString()}
               </div>
             </div>
             <div className="bg-high-bg rounded-sm px-[2px] py-1">
               <div className="text-[11px] font-medium text-high-fg tabular-nums">
-                {move.damage.high.toLocaleString()}
+                {damage.high.toLocaleString()}
               </div>
             </div>
             <div className="bg-max-bg rounded-sm px-[2px] py-1">
               <div className="text-[11px] font-medium text-max-fg tabular-nums">
-                {move.damage.max.toLocaleString()}
+                {damage.max.toLocaleString()}
               </div>
             </div>
           </div>

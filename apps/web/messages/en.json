@@ -119,7 +119,12 @@
     "noMoves": "No attacking moves.",
     "baseStats": "Base stats",
     "recent": "Recent searches",
-    "clearRecent": "Clear"
+    "clearRecent": "Clear",
+    "stageUp": "Raise stage",
+    "stageDown": "Lower stage",
+    "moveSearchPlaceholder": "Search moves",
+    "moveSearchClear": "Clear search",
+    "moveSearchNoMatches": "No matches."
   },
   "create": {
     "title": "New team",

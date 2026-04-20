@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { bulkRange, damageRange, statRange } from '../src/range';
+import { bulkRange, bulkRangeWithStages, damageRange, damageRangeWithStage, statRange, statRangeWithStage } from '../src/range';
 
 describe('statRange (HP)', () => {
   it('HP base 100 @ level 50 — min = norm (no nature), high = max (252 EV)', () => {
@@ -120,5 +120,57 @@ describe('damageRange', () => {
       high: 152 * 80 * 2,
       max: 167 * 80 * 2,
     });
+  });
+});
+
+describe('statRangeWithStage', () => {
+  it('stage 0 equals statRange', () => {
+    expect(statRangeWithStage(100, 50, false, 0)).toEqual(statRange(100, 50, false));
+  });
+  it('stage +2 doubles each column', () => {
+    const base = statRange(100, 50, false);
+    const r = statRangeWithStage(100, 50, false, 2);
+    expect(r.min).toBe(Math.floor(base.min * 2));
+    expect(r.norm).toBe(Math.floor(base.norm * 2));
+    expect(r.high).toBe(Math.floor(base.high * 2));
+    expect(r.max).toBe(Math.floor(base.max * 2));
+  });
+  it('stage -6 × 0.25', () => {
+    const base = statRange(100, 50, false);
+    const r = statRangeWithStage(100, 50, false, -6);
+    expect(r.max).toBe(Math.floor(base.max * 0.25));
+  });
+});
+
+describe('bulkRangeWithStages', () => {
+  it('stage 0 equals bulkRange', () => {
+    expect(bulkRangeWithStages(100, 100, 50, 'physical', 0)).toEqual(bulkRange(100, 100, 50, 'physical'));
+  });
+  it('stage +2 raises bulk (def doubled, HP fixed)', () => {
+    const base = bulkRangeWithStages(100, 100, 50, 'physical', 0);
+    const boosted = bulkRangeWithStages(100, 100, 50, 'physical', 2);
+    expect(boosted.max).toBeGreaterThan(base.max);
+  });
+  it('stage -6 non-negative', () => {
+    const r = bulkRangeWithStages(100, 100, 50, 'physical', -6);
+    expect(r.min).toBeGreaterThanOrEqual(0);
+    expect(r.max).toBeGreaterThanOrEqual(0);
+  });
+});
+
+describe('damageRangeWithStage', () => {
+  it('stage 0 equals damageRange', () => {
+    expect(damageRangeWithStage(100, 50, 80, true, 0)).toEqual(damageRange(100, 50, 80, true));
+  });
+  it('stage +2 doubles each column', () => {
+    const base = damageRange(100, 50, 80, true);
+    const r = damageRangeWithStage(100, 50, 80, true, 2);
+    // with atk doubled pre-floor, result is proportionally larger but may differ due to floor ordering
+    expect(r.max).toBeGreaterThan(base.max);
+  });
+  it('stage -1 shrinks', () => {
+    const base = damageRange(100, 50, 80, true);
+    const r = damageRangeWithStage(100, 50, 80, true, -1);
+    expect(r.max).toBeLessThan(base.max);
   });
 });

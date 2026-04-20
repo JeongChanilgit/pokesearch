@@ -119,7 +119,12 @@
     "noMoves": "공격 기술이 없습니다.",
     "baseStats": "종족값",
     "recent": "최근 검색",
-    "clearRecent": "지우기"
+    "clearRecent": "지우기",
+    "stageUp": "랭크 상승",
+    "stageDown": "랭크 하락",
+    "moveSearchPlaceholder": "기술 검색",
+    "moveSearchClear": "검색 지우기",
+    "moveSearchNoMatches": "일치하는 기술이 없습니다."
   },
   "create": {
     "title": "새 팀",

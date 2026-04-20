@@ -144,12 +144,13 @@ const TYPE_GLYPHS: Record<string, React.ReactNode> = {
       d="M5.5 10c0-2.5 2-4.5 4.5-4.5s4.5 2 4.5 4.5v5l-1.3-1-1.3 1-1.3-1-1.3 1-1.3-1-1.3 1-1.1-0.9V10z"
     />
   ),
-  // dragon — sharp flame / fang
+  // dragon — three dragon-claw slashes
   dragon: (
-    <path
-      fill="white"
-      d="M10 3c0.5 2 1.5 3.5 2.8 4.5 1.3 1 2 2.3 2 3.8 0 2.6-2.1 4.7-4.8 4.7S5.2 13.9 5.2 11.3c0-1.2 0.5-2.1 1.3-2.7-0.1 1.3 0.4 2 1.3 2 0.2-2 1.2-4.2 2.2-7.6z"
-    />
+    <g fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round">
+      <path d="M5.6 4.8C6.8 8 6.8 11.6 5.6 15" />
+      <path d="M10 4C11.6 8 11.6 12 10 16" />
+      <path d="M14.4 4.8C15.6 8 15.6 11.6 14.4 15" />
+    </g>
   ),
   // dark — crescent moon (like ember)
   dark: (
@@ -158,11 +159,14 @@ const TYPE_GLYPHS: Record<string, React.ReactNode> = {
       d="M13.5 5c-2.5 0-5 2-5 5s2.5 5 5 5c-4 0-7-2.5-7-5s3-5 7-5z"
     />
   ),
-  // steel — gear
+  // steel — hexagonal bolt head
   steel: (
     <g fill="white">
-      <path d="M10 3.3l1.3 1.5 1.9-0.5 0.3 2 1.8 0.9-0.7 1.8 1.3 1.5-1.3 1.5 0.7 1.8-1.8 0.9-0.3 2-1.9-0.5L10 16.7l-1.3-1.5-1.9 0.5-0.3-2-1.8-0.9 0.7-1.8L4.1 9.5l1.3-1.5-0.7-1.8 1.8-0.9 0.3-2 1.9 0.5z" />
-      <circle cx="10" cy="10" r="2" fill={TYPE_COLORS.steel} />
+      <polygon points="10,3.2 15.5,6.4 15.5,13.6 10,16.8 4.5,13.6 4.5,6.4" />
+      <polygon
+        points="10,7 13,8.75 13,11.25 10,13 7,11.25 7,8.75"
+        fill={TYPE_COLORS.steel}
+      />
     </g>
   ),
   // fairy — butterfly / ribbon

@@ -24,7 +24,7 @@
     "name": "고속이동"
   },
   "aircutter": {
-    "name": "에어컷터"
+    "name": "에어커터"
   },
   "airslash": {
     "name": "에어슬래시"
@@ -45,7 +45,7 @@
     "name": "사과산"
   },
   "aquacutter": {
-    "name": "물칼날"
+    "name": "아쿠아커터"
   },
   "aquajet": {
     "name": "아쿠아제트"
@@ -84,7 +84,7 @@
     "name": "눈사태"
   },
   "axekick": {
-    "name": "도끼발차기"
+    "name": "발꿈치찍기"
   },
   "babydolleyes": {
     "name": "초롱초롱눈동자"
@@ -96,7 +96,7 @@
     "name": "토치카"
   },
   "batonpass": {
-    "name": "바톤터치"
+    "name": "배턴터치"
   },
   "beakblast": {
     "name": "부리캐논"
@@ -117,16 +117,16 @@
     "name": "물기"
   },
   "bitterblade": {
-    "name": "비터블레이드"
+    "name": "원념의칼"
   },
   "bittermalice": {
-    "name": "원한"
+    "name": "천추지한"
   },
   "blastburn": {
-    "name": "블러스트번"
+    "name": "블라스트번"
   },
   "blazekick": {
-    "name": "브레이즈킥"
+    "name": "블레이즈킥"
   },
   "blizzard": {
     "name": "눈보라"
@@ -141,13 +141,13 @@
     "name": "누르기"
   },
   "bonerush": {
-    "name": "본러쉬"
+    "name": "본러시"
   },
   "boomburst": {
     "name": "폭음파"
   },
   "bounce": {
-    "name": "뛰어오르다"
+    "name": "뛰어오르기"
   },
   "bouncybubble": {
     "name": "생생버블"
@@ -159,13 +159,13 @@
     "name": "와이드브레이커"
   },
   "brickbreak": {
-    "name": "깨트리다"
+    "name": "깨트리기"
   },
   "brutalswing": {
     "name": "세차게휘두르기"
   },
   "bugbite": {
-    "name": "벌레먹음"
+    "name": "벌레먹기"
   },
   "bugbuzz": {
     "name": "벌레의야단법석"
@@ -180,7 +180,7 @@
     "name": "불릿펀치"
   },
   "bulletseed": {
-    "name": "기관총"
+    "name": "씨기관총"
   },
   "burningjealousy": {
     "name": "질투의불꽃"
@@ -195,7 +195,7 @@
     "name": "명상"
   },
   "ceaselessedge": {
-    "name": "무한베기"
+    "name": "비검천중파"
   },
   "charge": {
     "name": "충전"
@@ -207,10 +207,10 @@
     "name": "애교부리기"
   },
   "chillingwater": {
-    "name": "냉수"
+    "name": "찬물끼얹기"
   },
   "chillyreception": {
-    "name": "서늘한환영"
+    "name": "썰렁개그"
   },
   "circlethrow": {
     "name": "배대뒤치기"
@@ -234,7 +234,7 @@
     "name": "똬리틀기"
   },
   "comeuppance": {
-    "name": "되갚아주기"
+    "name": "앙갚음"
   },
   "confuseray": {
     "name": "이상한빛"
@@ -258,10 +258,10 @@
     "name": "카운터"
   },
   "covet": {
-    "name": "탐내다"
+    "name": "탐내기"
   },
   "crabhammer": {
-    "name": "찝게햄머"
+    "name": "집게해머"
   },
   "crosschop": {
     "name": "크로스촙"
@@ -273,7 +273,7 @@
     "name": "깨물어부수기"
   },
   "crushclaw": {
-    "name": "브레이크크루"
+    "name": "브레이크클로"
   },
   "curse": {
     "name": "저주"
@@ -303,7 +303,7 @@
     "name": "구멍파기"
   },
   "direclaw": {
-    "name": "위협의 발톱"
+    "name": "페이탈클로"
   },
   "disable": {
     "name": "사슬묶기"
@@ -321,7 +321,7 @@
     "name": "더블어택"
   },
   "doubleshock": {
-    "name": "더블쇼크"
+    "name": "전광쌍격"
   },
   "doubleteam": {
     "name": "그림자분신"
@@ -333,7 +333,7 @@
     "name": "드래곤옐"
   },
   "dragonclaw": {
-    "name": "드래곤크루"
+    "name": "드래곤클로"
   },
   "dragondance": {
     "name": "용의춤"
@@ -396,7 +396,7 @@
     "name": "일렉트릭네트"
   },
   "encore": {
-    "name": "앵콜"
+    "name": "앙코르"
   },
   "endeavor": {
     "name": "죽기살기"
@@ -432,7 +432,7 @@
     "name": "페어리록"
   },
   "fakeout": {
-    "name": "속이다"
+    "name": "속이기"
   },
   "faketears": {
     "name": "거짓울음"
@@ -504,7 +504,7 @@
     "name": "둥실둥실폴"
   },
   "flowertrick": {
-    "name": "꽃술기"
+    "name": "트릭플라워"
   },
   "fly": {
     "name": "공중날기"
@@ -555,7 +555,7 @@
     "name": "기가임팩트"
   },
   "gigatonhammer": {
-    "name": "기가톤해머"
+    "name": "거대해머"
   },
   "glare": {
     "name": "뱀눈초리"
@@ -564,37 +564,40 @@
     "name": "콸콸오라"
   },
   "gmaxbefuddle": {
-    "name": "거다이혼란"
+    "name": "거다이고혹"
   },
   "gmaxcannonade": {
     "name": "거다이포격"
   },
   "gmaxcentiferno": {
-    "name": "거다이 화염 소용돌이"
+    "name": "거다이백화"
   },
   "gmaxchistrike": {
-    "name": "거다이기합"
+    "name": "거다이회심격"
   },
   "gmaxcuddle": {
     "name": "거다이포옹"
   },
   "gmaxdepletion": {
-    "name": "거다이PP흡수"
+    "name": "거다이감쇠"
   },
   "gmaxdrumsolo": {
-    "name": "거다이드럼솔로"
+    "name": "거다이난타"
   },
   "gmaxfinale": {
-    "name": "거다이알캐비"
+    "name": "거다이단원"
   },
   "gmaxfireball": {
-    "name": "거다이불꽃"
+    "name": "거다이화염구"
   },
   "gmaxfoamburst": {
-    "name": "거다이거품"
+    "name": "거다이포말"
   },
   "gmaxgoldrush": {
-    "name": "거다이황금"
+    "name": "거다이금화"
+  },
+  "gmaxgravitas": {
+    "name": "거다이천도"
   },
   "gmaxhydrosnipe": {
     "name": "거다이저격"
@@ -603,61 +606,61 @@
     "name": "거다이악취"
   },
   "gmaxmeltdown": {
-    "name": "거다이용해"
+    "name": "거다이융격"
   },
   "gmaxoneblow": {
     "name": "거다이일격"
   },
   "gmaxrapidflow": {
-    "name": "거다이연속"
+    "name": "거다이연격"
   },
   "gmaxreplenish": {
     "name": "거다이재생"
   },
   "gmaxresonance": {
-    "name": "거다이울림"
+    "name": "거다이선율"
   },
   "gmaxsandblast": {
-    "name": "거다이모래폭풍"
+    "name": "거다이사진"
   },
   "gmaxsmite": {
     "name": "거다이천벌"
   },
   "gmaxsnooze": {
-    "name": "거다이졸음"
+    "name": "거다이수마"
   },
   "gmaxsteelsurge": {
-    "name": "거다이강철파도"
+    "name": "거다이강철진"
   },
   "gmaxstonesurge": {
-    "name": "거다이암석파도"
+    "name": "거다이암진"
   },
   "gmaxstunshock": {
-    "name": "거다이마비"
+    "name": "거다이감전"
   },
   "gmaxsweetness": {
-    "name": "거다이달콤함"
+    "name": "거다이감로"
   },
   "gmaxtartness": {
-    "name": "거다이신맛"
+    "name": "거다이산격"
   },
   "gmaxterror": {
-    "name": "거다이공포"
+    "name": "거다이환영"
   },
   "gmaxvinelash": {
-    "name": "거다이초목채찍"
+    "name": "거다이편달"
   },
   "gmaxvolcalith": {
-    "name": "거다이화산"
+    "name": "거다이분석"
   },
   "gmaxvoltcrash": {
-    "name": "거다이번개"
+    "name": "거다이만뢰"
   },
   "gmaxwildfire": {
-    "name": "거다이들불"
+    "name": "거다이옥염"
   },
   "gmaxwindrage": {
-    "name": "거다이폭풍"
+    "name": "거다이풍격"
   },
   "grassknot": {
     "name": "풀묶기"
@@ -681,7 +684,7 @@
     "name": "가드셰어"
   },
   "guardswap": {
-    "name": "가드스웹"
+    "name": "가드스왑"
   },
   "guillotine": {
     "name": "가위자르기"
@@ -702,7 +705,7 @@
     "name": "흑안개"
   },
   "headlongrush": {
-    "name": "저돌박치기"
+    "name": "들이받기"
   },
   "headsmash": {
     "name": "양날박치기"
@@ -741,10 +744,10 @@
     "name": "뿔드릴"
   },
   "hornleech": {
-    "name": "우드호른"
+    "name": "우드혼"
   },
   "howl": {
-    "name": "멀리짖음"
+    "name": "멀리짖기"
   },
   "hurricane": {
     "name": "폭풍"
@@ -789,13 +792,13 @@
     "name": "고드름침"
   },
   "icywind": {
-    "name": "얼다바람"
+    "name": "얼어붙은바람"
   },
   "imprison": {
     "name": "봉인"
   },
   "infernalparade": {
-    "name": "귀불 행진"
+    "name": "백귀야행"
   },
   "inferno": {
     "name": "연옥"
@@ -834,10 +837,10 @@
     "name": "분풀이"
   },
   "lastresort": {
-    "name": "뒀다쓰기"
+    "name": "비장의무기"
   },
   "lastrespects": {
-    "name": "마지막경의"
+    "name": "성묘"
   },
   "lavaplume": {
     "name": "분연"
@@ -876,7 +879,7 @@
     "name": "로킥"
   },
   "luminacrash": {
-    "name": "루미나크래시"
+    "name": "루미나콜리전"
   },
   "lunge": {
     "name": "덤벼들기"
@@ -903,7 +906,7 @@
     "name": "검은눈빛"
   },
   "megahorn": {
-    "name": "메가폰"
+    "name": "메가혼"
   },
   "megakick": {
     "name": "메가톤킥"
@@ -942,22 +945,22 @@
     "name": "문포스"
   },
   "moonlight": {
-    "name": "달의불빛"
+    "name": "달빛"
   },
   "morningsun": {
     "name": "아침햇살"
   },
   "mortalspin": {
-    "name": "독순환"
+    "name": "킬러스핀"
   },
   "mountaingale": {
-    "name": "산바람"
+    "name": "빙산바람"
   },
   "muddywater": {
     "name": "탁류"
   },
   "mudshot": {
-    "name": "머드숏"
+    "name": "머드샷"
   },
   "mudslap": {
     "name": "진흙뿌리기"
@@ -978,7 +981,7 @@
     "name": "깜짝베기"
   },
   "nihillight": {
-    "name": "니힐라이트"
+    "name": "니힐레이저"
   },
   "nobleroar": {
     "name": "부르짖기"
@@ -1032,7 +1035,7 @@
     "name": "쪼아대기"
   },
   "poisonfang": {
-    "name": "독엄니"
+    "name": "맹독엄니"
   },
   "poisonjab": {
     "name": "독찌르기"
@@ -1050,7 +1053,7 @@
     "name": "폴터가이스트"
   },
   "populationbomb": {
-    "name": "와글와글폭탄"
+    "name": "찍찍베기"
   },
   "pounce": {
     "name": "달려들기"
@@ -1062,13 +1065,13 @@
     "name": "파워젬"
   },
   "powershift": {
-    "name": "파워체인지"
+    "name": "파워시프트"
   },
   "powersplit": {
     "name": "파워셰어"
   },
   "powerswap": {
-    "name": "파워스웹"
+    "name": "파워스왑"
   },
   "powertrick": {
     "name": "파워트릭"
@@ -1101,7 +1104,7 @@
     "name": "자기암시"
   },
   "psyshieldbash": {
-    "name": "배리어 들이 받기"
+    "name": "배리어러시"
   },
   "psyshock": {
     "name": "사이코쇼크"
@@ -1113,7 +1116,7 @@
     "name": "전광석화"
   },
   "quickguard": {
-    "name": "퍼스트가드"
+    "name": "패스트가드"
   },
   "quiverdance": {
     "name": "나비춤"
@@ -1122,10 +1125,10 @@
     "name": "분노가루"
   },
   "ragingbull": {
-    "name": "폭주황소"
+    "name": "레이징불"
   },
   "ragingfury": {
-    "name": "분노의 불꽃"
+    "name": "대격분"
   },
   "raindance": {
     "name": "비바라기"
@@ -1155,7 +1158,7 @@
     "name": "기사회생"
   },
   "revivalblessing": {
-    "name": "생환의축복"
+    "name": "회생의기도"
   },
   "risingvoltage": {
     "name": "라이징볼트"
@@ -1164,7 +1167,7 @@
     "name": "울부짖기"
   },
   "rockblast": {
-    "name": "락블레스트"
+    "name": "록블라스트"
   },
   "rockpolish": {
     "name": "록커트"
@@ -1194,7 +1197,7 @@
     "name": "신비의부적"
   },
   "saltcure": {
-    "name": "소금절이기"
+    "name": "소금절이"
   },
   "sandstorm": {
     "name": "모래바람"
@@ -1233,7 +1236,7 @@
     "name": "섀도볼"
   },
   "shadowclaw": {
-    "name": "섀도크루"
+    "name": "섀도클로"
   },
   "shadowpunch": {
     "name": "섀도펀치"
@@ -1245,7 +1248,7 @@
     "name": "섀도스트라이크"
   },
   "shedtail": {
-    "name": "꼬리벗기기"
+    "name": "꼬리자르기"
   },
   "sheercold": {
     "name": "절대영도"
@@ -1257,7 +1260,7 @@
     "name": "껍질깨기"
   },
   "shelter": {
-    "name": "대피소"
+    "name": "농성"
   },
   "simplebeam": {
     "name": "심플빔"
@@ -1269,7 +1272,7 @@
     "name": "이글이글번"
   },
   "skillswap": {
-    "name": "스킬스웹"
+    "name": "스킬스왑"
   },
   "skittersmack": {
     "name": "엄습하는일격"
@@ -1278,7 +1281,7 @@
     "name": "불새"
   },
   "slackoff": {
-    "name": "태만함"
+    "name": "게으름피우기"
   },
   "sleeppowder": {
     "name": "수면가루"
@@ -1296,7 +1299,7 @@
     "name": "떨어뜨리기"
   },
   "smartstrike": {
-    "name": "스마트호른"
+    "name": "스마트혼"
   },
   "snaptrap": {
     "name": "집게덫"
@@ -1329,10 +1332,10 @@
     "name": "반짝반짝스톰"
   },
   "speedswap": {
-    "name": "스피드스웹"
+    "name": "스피드스왑"
   },
   "spicyextract": {
-    "name": "매운 추출물"
+    "name": "하바네로엑기스"
   },
   "spikes": {
     "name": "압정뿌리기"
@@ -1377,7 +1380,7 @@
     "name": "분함의발구르기"
   },
   "stoneaxe": {
-    "name": "돌도끼"
+    "name": "암석액스"
   },
   "stoneedge": {
     "name": "스톤에지"
@@ -1449,7 +1452,7 @@
     "name": "광합성"
   },
   "syrupbomb": {
-    "name": "시럽폭탄"
+    "name": "시럽봄"
   },
   "tailslap": {
     "name": "스위프뺨치기"
@@ -1503,10 +1506,10 @@
     "name": "간지르기"
   },
   "tidyup": {
-    "name": "청소"
+    "name": "정리정돈"
   },
   "torchsong": {
-    "name": "불꽃노래"
+    "name": "플레어송"
   },
   "torment": {
     "name": "트집"
@@ -1521,7 +1524,7 @@
     "name": "독실"
   },
   "trailblaze": {
-    "name": "선구자"
+    "name": "개척하기"
   },
   "transform": {
     "name": "변신"
@@ -1539,7 +1542,7 @@
     "name": "트릭룸"
   },
   "triplearrows": {
-    "name": "삼연화살"
+    "name": "3연화살"
   },
   "tripleaxel": {
     "name": "트리플악셀"
@@ -1587,7 +1590,7 @@
     "name": "해수스파우팅"
   },
   "wavecrash": {
-    "name": "파도충격"
+    "name": "웨이브태클"
   },
   "weatherball": {
     "name": "웨더볼"
@@ -1636,8 +1639,5 @@
   },
   "zippyzap": {
     "name": "파찌파찌액셀"
-  },
-  "gmaxgravitas": {
-    "name": "거다이중력"
   }
 }

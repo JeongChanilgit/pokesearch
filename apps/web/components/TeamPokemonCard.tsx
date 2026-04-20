@@ -63,9 +63,9 @@ export function TeamPokemonCard({ pokemon, metrics }: Props) {
           </div>
         </div>
 
-        <div className="ml-auto min-w-[140px] text-right text-[9px] text-text-secondary leading-[1.5]">
+        <div className="ml-auto min-w-[140px] grid grid-cols-[auto_1fr] gap-x-1 items-start text-[9px] text-text-secondary leading-[1.5]">
+          <b className="text-text-secondary">{t('weak')}</b>
           <div>
-            <b className="text-text-secondary">{t('weak')}</b>&nbsp;
             {weaknesses.map((w) => {
               const mult = effectivenessAgainst(w, defenderTypes);
               return (
@@ -77,18 +77,22 @@ export function TeamPokemonCard({ pokemon, metrics }: Props) {
               );
             })}
           </div>
+          <b className="text-text-secondary">{t('resist')}</b>
           <div>
-            <b className="text-text-secondary">{t('resist')}</b>&nbsp;
             {resistances.map((r) => (
               <TypeBadge key={r} type={r as PokemonType} />
             ))}
           </div>
-          <div>
-            <b className="text-text-secondary">{t('immune')}</b>&nbsp;
-            {immunities.map((im) => (
-              <TypeBadge key={im} type={im as PokemonType} />
-            ))}
-          </div>
+          {immunities.length > 0 && (
+            <>
+              <b className="text-text-secondary">{t('immune')}</b>
+              <div>
+                {immunities.map((im) => (
+                  <TypeBadge key={im} type={im as PokemonType} />
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </div>
 

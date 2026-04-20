@@ -164,9 +164,9 @@ function SearchResult({
           </div>
         </div>
 
-        <div className="ml-auto min-w-[140px] text-right text-[9px] text-text-secondary leading-[1.5]">
+        <div className="ml-auto min-w-[140px] grid grid-cols-[auto_1fr] gap-x-1 items-start text-[9px] text-text-secondary leading-[1.5]">
+          <b className="text-text-secondary">{labels.weak}</b>
           <div>
-            <b className="text-text-secondary">{labels.weak}</b>&nbsp;
             {p.weaknesses.map((w) => {
               const mult = effectivenessAgainst(w, defenderTypes);
               return (
@@ -178,18 +178,22 @@ function SearchResult({
               );
             })}
           </div>
+          <b className="text-text-secondary">{labels.resist}</b>
           <div>
-            <b className="text-text-secondary">{labels.resist}</b>&nbsp;
             {p.resistances.map((r) => (
               <TypeBadge key={r} type={r as PokemonType} />
             ))}
           </div>
-          <div>
-            <b className="text-text-secondary">{labels.immune}</b>&nbsp;
-            {p.immunities.map((im) => (
-              <TypeBadge key={im} type={im as PokemonType} />
-            ))}
-          </div>
+          {p.immunities.length > 0 && (
+            <>
+              <b className="text-text-secondary">{labels.immune}</b>
+              <div>
+                {p.immunities.map((im) => (
+                  <TypeBadge key={im} type={im as PokemonType} />
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </div>
 

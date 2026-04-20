@@ -59,7 +59,11 @@ export function BaseStatRow({ letter, base, className, stage, onStageChange, inc
           </button>
         </div>
       ) : (
-        <div />
+        <div className="flex items-center justify-end gap-1" aria-hidden="true">
+          <span className="min-w-[32px]" />
+          <span className="w-6" />
+          <span className="min-w-[32px]" />
+        </div>
       )}
     </div>
   );

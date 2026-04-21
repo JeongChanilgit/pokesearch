@@ -12,6 +12,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@next/third-parties": "^16.2.4",
     "@pokesearch/api-client": "workspace:*",
     "@pokesearch/calc": "workspace:*",
     "@pokesearch/db": "workspace:*",

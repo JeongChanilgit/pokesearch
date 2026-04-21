@@ -2,11 +2,14 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations } from 'next-intl/server';
+import { GoogleTagManager } from '@next/third-parties/google';
 import { locales, type Locale } from '../../i18n';
 import { IconDefs } from '../../components/IconDefs';
 import { TopTabs } from '../../components/TopTabs';
 import { LocaleToggle } from '../../components/LocaleToggle';
 import { QueryProvider } from '../../components/QueryProvider';
+
+const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID;
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -44,6 +47,7 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <html lang={locale} suppressHydrationWarning>
+      {GTM_ID && <GoogleTagManager gtmId={GTM_ID} />}
       <body className="min-h-screen bg-bg-tertiary" suppressHydrationWarning>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <QueryProvider>

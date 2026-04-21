@@ -65,7 +65,7 @@ export async function generateMetadata({
   const description = t('pokemon.description', { name, level: 50 });
 
   return {
-    title,
+    title: { absolute: title },
     description,
     alternates,
     openGraph: {
